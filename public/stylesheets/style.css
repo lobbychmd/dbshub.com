@@ -1,0 +1,40 @@
+body { padding: 50px; font-family: Verdana,helvetica,arial,sans-serif;  font-size: 82%;  background: url("/images/bg.png");}
+a { color: #00B7FF;}
+
+.header { background: none repeat scroll 0 0 #2D2D2D; color: #CCCCCC !important; font-size: 0.88em; height: 18px; padding: 6px;}
+.header div.left {float: left;}
+.header div.right { float: right; }
+
+.header div.right ol { display: block; list-style: none outside none; margin: 0; padding: 0;}
+.header div.right li { display: inline-block; }
+
+#top-bar { background: none repeat scroll 0 0 #F5F5F5; border: 1px solid #E5E5E5; display: block; height: 30px; width: auto;}
+
+div.table {
+    background-color: #DDDDDD;
+    border:2px solid #000000;
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 4px 4px 8px #888888;
+    cursor: pointer;
+    position: absolute;
+}
+div.table table {
+    border-collapse: collapse;
+}
+div.table tbody tr {
+    background-color: #EEEEAA;
+    border-top: 1px dotted #888888;
+}
+
+div.table tbody tr.sel {
+    padding-left: 10px;
+}
+
+div.table tbody tr span{ display: none;
+     font-size: 0.75em; color: red;
+}
+div.table tbody tr.sel span{ display: inline;}
+
+div.table td, div.table th {
+    padding: 3px;        
+}

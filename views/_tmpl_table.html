@@ -1,0 +1,12 @@
+﻿    <table>
+        <thead>
+            <tr><th>${TableName}</th></tr>
+        </thead>
+        <tbody>
+            {{each cols}}
+            <tr><td ${PK} {{if(PK)}}class="pk"{{/if}}><span>>></span>${ColumnName}</td></tr>
+            {{/each}}
+        </tbody>
+
+    </table>
+ 

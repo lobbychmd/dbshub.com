@@ -1,0 +1,27 @@
+﻿<ul id="movieList"></ul>
+
+<canvas id="flow_panel"></canvas>
+
+<script>
+    $(document).ready(function () {
+        $.get('/data/table', function (data) {
+            $('#tpTable').tmpl(data).metaTable().appendTo('body');
+            $("div.table").draggable();
+        });
+        //
+
+        var canvas = $('#flow_panel')[0];
+        if (canvas.getContext) {
+            var ctx = canvas.getContext("2d");
+            ctx.penStyle = "rgb(255,255,0)";
+            ctx.penWidth = 2;
+            ctx.moveTo(0, 0);
+            for (var i = 0; i< 100; i++ ){
+                ctx.moveTo(0, i);
+                ctx.lineTo(1, i+ 1);
+            }
+            
+            ctx.stroke();
+        }
+    });
+</script>

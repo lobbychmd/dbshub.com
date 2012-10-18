@@ -1,0 +1,26 @@
+﻿    <script id="tpTable" type="text/x-jquery-tmpl">
+        <div class="table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>${TableName}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{each cols}}
+                    <tr>
+                        <td ${PK=""} {{if(PK)}}class="pk"{{/if}}><span>>></span>${ColumnName}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+
+            </table>
+        </div>
+    </script>
+
+
+    <script id="movieTemplate" type="text/x-jquery-tmpl"> 
+    <li> 
+        <b>${Name}</b> (${ReleaseYear}) 
+    </li> 
+    </script> 

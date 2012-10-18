@@ -1,0 +1,17 @@
+﻿
+<div id="tabs" style="width: 400px;height: 300px">
+    <ul>
+        <li><a href="#tabs-1">字段和索引</a></li>
+    </ul>
+    <div id="tabs-1">
+        <div class="table">
+           {{partial "_tmpl_table.html"}}
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function() {
+        $( "#tabs" ).tabs();
+    });
+</script>
