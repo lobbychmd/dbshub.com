@@ -4,6 +4,8 @@
 
 <script>
     $(document).ready(function () {
+        window.location = "/flowchart/view/test";
+
         $.get('/data/table', function (data) {
             $('#tpTable').tmpl(data).metaTable().appendTo('#painter');
             $("div.table").draggable();
