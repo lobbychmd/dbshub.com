@@ -35,7 +35,7 @@ exports.table = function (req, res) {
     var db = require('mongo');
     var tables = mongoose.model("MetaTable").findOne(function (err, doc) {
         var data1 = new metaTable(doc);
-        data1.layout = null;
+        data1.layout = null;    
         res.render("table.html", data1);
     });
 };
