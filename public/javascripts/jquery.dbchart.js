@@ -15,11 +15,11 @@ $.fn.dbchart_demo = function () {
             var table = { TableName: 'table' + i, cols: [] };
             var j = 1;
             $(this).find('.nodeLayer').each(function () {
-                table.cols.push({ ColumnName: 'field' + j });
+                table.cols.push({ ColumnName: 'field' + j, linkTo: $(this).attr('linkTo') });
                 j++;
             });
             i++;
-            $(this).html($('#tpTable').tmpl(table).html()).addClass('table').removeClass('jfDemo');
+            $(this).html($('#tpTable').tmpl(table).html()).addClass('table').removeClass('jfDemo')//.flowchart();
         });
     });
 }

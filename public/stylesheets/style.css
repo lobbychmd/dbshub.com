@@ -21,20 +21,25 @@ div.table {
 div.table table {
     border-collapse: collapse;
 }
-div.table tbody tr {
+div.table div.nodeLayer {
     background-color: #EEEEAA;
     border-top: 1px dotted #888888;
+    padding: 3px;        
 }
 
-div.table tbody tr.sel {
+div.table div.nodeLayer.header {
+    background-color: #DDDDDD;
+}
+
+div.table  div.nodeLayer.sel {
     padding-left: 10px;
 }
 
-div.table tbody tr span{ display: none;
+div.table div.nodeLayer span.indicator{ display: none;
      font-size: 0.75em; color: red;
 }
-div.table tbody tr.sel span{ display: inline;}
+div.table div.nodeLayer.sel span.indicator{ display: inline;}
 
-div.table td, div.table th {
-    padding: 3px;        
+div.table div.nodeLayer{
+    
 }

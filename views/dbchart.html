@@ -1,6 +1,9 @@
 <h2>flowchart</h2>
-<div style="width: auto;height: 500px; border:1px solid blue;padding: 0px;" id='flowView'></div>
+<div style="width: 1500px;height: 1000px; border:1px solid blue;padding: 0px;" id='flowView'></div>
 <script>
-    $('#flowView').flowchart_demo().flowchart().dbchart_demo();
+    $('#flowView').flowchart_demo().flowchart(
+            {containerHeight: "500px", containerWidth: "1300px"}
+        ).thumbnail()
+          .dbchart_demo();
 
 </script>

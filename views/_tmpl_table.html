@@ -1,12 +1,6 @@
-﻿    <table>
-        <thead>
-            <tr><th>${TableName}</th></tr>
-        </thead>
-        <tbody>
-            {{each cols}}
-            <tr><td ${PK} {{if(PK)}}class="pk"{{/if}}><span>>></span>${ColumnName}</td></tr>
-            {{/each}}
-        </tbody>
-
-    </table>
- 
+﻿<div class='nodeLayer header'>${TableName}<span>
+        
+{{each cols}}
+<div class='nodeLayer{{if(PK)}} pk{{/if}}' ${PK} ><span>>></span>${ColumnName}</div>
+{{/each}}
+        

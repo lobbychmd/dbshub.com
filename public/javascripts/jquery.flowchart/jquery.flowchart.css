@@ -1,3 +1,29 @@
 .jfDemo  {
     border: 1px solid red;
 }
+.thumbNode {border: 1px solid blue; }
+.chartContainer {overflow:auto;border: 1px solid gray; position: relative}
+.linePoint {
+    border: 2px solid gray;
+    width: 5px; height: 5px;
+    float: right;
+    display: inline-block;
+    vertical-align: central;
+}
+
+.flowchart.lineStart .nodeLayer:hover .linePoint, .linePoint {display: none;cursor: pointer}
+.nodeLayer:hover .linePoint{  border-color: gray;display: inline-block }
+.nodeLayer:hover .linePoint.lineStart , .linePoint.lineStart {display: inline-block; border-color: #000  }
+
+.flowchart.lineStart {color: #666}
+.nodeLayer.lineStart { border-width: 2px}
+
+.nodeLayer {border: 1px solid blue;}
+.flowchart.lineStart .nodeLayer{cursor: pointer}
+.flowchart.lineStart .flowNode.lineStart .nodeLayer{cursor: default}
+.flowchart.lineStart .nodeLayer:hover {border-width: 3px}
+.flowchart.lineStart .flowNode.lineStart .nodeLayer:hover {border-width: 1px}
+
+
+.thumbnail {position:  absolute; border: 1px solid #000; height: 100px; width: 100px; margin: 5px; background: #fff; z-index: 999}
+.thumb {position:  absolute; border: 1px solid red;cursor: move}
