@@ -9,17 +9,25 @@ $.fn.dbchart = function () {
 
 $.fn.dbchart_demo = function () {
     return this.each(function () {
-        //var data = [];
-        var i = 1;
-        $(this).find('.flowNode').each(function () {
-            var table = { TableName: 'table' + i, cols: [] };
-            var j = 1;
-            $(this).find('.nodeLayer').each(function () {
-                table.cols.push({ ColumnName: 'field' + j, linkTo: $(this).attr('linkTo') });
-                j++;
+        var flowchart = this;
+        var count = Math.random() * 8 + 2;
+        
+        $.get('/flowchart/demo', function (data) {
+            var nodes = $('#tpTable').tmpl(data).appendTo(flowchart);
+            nodes.each(function() {
+                var w = Math.random() * 100 + 50;
+                var h = Math.random() * 200 + 100;
+                
+                $(this)
+                    //.css('width', w).css('height', h)
+                    .css('left', Math.random() * ($(flowchart).width() - $(this).width()))
+                    .css('top', Math.random() * ($(flowchart).height() - $(this).height()))
+              //  .find('.headLayer>div>.nodeLayer').appendTo(this);//jqtpl 有bug
             });
-            i++;
-            $(this).html($('#tpTable').tmpl(table).html()).addClass('table').removeClass('jfDemo')//.flowchart();
+               // node.css('height', '').css('width','');    
+            $(flowchart).flowchart_demo({createLine:true}).flowchart({ containerHeight: "auto", containerWidth: "auto" })
+            .thumbnail(); 
         });
+        
     });
 }

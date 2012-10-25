@@ -36,6 +36,7 @@ app.get('/', routes.index);
 app.get('/table', routes.table);
 app.get('/data/table', routes.metaTable);
 app.get('/flowchart/view/:id', require('./routes/dbchart').view);
+app.get('/flowchart/demo', require('./routes/dbchart').demo);
 
 app.listen(3000, function(){
   console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

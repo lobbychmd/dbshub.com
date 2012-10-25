@@ -1,4 +1,4 @@
-body { padding: 50px; font-family: Verdana,helvetica,arial,sans-serif;  font-size: 82%;  background: url("/images/bg.png");}
+body { padding: 50px; font-family: Verdana,helvetica,arial,sans-serif;  font-size: 88%;  }
 a { color: #00B7FF;}
 
 .header { background: none repeat scroll 0 0 #2D2D2D; color: #CCCCCC !important; font-size: 0.88em; height: 18px; padding: 6px;}
@@ -9,36 +9,31 @@ a { color: #00B7FF;}
 .header div.right li { display: inline-block; }
 
 #top-bar { background: none repeat scroll 0 0 #F5F5F5; border: 1px solid #E5E5E5; display: block; height: 30px; width: auto;}
-
-div.table {
-    background-color: #DDDDDD;
-    border:2px solid #000000;
-    border-radius: 3px 3px 3px 3px;
-    box-shadow: 4px 4px 8px #888888;
-    cursor: pointer;
-    position: absolute;
-}
+.chartContainer {width: auto;}
+canvas.flowchart {background: url("/images/bg.png")}
 div.table table {
     border-collapse: collapse;
+    padding: 0px;
 }
-div.table div.nodeLayer {
-    background-color: #EEEEAA;
-    border-top: 1px dotted #888888;
-    padding: 3px;        
+div.table div.nodeLayer[type=type3] {
+    background:  #C8FFC8    
 }
 
-div.table div.nodeLayer.header {
+div.table div.nodeLayer.headLayer {
     background-color: #DDDDDD;
+    border-top: 0px;
+    text-align: center;
+    padding: 3px;
 }
 
 div.table  div.nodeLayer.sel {
     padding-left: 10px;
 }
 
-div.table div.nodeLayer span.indicator{ display: none;
-     font-size: 0.75em; color: red;
+span.indicator{ display: none;font-size: 0.75em; color: red; padding: 0px;  vertical-align: middle;
 }
-div.table div.nodeLayer.sel span.indicator{ display: inline;}
+
+div.table div.nodeLayer.sel span.indicator{ display:  inline-block}
 
 div.table div.nodeLayer{
     

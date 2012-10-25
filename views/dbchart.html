@@ -1,9 +1,15 @@
-<h2>flowchart</h2>
-<div style="width: 1500px;height: 1000px; border:1px solid blue;padding: 0px;" id='flowView'></div>
+ 
+<div style="width: 2000px;height:1500px ;padding: 0px;" id='flowView'></div>
+ 
 <script>
-    $('#flowView').flowchart_demo().flowchart(
-            {containerHeight: "500px", containerWidth: "1300px"}
-        ).thumbnail()
-          .dbchart_demo();
+    $(function () {
+        $.ajaxSetup({ cache: false });
+        //$('#flowView').flowchart_demo().flowchart({ containerHeight: "500px", containerWidth: "1300px" }  ).thumbnail();
+        // $('body').html($.trim($('body').html()));
+        $('#flowView').wrapChart({}).dbchart_demo();
+        $.autoHeight({ '.chartContainer': "89" }, true, function () {
+            $('.chartContainer').thumbnail({ reset: true });
 
+        });
+    });
 </script>

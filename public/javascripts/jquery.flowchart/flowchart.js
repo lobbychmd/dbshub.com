@@ -11,7 +11,7 @@ flowchart.prototype = {
         var w = $(div).width();
         var h = $(div).height();
         var canvasId = 'canvas' + Math.random().toString().substring(2);
-        var cv = $('<canvas>').insertAfter(this).css('border', '1px solid red')
+        var cv = $('<canvas>').insertAfter(this).addClass('flowchart')
             .attr('id', canvasId).attr('width', w).attr('height', h)
             .css('position', 'relative')
             .css('z-index', '-1').insertBefore(div);
@@ -38,7 +38,8 @@ flowchart.prototype = {
             var x1 = srcR; var x2 = destR;
             var c1x = srcR + 20; var c2x = c1x;
         }
-        cxt.strokeStyle = "rgba(255,0,255,1)";  
+        cxt.strokeStyle = "rgba(10,14,134,1)";
+        cxt.lineWidth = 2;  
         cxt.beginPath();
         cxt.moveTo(x1, srcTop);
         cxt.bezierCurveTo(c1x, srcTop, c2x, destTop, x2, destTop);
