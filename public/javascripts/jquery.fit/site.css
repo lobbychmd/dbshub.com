@@ -1,0 +1,121 @@
+﻿
+/********StdQuery *********************************/
+a.hidesq {border: 1px solid gray; padding: 3px; text-decoration: none; width: 100%; }
+/********StdQuery end *****************************/
+
+.cd_container .ui-widget-header { background:url("images/outlookbar.png") repeat scroll 0 0 transparent }
+.cd_container.ui-widget-content{border-color:#7290B4; border-width:1px;}
+.commonDialog .QueryGrid {border:#7290B4 1px solid;}/**没起作用*/
+.commonDialog .QueryGrid thead{ color:#333}
+.DialogQueryParams fieldset{border-color:#7290B4; border-width:1px;}
+.DialogQueryParams input.ui-state-default, .cd_container button.ui-state-default{border-color:#7290B4; border-width:1px;background:url("images/outlookbar.png") ; padding:0.2em 0.5em;}
+
+.ModulePage { padding:10px; background:#d8e8ff}
+
+
+.QueryParams {float:left; min-width:220px}
+.QueryParams .ui-accordion-content{background:#d8e8ff; border-color:#7791ac}
+.QueryParams h3{ background:url('images/queryparam_bg.png'); border-color:#7791ac}
+.QueryParams .ui-icon-triangle-1-s{ background-position: -97px -128px}
+
+span.caption{ background:#eee; display:inline-block; border-width:0px 0px 1px 0px; border-color:#7791ac; border-style:solid; width:100%;padding:10px 0 ;
+              color:#666;font-size: 1.2em;font-weight: bold;text-align: left;}
+
+
+span.caption a{color:#36688D}
+.QueryGrid .ui-widget-header{background:url('images/qgbg.png');border-bottom:#7791ac 1px solid; height:35px; }
+.QueryGrid tbody tr.selected { background: #A7CDF0}
+.QueryGrid tbody tr:hover{ background: #eee}
+
+.qg_container {overflow:auto;width:5000px;border:#7791ac 1px solid; margin:0px 10px 10px 10px;}
+.qg_container.right{ margin-left:245px;}
+.qg_container.right span.caption{ display:none;}
+
+.ModulePage .Toolbar {padding: 0px 0px 0px 20px;width:100%; background:url('images/tbbg.png'); height:43px; margin: -10px -10px 10px -10px}
+.Toolbar>input.ui-button{width:auto;  background:none; border:0px; height:16px; padding: 0px 18px; color:#234369; margin-bottom:4px;}
+.Toolbar>input[btntype=report]{background:url('images/report.png') no-repeat;  }
+.Toolbar>input[value=查询]{background:url('images/search.png') no-repeat;  }
+.Toolbar>input[btntype=new],.Toolbar>input#new{background:url('images/new.png') no-repeat;  }
+.Toolbar>input#btnEdit{background:url('images/edit.png') no-repeat;  }
+.Toolbar>input#btnSave{background:url('images/save.png') no-repeat;  }
+.Toolbar>input, .Toolbar>div { vertical-align:middle} 
+.Toolbar>div.logo{ background:url('images/tblogo1.gif') no-repeat; margin-top:4px; width:38px; height:38px; display:inline-block; margin-right:10px;}
+
+FlowBar li.ui-tabs-selected{ background:c2d}
+
+.editor { border:1px #87949d solid;}
+
+.DialogQueryParams fieldset { padding:10px;}
+
+
+.formatError{background:url('./images/invalid_line.gif') repeat-x 100px bottom;}
+
+div.indicator{background:url('./images/indicator_s.gif') no-repeat;height:16px;width:16px;cursor:pointer;display:inline-block; }
+
+table.Grid {border:1px solid #bbb} 
+table.Grid thead th{ background: #ccc; text-align:center;font-weight:bold;padding:5px;}
+table.Grid input{ border-width:0px 0px 1px 0px;border-color:#aaa;border-style:solid}
+ 
+table.Grid a.delRow{ text-decoration:none; font-size:1.2em; font-weight:bold;}
+table.Grid a.delRow{ text-decoration:none; font-size:1.2em; font-weight:bold;}
+table.Grid a.addRow {background:url('./images/add.png');height:16px;width:16px;cursor:pointer;display:inline-block}
+
+a.delContent{background:url('./images/delContent.png');height:16px;width:16px;cursor:pointer;display:inline-block}
+
+fieldset.ListEditor {padding:6px;margin-left:-1px;}
+fieldset.ListEditor a.add {background:url('./images/add.png');height:16px;width:16px;cursor:pointer;display:inline-block}
+
+table.Grid input.modalError, .modalError{border:1px solid red}
+table.Grid tr.changed, table.Grid tr.changed [name]{background:yellow}
+table.Grid tr.deleted td, table.Grid tr.deleted [name]{text-decoration:line-through;color:red}
+input.uf{border:1px solid;width:20px;}
+[readonly=readonly]{background-color: #ded}
+
+.StatusBar input{ display:inline-block; float:right}
+
+.AccordionMenu .ui-accordion-header{border-style:solid;border-color:#7290B4; border-width:0px 0px 1px 1px; background:url('images/outlookbar.png'); height:31px; margin-top:0px; 
+                                  vertical-align:middle; font-size:1.03em; }
+.AccordionMenu .ui-accordion-header .ui-icon{background-image:url('images/module/module.24.png'); height:24px; width:24px; top:3px; background-position:0px 0px;
+                                    vertical-align:middle; }
+.AccordionMenu.ui-accordion .ui-accordion-header .ui-icon{margin-top:-12px;  }
+.AccordionMenu .ui-accordion-header[icon=商品] .ui-icon{background-image:url('images/module/商品.24.png');}
+.AccordionMenu .ui-accordion-header[icon=码] .ui-icon{background-image:url('images/module/码.24.png');}
+.AccordionMenu .ui-accordion-header[icon=客户] .ui-icon{background-image:url('images/module/客户.24.png');}
+.AccordionMenu .ui-accordion-header[icon=分类] .ui-icon{background-image:url('images/module/分类.24.png');}
+.AccordionMenu .ui-accordion-header[icon=车] .ui-icon{background-image:url('images/module/车.24.png');}
+.AccordionMenu .ui-accordion-header[icon=盘点] .ui-icon{background-image:url('images/module/盘点.24.png');}
+.AccordionMenu .ui-accordion-header[icon=供应商] .ui-icon{background-image:url('images/module/供应商.24.png');}
+.AccordionMenu .ui-accordion-header[icon=管理] .ui-icon{background-image:url('images/module/管理.24.png');}
+.AccordionMenu .ui-accordion-header[icon=维护] .ui-icon{background-image:url('images/module/维护.24.png');}
+.AccordionMenu .ui-accordion-header[icon=查询] .ui-icon{background-image:url('images/module/查询.24.png');}
+.AccordionMenu .ui-accordion-header[icon=报表] .ui-icon{background-image:url('images/module/报表.24.png');}
+.AccordionMenu .ui-accordion-header>a{height:24px;}
+.AccordionMenu .ui-accordion-content{ background:#eee; border-color:#7290B4; border-width:0px 0px 1px 1px; }
+.AccordionMenu h3.ui-state-active a, .AccordionMenu h3.ui-state-active a:link, .AccordionMenu h3.ui-state-active a:visited
+    .AccordionMenu h3.ui-state-default a, .AccordionMenu h3.ui-state-default a:link, .AccordionMenu h3.ui-state-default a:visited
+        { font-weight:bold; color:#36688D; margin-left:4px;} /*#224678*/
+.AccordionMenu .ui-corner-top, .AccordionMenu .ui-corner-all, .AccordionMenu .ui-corner-bottom{ border-top-left-radius:0px;border-top-right-radius:0px;border-bottom-left-radius:0px;border-bottom-right-radius:0px;}
+        
+.AccordionMenu .filetree span.file{ background: url("images/mod.png") no-repeat scroll 0 0 transparent; }
+.AccordionMenu .filetree span.file[icon=商品]{ background: url("images/module/商品.png") no-repeat scroll 0 0 transparent; }
+.AccordionMenu .filetree span.file[icon=码]{ background: url("images/module/码.png") no-repeat scroll 0 0 transparent; }
+.AccordionMenu .filetree span.file[icon=客户]{ background: url("images/module/客户.png") no-repeat scroll 0 0 transparent; }
+.AccordionMenu .filetree span.file[icon=分类]{ background: url("images/module/分类.png") no-repeat scroll 0 0 transparent; }
+.AccordionMenu .filetree span.file[icon=车]{ background: url("images/module/车.png") no-repeat scroll 0 0 transparent; }
+.AccordionMenu .filetree span.file[icon=盘点]{ background: url("images/module/盘点.png") no-repeat scroll 0 0 transparent; }
+.AccordionMenu .filetree span.file[icon=供应商]{ background: url("images/module/供应商.png") no-repeat scroll 0 0 transparent; }
+.AccordionMenu .filetree span.file[icon=管理]{ background: url("images/module/管理.png") no-repeat scroll 0 0 transparent; }
+.AccordionMenu .filetree span.file[icon=维护]{ background: url("images/module/维护.png") no-repeat scroll 0 0 transparent; }
+.AccordionMenu .filetree span.file[icon=报表]{ background: url("images/module/报表.png") no-repeat scroll 0 0 transparent; }
+.AccordionMenu .filetree span.file[icon=查询]{ background: url("images/module/查询.png") no-repeat scroll 0 0 transparent; }
+.AccordionMenu .treeview li{ background:url("images/treeview-default-line.gif") no-repeat scroll 0 0 transparent;}
+.AccordionMenu .treeview li.collapsable, #nav .treeview li.expandable{  margin-left:-20px; }
+.AccordionMenu .treeview li.selected { background:#a7ceef}
+.AccordionMenu .treeview li.collapsable>span, #nav .treeview li.expandable>span{  font-weight:bold;}
+.AccordionMenu .filetree span.folder{ background :url("images/arrow_down.png")  no-repeat scroll 4px 7px transparent}
+.AccordionMenu .filetree li.expandable span.folder{ background :url("images/arrow_right.png")  no-repeat scroll 4px 4px transparent}
+        
+.AccordionMenu a{ text-decoration:none}
+.AccordionMenu a:hover{ text-decoration: underline}
+        
+        
