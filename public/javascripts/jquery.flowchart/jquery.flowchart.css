@@ -15,7 +15,7 @@
 .flowNode { background-color: #DDDDDD;border: solid #000 1px;  cursor: pointer;border-radius: 3px 3px 3px 3px; box-shadow: 4px 4px 8px #888888;
             position: absolute; display: inline-block
 }
-.flowNode.sel { border-width: 3px; }
+.flowNode.sel { border-width: 2px; }
 
 .flowchart.lineStart .nodeLayer:hover .linePoint, .linePoint {display: none;cursor: pointer}
  
