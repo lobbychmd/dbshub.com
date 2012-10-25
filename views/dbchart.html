@@ -4,11 +4,11 @@
 <script>
     $(function () {
         $.ajaxSetup({ cache: false });
-        //$('#flowView').flowchart_demo().flowchart({ containerHeight: "500px", containerWidth: "1300px" }  ).thumbnail();
+        //$('#flowView').flowchart_demo().wrapChart({}).flowchart({ containerHeight: "500px", containerWidth: "1300px" }  ).thumbnail();
         // $('body').html($.trim($('body').html()));
         $('#flowView').wrapChart({}).dbchart_demo();
         $.autoHeight({ '.chartContainer': "89" }, true, function () {
-            $('.chartContainer').thumbnail({ reset: true });
+            $('.chartContainer').thumbnail({ resetThumb: true });
 
         });
     });

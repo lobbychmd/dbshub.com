@@ -39,12 +39,19 @@ flowchart.prototype = {
             var c1x = srcR + 20; var c2x = c1x;
         }
         cxt.strokeStyle = "rgba(10,14,134,1)";
-        cxt.lineWidth = 2;  
+        cxt.fillStyle = "rgba(10,14,134,1)";
+        cxt.lineWidth = 2;
         cxt.beginPath();
         cxt.moveTo(x1, srcTop);
         cxt.bezierCurveTo(c1x, srcTop, c2x, destTop, x2, destTop);
+        
+        
         //alert(c1x);        alert(srcTop);        alert(c2x);        alert(destTop);        alert(x2);        alert(destTop);
         cxt.stroke();
+        cxt.beginPath();
+        cxt.fillStyle = "rgba(10,14,134,1)";
+        cxt.arc(x2, destTop, 5, 0, Math.PI * 2);
+        cxt.fill();
 
     }
 

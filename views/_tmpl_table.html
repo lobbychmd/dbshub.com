@@ -1,6 +1,11 @@
-﻿<div class='nodeLayer header'>${TableName}<span>
-        
-{{each cols}}
-<div class='nodeLayer{{if(PK)}} pk{{/if}}' ${PK} ><span>>></span>${ColumnName}</div>
-{{/each}}
-        
+﻿<div class="table flowNode" style='width:200px' nodeId = '${TableName}'>
+            <div class="nodeLayer headLayer" >${TableName}</div>
+            {{each cols}}
+                <div linkTo='${linkTo}' class='nodeLayer{{if(PK)}} pk{{/if}}' ${PK} 
+                type='type${Type}' nodeLayerId='${ColumnName}'>
+                    <span class='indicator'>>></span>
+                    ${ColumnName}
+                    <span class='linePoint'></span>
+                </div>
+            {{/each}}
+</div>

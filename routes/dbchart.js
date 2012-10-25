@@ -33,3 +33,12 @@ exports.demo = function (req, res) {
         res.send(data);
     });
 };
+
+exports.edit = function (req, res) {
+    var db = require('mongo');
+    var tables = mongoose.model("MetaTable").find({ TableName: 'tCardReceive' }).exec(function (err, docs) {
+        var doc = new metaTable(docs[0]);
+        doc.layout = null;
+        res.render('table.html', doc);
+    });
+};
