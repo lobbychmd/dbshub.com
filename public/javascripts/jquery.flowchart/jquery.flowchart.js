@@ -35,7 +35,7 @@ $.fn.flowchart = function (option) {
                 canvas.width = canvas.width;
                 //$(this).flowchart_linkTo(canvas);
                 $(chart).trigger('redraw', []);
-                $(chart).thumbnail({thumb:true});
+                $(chart).thumbnail({thumb:true});   
             }
                 //连线控制
             }).find('.linePoint').click(function () {
