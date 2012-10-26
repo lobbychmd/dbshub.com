@@ -1,4 +1,4 @@
-$.fn.dbchart = function () {
+﻿$.fn.dbchart = function () {
     return this.each(function () {
         
     });
@@ -25,7 +25,7 @@ $.fn.dbchart_demo = function () {
               //  .find('.headLayer>div>.nodeLayer').appendTo(this);//jqtpl 有bug
             });
                // node.css('height', '').css('width','');    
-            $(flowchart).flowchart_demo({createLine:true}).flowchart({ containerHeight: "auto", containerWidth: "auto" })
+            $(flowchart).flowchart_demo({createLine:true}).flowchart({ containerHeight: "auto", containerWidth: "auto" , handle: '.headLayer'})
             .thumbnail(); 
         });
         

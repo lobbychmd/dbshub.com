@@ -1,4 +1,4 @@
-$.fn.wrapChart = function (option) {
+﻿$.fn.wrapChart = function (option) {
     return this.each(function () {
         //创建一个容器用来包装
         var container = $(this).wrap('<div>').parent().addClass('chartContainer');
@@ -37,7 +37,8 @@ $.fn.flowchart = function (option) {
 
             })
             .draggable(
-                { stop: function (event, ui) {
+                { handle: option? option.handle : null,
+                    stop: function (event, ui) {
                 
                     //$(this).flowchart_linkTo(canvas);
                     $(chart).flowchart({redraw: true});
