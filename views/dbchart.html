@@ -1,4 +1,4 @@
- 
+﻿ 
 <div style="width: 2000px;height:1500px ;padding: 0px;" id='flowView'></div>
  
 <script>
@@ -9,6 +9,14 @@
         $('#flowView').wrapChart({}).dbchart_demo();
         $.autoHeight({ '.chartContainer': "89" }, true, function () {
             $('.chartContainer').thumbnail({ resetThumb: true });
+
+        });
+
+        $('#joinflow').click(function () {
+            $.get('/data/table?tableName=' + $('#pickTable').val(), function (data) {
+                var node = $('#tpTable').tmpl(data).appendTo('#flowView').attr('id', data.TableName);
+                $('#flowView').flowchart({add: data.TableName});
+            })
 
         });
     });

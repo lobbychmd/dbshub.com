@@ -21,7 +21,14 @@
     <link href="/stylesheets/style.css" rel="stylesheet" type="text/css" />
     
     {{partial "_tmpl.ejs"}}
-    
+    <script>
+        $(function () {
+            $("#pickTable").autocomplete({ source: "/tables", minLength: 1 });
+            $("#top-bar [type=button]").button();
+        });
+
+
+    </script>
 </head>
 <body style="padding:0px;margin:0px;">
     <div class="header">
@@ -38,7 +45,9 @@
         </div>
         <div style="clear:both"></div>
     </div>
-    <div id="top-bar" style=""></div>
+    <div id="top-bar" style="">
+        <input id="pickTable"  /> <input type='button' value='加入' id="joinflow">
+    </div>
 	{{html body}}
     
 </body>

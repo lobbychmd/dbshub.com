@@ -44,14 +44,14 @@ flowchart.prototype = {
         cxt.beginPath();
         cxt.moveTo(x1, srcTop);
         cxt.bezierCurveTo(c1x, srcTop, c2x, destTop, x2, destTop);
-        
-        
-        //alert(c1x);        alert(srcTop);        alert(c2x);        alert(destTop);        alert(x2);        alert(destTop);
+        //cxt.lineTo(c2x, destTop);
         cxt.stroke();
-        cxt.beginPath();
-        cxt.fillStyle = "rgba(10,14,134,1)";
-        cxt.arc(x2, destTop, 5, 0, Math.PI * 2);
-        cxt.fill();
+        
+        
+        //cxt.beginPath();
+        //cxt.fillStyle = "rgba(10,14,134,1)";
+        //cxt.arc(x2, destTop, 5, 0, Math.PI * 2);
+        //cxt.fill();
 
     }
 

@@ -33,10 +33,10 @@ app.configure('production', function(){
 // Routes
 
 app.get('/', routes.index);
-app.get('/table', routes.table);
-app.get('/data/table', routes.metaTable);
+app.get('/tables', routes.tables);
+app.get('/data/tables', require('./routes/data').tables);
+app.get('/data/table', require('./routes/data').table);
 app.get('/flowchart/view/:id', require('./routes/dbchart').view);
-app.get('/flowchart/demo', require('./routes/dbchart').demo);
 app.get('/flowchart/edit/:id', require('./routes/dbchart').edit);
 
 app.listen(3000, function(){
