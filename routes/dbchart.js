@@ -1,3 +1,4 @@
+//require('schema');
 var mongoose = require('mongoose');
 var Enumerable = require('linq');
 var metaTable = require('metaTable').metaTable;
@@ -7,10 +8,12 @@ exports.view = function (req, res) {
 };
 
 exports.edit = function (req, res) {
-    var db = require('mongo');
-    var tables = mongoose.model("MetaTable").find({ TableName: 'tCardReceive' }).exec(function (err, docs) {
-        var doc = new metaTable(docs[0]);
+    var db = require('schema');
+    console.log(req.params.id);
+    var tables = mongoose.model("MetaTable").findOne({ _id:  req.params.id }).exec(function (err, doc) {
+        console.log(doc);
+        doc = new metaTable(doc);
         doc.layout = null;
-        res.render('table.html', doc);  
+        res.render('design-table.html', doc);
     });
 };

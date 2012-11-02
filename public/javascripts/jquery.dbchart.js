@@ -1,12 +1,12 @@
 ﻿$.fn.dbchart = function () {
     return this.each(function () {
-        $(this).find('a.edit').click(function () {
-            alert($(this).closest('.flowNode').html());
-            return false;
-        });
+        //$.dialog.init();
+        //$(this).find('a.edit').click(function () {
+        //    alert($(this).closest('.flowNode').html());
+        //    return false;
+        //});
     });
 }
-
 
 $.fn.dbchart_demo = function () {
     return this.each(function () {

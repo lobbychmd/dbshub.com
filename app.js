@@ -7,7 +7,7 @@ var express = require('express')
   , routes = require('./routes');
 
 var app = module.exports = express.createServer();
-var db = require('mongo');
+var db = require('schema');
 db.connect();
 
 // Configuration

@@ -1,6 +1,6 @@
 ﻿    <script id="tpTable" type="text/x-jquery-tmpl">
         <div class="table flowNode" style='width:200px' nodeId = '${TableName}'>
-            <div class="nodeLayer headLayer" >${TableName}<a class='edit'></a></div>
+            <div class="nodeLayer headLayer" >${TableName}<a class='edit dialog' href='/flowchart/edit/${_id}'></a></div>
             {{each cols}}
                 <div linkTo='${linkTo}' class='nodeLayer{{if(PK)}} pk{{/if}}' ${PK} 
                 type='type${Type}' nodeLayerId='${ColumnName}'>

@@ -1,11 +1,16 @@
-﻿<div class="table flowNode" style='width:200px' nodeId = '${TableName}'>
-            <div class="nodeLayer headLayer" >${TableName}</div>
-            {{each cols}}
-                <div linkTo='${linkTo}' class='nodeLayer{{if(PK)}} pk{{/if}}' ${PK} 
-                type='type${Type}' nodeLayerId='${ColumnName}'>
-                    <span class='indicator'>>></span>
-                    ${ColumnName}
-                    <span class='linePoint'></span>
-                </div>
-            {{/each}}
+﻿<div class="tb-design" style='width:800px;  display: inline-block;' >
+    <span class="caption"><a href="#" >表名:</a><input value="${TableName}" /> </span>
+    <table class="ui-widget ui-widget-content">
+        <thead class="ui-widget-header">
+            <tr><th>字段名</th><th>字段描述</th><th>说明</th><th>大小</th></tr>
+        </thead><tbody>
+        {{each cols}}
+            <tr>
+                <td>${ColumnName}</td>
+                <td>${Caption}</td>
+                <td>${Summary}</td>
+                <td>${Size}</td>
+            </tr>
+        {{/each}}
+    </tbody></table>            
 </div>
