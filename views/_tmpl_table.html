@@ -2,15 +2,16 @@
     <span class="caption"><a href="#" >表名:</a><input value="${TableName}" /> </span>
     <table class="ui-widget ui-widget-content">
         <thead class="ui-widget-header">
-            <tr><th>字段名</th><th>字段描述</th><th>说明</th><th>大小</th></tr>
+            <tr><th>字段名</th><th>字段描述</th><th>说明</th><th>大小</th><th><a class="addIndex" href="#"></a></th></tr>
         </thead><tbody>
         {{each cols}}
             <tr>
-                <td>${ColumnName}</td>
-                <td>${Caption}</td>
-                <td>${Summary}</td>
-                <td>${Size}</td>
+                <td><input value='${ColumnName}'></td>
+                <td><input value='${Caption}'></td>
+                <td><input value='${Summary}'></td>
+                <td><input value='${Size}'></td>
             </tr>
         {{/each}}
     </tbody></table>            
 </div>
+

@@ -32,6 +32,19 @@ a { color: #00B7FF;}
     height: 35px;
 }
 .tb-design span.caption {background: none repeat scroll 0 0 #EEEEEE;border-color: #7791AC;border-style: solid;border-width: 0 0 1px;color: #666666;display: inline-block;font-size: 1.2em;font-weight: bold;padding: 10px 0;text-align: left;width: 100%;}
+.tb-design th a, .tb-design th input {margin: 2px; vertical-align: middle; height: 16px;display: inline-block;}
+.tb-design th a.addIndex {background: url("/images/addIndex.png") no-repeat scroll 0 0 transparent; width: 16px}
+.tb-design th a.index {background: url("/images/index.png") no-repeat scroll 0 0 transparent; width: 16px;}
+.tb-design th a.delIndex {background: url("/images/del.png") no-repeat scroll 0 0 transparent; width: 16px;display: none;}
+.tb-design th a.rename {background: url("/images/rename.png") no-repeat scroll 0 0 transparent; width: 16px;display: none;}
+.tb-design th input {display: none; height: 12px;width: 50px;}
+.tb-design th.editing a.rename, .tb-design th:hover.editing  a.rename{display: none; }
+.tb-design th.editing input, .tb-design th:hover.editing  input{display: inline-block; }
+.tb-design th:hover a.rename, .tb-design th:hover a.delIndex { display: inline-block}
+.tb-design th[indexType=U] a.index {background-image: url("/images/unique.png")}
+.tb-design th[indexType=P] a.index {background-image: url("/images/pk.png")}
+.tb-design td.index {  cursor: pointer;}
+.tb-design td.index span { border: 1px solid #ddd; color: #999; height: 16px; width: 10px; display: inline-block; font-size: 0.88em; padding: 0px 4px;}
 
 .chartContainer {width: auto;}
 canvas.flowchart {background: url("/images/bg.png")}
