@@ -11,45 +11,25 @@
     <link href="/javascripts/jc.dialog/dialog.css" rel="stylesheet" type="text/css" />
 
     <script src="/javascripts/jquery.fit/site.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery.fitui/jquery.fitui.layout.js" type="text/javascript"></script>
 
     <script src="/javascripts/jquery.flowchart/jquery.flowchart.js" type="text/javascript"></script>
     <script src="/javascripts/jquery.flowchart/flowchart.js" type="text/javascript"></script>
     <link href="/javascripts/jquery.flowchart/jquery.flowchart.css" rel="stylesheet" type="text/css" />
-
     <script src="/javascripts/jquery.dbchart.js" type="text/javascript"></script>
-
     <link href="/stylesheets/style.css" rel="stylesheet" type="text/css" />
-    
-    {{partial "_tmpl.ejs"}}
     <script>
         $(function () {
-            $("#pickTable").autocomplete({ source: "/tables", minLength: 1 });
-            $("#top-bar [type=button]").button();
+            $.initLayout();
         });
 
 
     </script>
 </head>
 <body style="padding:0px;margin:0px;">
-    <div class="header">
-        <div class="left">
-            <a href="/struct/index">数据结构</a>
-        </div>
-        
-        <div class="right">
-            <ol>
-                <li> <span> lobby@21cn.com (<a href="/logout">退出</a>) </span></li>
-                <li> <select id="combobox"> </select></li>
-                <li><a style="display:inline-block;width:18px;height:18px; background: url(&quot;/images/h_bedf916a.png&quot;) repeat scroll 0 0 transparent;" href="/Account/Setting"></a></li>
-            </ol>
-        </div>
-        <div style="clear:both"></div>
-    </div>
-    <div id="top-bar" style="">
-        <input id="pickTable"  /> <input type='button' value='加入' id="joinflow">
-    </div>
+    <header></header>
 	{{html body}}
-    
+    <footer></footer>
 </body>
 </html>
 

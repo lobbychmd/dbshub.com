@@ -1,34 +1,6 @@
-﻿
-
-<div id="painter" style="width: auto; height: 500px;border: 1px solid red;" ></div>
-
-<script>
+﻿<script>
     $(document).ready(function () {
+        return;
         window.location = "/flowchart/view/test";
-
-        $.get('/data/table', function (data) {
-            $('#tpTable').tmpl(data).metaTable().appendTo('#painter');
-            $("div.table").draggable();
-        });
-        //
-        $('#painter').createCanvas().testCanvas();
-
-        var canvas = $('#flow_panel')[0];
-        if (canvas.getContext) {
-            var ctx = canvas.getContext("2d");
-            ctx.penStyle = "rgb(255,255,0)";
-            ctx.penWidth = 2;
-            ctx.moveTo(0, 0);
-            var h = 100; var w = 0;
-            for (var i = 0; i < w; i++) {
-                var x = i;
-                //var y =  Math.cos(Math.PI * i/w/2) * h;
-                var y = 0.03 * i * i + .5 * i;
-                ctx.moveTo(x, y);
-                ctx.lineTo(x + 1, y + 1);
-            }
-            ctx.bezierCurveTo(20, 0, 20, 60, 40, 60);
-            ctx.stroke();
-        }
     });
 </script>
