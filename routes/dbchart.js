@@ -4,7 +4,7 @@ var Enumerable = require('linq');
 var metaTable = require('metaTable').metaTable;
 
 exports.view = function (req, res) {
-    res.render('dbchart.html', {});
+    res.render('dbchart.html', {toolbar: []});
 };
 
 exports.edit = function (req, res) {

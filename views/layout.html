@@ -12,6 +12,8 @@
 
     <script src="/javascripts/jquery.fit/site.js" type="text/javascript"></script>
     <script src="/javascripts/jquery.fitui/jquery.fitui.layout.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery.fitui/jquery.fitui.js" type="text/javascript"></script>
+    <link href="/javascripts/jquery.fitui/jquery.fitui.css" rel="stylesheet" type="text/css" />
 
     <script src="/javascripts/jquery.flowchart/jquery.flowchart.js" type="text/javascript"></script>
     <script src="/javascripts/jquery.flowchart/flowchart.js" type="text/javascript"></script>
@@ -20,15 +22,26 @@
     <link href="/stylesheets/style.css" rel="stylesheet" type="text/css" />
     <script>
         $(function () {
-            $.initLayout();
+            $.initLayout({navWidth:300});
         });
-
-
     </script>
+
+    
 </head>
 <body style="padding:0px;margin:0px;">
-    <header></header>
-	{{html body}}
+    <header><a href="/">首页</a><a href="/flowchart/view/test">流程</a></header>
+    <div class="header" style="height: 60px;"></div>
+    <div class="toolbar" style="height: 30px;">
+        {{partial(toolbar) "_toolbar.html"}}
+    </div>
+    <div class="main" id="main">
+        <nav>
+            <header>数</header>
+        </nav>
+        <div id="content">
+            {{html body}}
+        </div>
+    </div>
     <footer></footer>
 </body>
 </html>
