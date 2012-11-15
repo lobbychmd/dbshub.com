@@ -22,7 +22,7 @@
     <link href="/stylesheets/style.css" rel="stylesheet" type="text/css" />
     <script>
         $(function () {
-            $.initLayout({navWidth:300});
+            
         });
     </script>
 
@@ -34,10 +34,11 @@
     <div class="toolbar" style="height: 30px;">
         {{partial(toolbar) "_toolbar.html"}}
     </div>
-    <div class="main" id="main">
+    <div class="main" id="main" style="height: 100px;">
         <nav>
             <header>数</header>
         </nav>
+        <div class="spliter"></div>
         <div id="content">
             {{html body}}
         </div>

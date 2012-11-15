@@ -25,41 +25,86 @@ $.resizeW = function () {
     }
 }
 
+
+$.fn.layout = function () {
+    return this.each(function () {
+        if ($(this).children().size() > 1) {
+            var ver_align = $(this).children().eq(0).css('float') != 'left';
+
+            if (ver_align) {
+                var spliter = $(this).children('.spliter').draggable({
+                    axis: "x", stop: function () { $(this).trigger('resize.split'); }
+                }).bind('resize.split', function () {
+                    var l = $(this).offset().left;
+                    var nav = $(this).prev().width(l);
+                    var content = $(this).next().css('margin-left', l + $(this).width());
+                    $(this).css('left', 0);
+                }).trigger('resize.split', []);
+
+                var content = spliter.next().layout();
+            } else {
+                var root = $(this).parent()[0].tagName == 'BODY';
+                var footer = $(this).parent().find('footer');
+                var cr = $(this).children();
+                var hOffset = 0;
+                var content = null;
+                for (var i = cr.size() - 1; i >= 0; i--) {
+                    var d = cr.eq(i);
+                    if ((d.attr('id') != this.id) && (d.css('display') != 'none'))
+                        hOffset += d.height();
+                }
+                setting[container[0].id] = hOffset + (root ? 0 : document.documentElement.clientHeight - $(this).height());
+                $.autoHeight(setting, true);
+            }
+
+        }
+
+    });
+}
+
 $.initLayout = function (option) {
     if (!option) option = {};
-    $.extend({ navWidth: 200 }, option)
-
-    var c = $('body').children();
-    var hOffset = 0;
-    var main = null;
-    var footer = null;
-    for (var i = c.size() - 1; i >= 0; i--) {
-        var d = c.eq(i);
-        if (d[0].tagName != 'FOOTER') {
-            if ((!main) && footer) main = d;
-            else if (footer) hOffset += d.height();
-        }
-        else {
-            if (!footer) footer = d;
-            if (footer) hOffset += d.height();
-        }
-    }
+    $.extend({ navWidth: 200, containers: [] }, option)
+    $('body').layout();
+    return;
     var setting = {};
-    var nav = main.children('nav').width(option.navWidth);
-    var spliter = $("<div class='spliter' />").insertAfter(nav).draggable({
-        axis: "x", stop: function () { $(this).trigger('resize.split'); }
-    }).bind('resize.split', function () {
-        var l = $(this).offset().left;
-        var nav = $(this).prev().width(l);
-        var content = $(this).next().css('margin-left', l + $(this).width());
-        $(this).css('left', 0);
-    }).trigger('resize.split', []);
-    var content = spliter.next();
-    main.append("<div style='clear:both'>");
-    setting['nav'] = hOffset;
-    setting["#" + main.attr("id")] = hOffset;
-    setting["#" + content.attr("id")] = hOffset;
-    setting[".spliter"] = hOffset;
-    if(window.console) console.log(setting);
+    for (var j in option.containers) {
+        var c = option.containers[j];
+        $(c).each(function () {
+            var root = $(c).parent()[0].tagName == 'BODY';
+            var footer = $(c).parent().find('footer');
+            var cr = $(this).parent().children();
+            var hOffset = 0;
+            for (var i = cr.size() - 1; i >= 0; i--) {
+                var d = cr.eq(i);
+                if ((d.attr('id') != this.id) && (d.css('display') != 'none'))
+                    hOffset += d.height();
+            }
+
+
+            setting[this.id] = hOffset + (root ? 0 : document.documentElement.clientHeight - $(this).parent().height());
+            if (root) {
+                var nav = $(this).children('nav').width(option.navWidth);
+                var spliter = $("<div class='spliter' />").insertAfter(nav).draggable({
+                    axis: "x", stop: function () { $(this).trigger('resize.split'); }
+                }).bind('resize.split', function () {
+                    var l = $(this).offset().left;
+                    var nav = $(this).prev().width(l);
+                    var content = $(this).next().css('margin-left', l + $(this).width());
+                    $(this).css('left', 0);
+                }).trigger('resize.split', []);
+                //var content = spliter.next();
+                $(this).append("<div style='clear:both'>");
+
+                setting['nav'] = hOffset;
+                setting[".spliter"] = hOffset;
+            }
+
+        });
+
+
+    }
+
+    if (window.console) console.log(setting);
     $.autoHeight(setting, true);
 }
