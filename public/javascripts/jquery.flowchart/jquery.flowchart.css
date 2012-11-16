@@ -3,7 +3,7 @@
 }
 .thumbNode {border: 1px solid blue; }
 .thumbNode.sel {  background: #EEEEAA}
-.chartContainer {overflow:auto;border: 0px solid gray; position: relative}
+
 .linePoint {
     border: 2px solid gray;border-radius: 3px 3px 3px 3px; margin: 2px;
     width: 10px; height: 10px;

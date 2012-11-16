@@ -22,17 +22,17 @@
         $.ajaxSetup({ cache: false });
         $('#flowView').thumbnail();
         $('#flowView').dbchart_demo();
-        //$.autoHeight({ '.chartContainer': "89" }, true, function () {
-        //    $('.chartContainer').thumbnail({ resetThumb: true });
-
-        //});
-
-        $('#joinflow').click(function () {
-            $.get('/data/table?tableName=' + $('#pickTable').val(), function (data) {
-                var node = $('#tpTable').tmpl(data).appendTo('#flowView').attr('id', data.TableName);
-                $('#flowView').flowchart({ add: data.TableName });
-            })
+        $.autoHeight({}, false, function () {
+            $('#flowView').thumbnail({ resetThumb: true });
 
         });
-    });
+
+            $('#joinflow').click(function () {
+                $.get('/data/table?tableName=' + $('#pickTable').val(), function (data) {
+                    var node = $('#tpTable').tmpl(data).appendTo('#flowView').attr('id', data.TableName);
+                    $('#flowView').flowchart({ add: data.TableName });
+                })
+
+            });
+        });
 </script>

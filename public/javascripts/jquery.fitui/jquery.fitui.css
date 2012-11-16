@@ -5,6 +5,7 @@ a {text-decoration: none; }
 /* 布局 */
 footer, header {height: 32px; background: url("images/header_bg.png") repeat-x scroll right 0 transparent}
 body>header {background: repeat scroll 0 0 #2D2D2D}
+header>* { display: inline-block; padding: 4px 8px; margin: 0px; vertical-align: middle; color: #666 }
 nav {float: left}
 [align=spliter] { cursor: col-resize;width: 4px; float: left; background: #ddd}
 
@@ -13,6 +14,7 @@ nav {float: left}
 .headerTabs.ui-tabs ul { border-width: 0px; padding: 0 0 0 6px;   }
 .headerTabs.ui-tabs .ui-widget-header {background: url("images/header_bg.png") repeat scroll 0 0 transparent;border-top-left-radius:0px;border-bottom-right-radius:0px;border-top-right-radius:0px;border-bottom-left-radius:0px;  }
 .headerTabs.ui-tabs .ui-tabs-nav{height:32px;}
+.headerTabs li .ui-icon-close {cursor: pointer; float: left; margin: 0.4em 0.6em 0 0;}
 
 .headerTabs.ui-tabs li.ui-state-default {
     background:url("/") repeat-x scroll 50% 50%   ; border: 0px;    height: 31px;  }

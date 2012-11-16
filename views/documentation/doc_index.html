@@ -1,0 +1,28 @@
+﻿<div section="nav">
+    <ul>
+        <li><a href="#/documentation/_layout" title="布局layout">布局</a></li>
+        <li><a href="#/documentation/tabs" icon="tabs">标签页</a></li>
+    </ul>
+</div>
+
+<div id="tabs" align="auto" layout="v">
+    <ul align="top">
+        
+    </ul>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('[section=nav]').appendTo('#nav');
+
+        $('#tabs').ajaxTabs({ a_selector: "#nav a", 
+        saveState: function () {
+            alert('save');
+        }, restoreState: function (lastState) {
+            for (var i in lastState.OpenTabs) $.ajaxTab.openTab(lastState.OpenTabs[i].MetaType, lastState.OpenTabs[i].Url, lastState.OpenTabs[i].Text);
+            $tabs.tabs("select", lastState.LastIndex);
+            $.ajaxTab.tabCheckLoad($tabs.find('li.ui-state-active').attr('index'));
+        }
+        });
+    });
+</script>

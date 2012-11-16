@@ -1,17 +1,19 @@
 ﻿$.autoHeightSetting = {};
+$.autoHeightEvent = [];
 $.autoHeight = function (setting, init, callback) {
-
     for (var i in setting)
         $.autoHeightSetting[i] = setting[i];
+    if (callback) $.autoHeightEvent.push(callback);
     if (init) {
-        $(window).resize(function () {
-            // alert(2);
+        $(window).bind('resize.layout', function () {
             $.resizeW();
-	    if (callback) callback();
+            for (var i in $.autoHeightEvent)
+                $.autoHeightEvent[i]();
         });
     }
     $.resizeW();
-    if (callback) callback();
+    $(window).trigger('resize.layout', []);
+
 }
 
 $.resizeW = function () {
