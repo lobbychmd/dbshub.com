@@ -14,7 +14,8 @@ flowchart.prototype = {
         var cv = $('<canvas>').insertAfter(this).addClass('flowchart')
             .attr('id', canvasId).attr('width', w).attr('height', h)
             .css('position', 'relative')
-            .css('z-index', '-1').insertBefore(div);
+            //.css('z-index', '-1')
+            .insertBefore(div);
         $(div).css('position', 'relative').attr('canvasId', canvasId).css('margin-top', '-' + h + 'px');
         return cv[0];
     },

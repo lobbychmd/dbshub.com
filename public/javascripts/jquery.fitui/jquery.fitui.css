@@ -6,14 +6,20 @@ a {text-decoration: none; }
 footer, header {height: 32px; background: url("images/header_bg.png") repeat-x scroll right 0 transparent}
 body>header {background: repeat scroll 0 0 #2D2D2D}
 nav {float: left}
-.spliter { cursor: col-resize;width: 4px; float: left; background: #ddd}
+[align=spliter] { cursor: col-resize;width: 4px; float: left; background: #ddd}
 
-/* 标签(基于 jquery ui) */
+/* 标签页(基于 jquery ui) */
 .headerTabs.ui-tabs{border-radius:0px; border: 0px; padding: 0px;}
-.headerTabs.ui-tabs ul { border: 0px; padding: 0 0 0 6px;   }
+.headerTabs.ui-tabs ul { border-width: 0px; padding: 0 0 0 6px;   }
 .headerTabs.ui-tabs .ui-widget-header {background: url("images/header_bg.png") repeat scroll 0 0 transparent;border-top-left-radius:0px;border-bottom-right-radius:0px;border-top-right-radius:0px;border-bottom-left-radius:0px;  }
 .headerTabs.ui-tabs .ui-tabs-nav{height:32px;}
 
 .headerTabs.ui-tabs li.ui-state-default {
-    background:url("/") repeat-x scroll 50% 50%   ; border: 0px;    height: 32px;  }
+    background:url("/") repeat-x scroll 50% 50%   ; border: 0px;    height: 31px;  }
 .headerTabs.ui-tabs li.ui-state-active{ background: #ddd; border-radius: 0px; height: 30px; }
+
+
+/*  缩略图 */
+.thumbContainer { position: relative}
+.thumbnail {position:  absolute; border: 1px solid #000; height: 100px; width: 100px; margin: 5px; background: #fff; z-index: 999}
+.thumb {position:  absolute; border: 1px solid red;cursor: move}

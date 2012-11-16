@@ -33,5 +33,3 @@
 .flowchart.lineStart .flowNode.lineStart .nodeLayer:hover {border-top: dotted #888888; border-width: 1px 0px 0px}
 
 
-.thumbnail {position:  absolute; border: 1px solid #000; height: 100px; width: 100px; margin: 5px; background: #fff; z-index: 999}
-.thumb {position:  absolute; border: 1px solid red;cursor: move}

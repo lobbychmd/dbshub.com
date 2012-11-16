@@ -1,17 +1,4 @@
-﻿$.fn.wrapChart = function (option) {
-    return this.each(function () {
-        //创建一个容器用来包装
-        var container = $(this).wrap('<div>').parent().addClass('chartContainer');
-        if (option && option.containerHeight )
-            container.height(option.containerHeight);
-        if (option && option.containerWidth )
-            container.width(option.containerWidth);
-        if (option && option.height && option.width) {
-            $(this).width(option.width);
-            $(this).height(option.height);
-        }
-    });
-}
+﻿
 
 $.fn.flowchart_node = function (option, chart) {
     return this.each(function(){
@@ -138,69 +125,6 @@ $.fn.flowchart_linkTo = function (canvas) {
     });
 }
 
-//创建缩略图
-$.fn.thumbnail = function (option) {
-    return this.each(function () {
-        if (option && option.thumb) {  //重画缩略
-            $(this).closest('.chartContainer').find('.thumbnail').trigger('thumb', []);
-        }
-        else if (option && option.resetThumb) //重新设定缩略图位置在右下角
-            $(this).trigger('resize.thumbnail').trigger('scroll.thumbnail');
-        else {
-            var chart = this;
-            var container = $(this).parent();
-            var thumbnail = $('<div>').addClass('thumbnail')
-                .appendTo(container).click(function (data) {
-                }).bind('thumb', function () {  //重画缩略
-                    var _thumbnail = this;
-                    var rateH = $(_thumbnail).height() / $(chart).height();
-                    var rateW = $(_thumbnail).width() / $(chart).width();
-                    $(chart).find('.flowNode').each(function () {
-                        var thumbNode = $(_thumbnail).find('[nodeId=' + $(this).attr('nodeId') + ']');
-                        if (thumbNode.size() == 0)
-                            thumbNode = $("<div>").addClass('thumbNode').css('position', 'absolute').attr('nodeId', $(this).attr('nodeId')).appendTo(_thumbnail);
-                        if ($(this).hasClass('sel')) thumbNode.addClass('sel')
-                        else thumbNode.removeClass('sel')
-                        thumbNode.css('width', $(this).width() * rateW)
-                        .css('height', $(this).height() * rateH)
-                        .css('left', $(this).position().left * rateW)
-                        .css('top', $(this).position().top * rateH);
-                    });
-
-                }).trigger('thumb', []);
-
-            $('<div>').addClass('thumb')
-                .appendTo(thumbnail).draggable(
-                { containment: "parent", stop: function (event, ui) {
-                    container.scrollTop($(this).position().top * $(chart).height() / thumbnail.height());
-                    container.scrollLeft($(this).position().left * $(chart).width() / thumbnail.width());
-                }
-                });
-
-            $(container[0].tagName == 'BODY' ? window : container).bind('resize.thumbnail', function () {
-                var thumb = $(container).find('.thumbnail').find('.thumb');
-                var wRate = $(chart).width() / container.width(); /*document.documentElement.clientWidth- $(container).offset().left*/
-                var hRate = $(chart).height() / container.height();
-                if (wRate > 1 || hRate > 1) {
-                    thumb.show().width(thumbnail.width() / wRate)
-                    .height(thumbnail.height() / hRate);
-                }
-                else thumb.hide();
-            }).bind('scroll.thumbnail', function () {
-                var thumbnail = $(container).find('.thumbnail');
-                var topScroll = container.scrollTop();//parseInt(thumbnail.css('top').substring(0, thumbnail.css('top').length - 2)) - thumbnail.position().top;
-                var leftScroll = container.scrollLeft();//parseInt(thumbnail.css('left').substring(0, thumbnail.css('left').length - 2)) - thumbnail.position().left;
-                //alert(   topScroll);
-                var thumb = thumbnail
-                    .css('top', $(container).height() - thumbnail.height() - 30 + topScroll)
-                    .css('left', $(container).width() - thumbnail.width() - 30 + leftScroll)
-                .find('.thumb')
-                    .css('top', topScroll * thumbnail.height() / $(chart).height())
-                    .css('left', leftScroll * thumbnail.width() / $(chart).width());
-            }).thumbnail({ resetThumb: true });
-        }
-    });
-}
 
 $.fn.flowchart_demo = function (option) {
     return this.each(function () {

@@ -22,28 +22,28 @@
     <link href="/stylesheets/style.css" rel="stylesheet" type="text/css" />
     <script>
         $(function () {
-            
+            $.initLayout();
         });
     </script>
 
     
 </head>
-<body style="padding:0px;margin:0px;">
-    <header><a href="/">首页</a><a href="/flowchart/view/test">流程</a></header>
-    <div class="header" style="height: 60px;"></div>
-    <div class="toolbar" style="height: 30px;">
+<body style="padding:0px;margin:0px;" layout="v" id="body">
+    <header align="top" ><a href="/">首页</a><a href="/flowchart/view/test">流程</a></header>
+    <div align="top" class="header" style="height: 60px;"></div>
+    <div align="top" class="toolbar" style="height: 30px;">
         {{partial(toolbar) "_toolbar.html"}}
     </div>
-    <div class="main" id="main" style="height: 100px;">
-        <nav>
+    <div align="auto" layout="h" id="main" style="height: 100px;">
+        <nav align="left" style="width: 300px;" id="nav">
             <header>数</header>
         </nav>
-        <div class="spliter"></div>
-        <div id="content">
+        <div align="spliter" id="spliter"></div>
+        <div align="auto" id="content" layout="v">
             {{html body}}
         </div>
     </div>
-    <footer></footer>
+    <footer align="bottom" ></footer>
 </body>
 </html>
 
