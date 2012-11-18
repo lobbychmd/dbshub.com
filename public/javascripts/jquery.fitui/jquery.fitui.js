@@ -77,7 +77,6 @@ $.tabState = {  //状态保留专用
         //var li = $('#browser li.collapsable').each(function () {
         //    if ($(this).attr('_id') || $(this).attr('metaType')) state.OpenNodes.push($(this).attr('metaType') + "." + $(this).attr('_id') );
         //});  
-        alert(JSON.stringify(state) );
         return JSON.stringify(state) ;
     }
 }

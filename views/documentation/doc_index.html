@@ -15,14 +15,17 @@
     $(document).ready(function () {
         $('[section=nav]').appendTo('#nav');
 
-        $('#tabs').ajaxTabs({ a_selector: "#nav a", 
-        saveState: function () {
-            alert('save');
-        }, restoreState: function (lastState) {
-            for (var i in lastState.OpenTabs) $.ajaxTab.openTab(lastState.OpenTabs[i].MetaType, lastState.OpenTabs[i].Url, lastState.OpenTabs[i].Text);
-            $tabs.tabs("select", lastState.LastIndex);
-            $.ajaxTab.tabCheckLoad($tabs.find('li.ui-state-active').attr('index'));
-        }
+        $('#tabs').ajaxTabs({ a_selector: "#nav a",
+            saveState: function () {
+                //alert('save');
+            }, restoreState: function () {
+                var data;
+                if (data) {
+                    for (var i in data.OpenTabs) $.ajaxTab.openTab(lastState.OpenTabs[i].MetaType, lastState.OpenTabs[i].Url, lastState.OpenTabs[i].Text);
+                    $tabs.tabs("select", lastState.LastIndex);
+                    $.ajaxTab.tabCheckLoad($tabs.find('li.ui-state-active').attr('index'));
+                }
+            }
         });
     });
 </script>
