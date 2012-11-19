@@ -1,11 +1,13 @@
-//var metaTable = require("metaTable").metaTable;
 var mongoose = require('mongoose');
 var Enumerable = require('linq');
-
- 
+var account = require('./account');
 
 exports.index = function (req, res) {
-    res.render('index.html', {toolbar: null});
+    //var auth = snsauth.snsauth();
+    account.projects(function(items){
+       // console.dir(items);
+    });
+    res.render('index.html', { toolbar: null });
 };
 
  
