@@ -1,18 +1,19 @@
 var mongoose = require('mongoose');
 var Enumerable = require('linq');
 var account = require('./account');
+var db = require('config').db();
 
 exports.index = function (req, res) {
     //var auth = snsauth.snsauth();
-    account.projects(function(items){
-        console.dir(items);
+    account.projects(function (items) {
+        db.collection('Project').findOne({_id: db.ObjectID(req.params.id)}, function(err, doc){
+            res.render('index.html', { toolbar: null, projects: items, project: doc });
+        });
     });
-    res.render('index.html', { toolbar: null });
 };
 
 exports.tables = function (req, res) {
     var m = mongoose.model("MetaTable");
-    console.log(req.query);
 
     var query = "";
     for (var i in req.query.term) query = query + "[" + req.query.term[i].toLowerCase() + req.query.term[i].toUpperCase() + "]";

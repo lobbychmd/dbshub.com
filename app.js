@@ -18,6 +18,11 @@ app.configure(function(){
   app.register(".html", require("jqtpl").express);
   app.use(express.bodyParser());
   app.use(express.methodOverride());
+  app.use(express.cookieParser());
+  app.use(express.session({
+      secret: "keyboard cat"
+  }));
+
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
 });
@@ -31,8 +36,13 @@ app.configure('production', function(){
 });
 
 // Routes
+var login = require('fitnode').login_filter;
 
-app.get('/', routes.index);
+app.get('/account/login', require('./routes/account').login)
+app.post('/account/signin', require('./routes/account').signin)
+//app.get('/account/login', routes.account.login)
+app.get('/', login, routes.index);
+app.get('/project/:id', login, routes.index);
 app.get('/tables', routes.tables);
 app.get('/data/tables', require('./routes/data').tables);
 app.get('/data/table', require('./routes/data').table);

@@ -1,7 +1,14 @@
-﻿<header>数</header>
-
+﻿<header></header>
+<h1>${project.ProjectName}</h1>
+<div section="nav">
+    <ul>
+        {{each projects}}
+            <li><a href="/project/${_id}" title="布局layout">${ProjectName}</a></li>
+        {{/each}}
+    </ul>
+</div>
 <script>
     $(document).ready(function () {
-      
+        $('[section=nav]').appendTo('#nav');
     });
 </script>
