@@ -46,6 +46,7 @@ app.get('/project/:id', login, routes.index);
 app.get('/tables', routes.tables);
 app.get('/data/tables', require('./routes/data').tables);
 app.get('/data/table', require('./routes/data').table);
+app.get('/flowchart/index', require('./routes/dbchart').index);
 app.get('/flowchart/view/:id', require('./routes/dbchart').view);
 app.get('/flowchart/edit/:id', require('./routes/dbchart').edit);
 app.get('/documentation', require('./routes/documentation').index);

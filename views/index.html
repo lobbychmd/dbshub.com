@@ -1,5 +1,5 @@
 ﻿<header></header>
-<h1>${project.ProjectName}</h1>
+<h1>{{if project}} ${project.ProjectName} {{/if}}</h1>
 <div section="nav">
     <ul>
         {{each projects}}
@@ -9,6 +9,6 @@
 </div>
 <script>
     $(document).ready(function () {
-        $('[section=nav]').appendTo('#nav');
+        
     });
 </script>

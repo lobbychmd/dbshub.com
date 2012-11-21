@@ -15,7 +15,9 @@ $.fn.ajaxTabs = function (option) {
         $(option.a_selector).die("click.withTab").live("click.withTab", function () {
             var url = $(this).attr('href');
             if (url) {
-                $.ajaxTab.openTab($(this).attr('icon'), url.substring(1), $(this).text() ? $(this).text() : $(this).attr('title'), true);
+                $.ajaxTab.openTab($(this).attr('icon'), url.substring(1), 
+                    $(this).text() ? $(this).text() : $(this).attr('title'), true,
+                    option.create);
                 $.lastState.change(id); //打开会切换，切换时会保存,但是有问题, 切换事件发生在未创建tab之前
             }
             return false;
@@ -26,7 +28,7 @@ $.fn.ajaxTabs = function (option) {
 $.ajaxTab = {
     setup: function (tabs, restoreState) {
         $tabs = tabs.headerTabs ({
-            tabTemplate: "<li><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close'>Remove Tab</span></li>",
+            tabTemplate: "<li><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close'>Remove Tab</span></li>"
         });
         var id = tabs.attr('id');
         if (restoreState) restoreState();
@@ -43,12 +45,13 @@ $.ajaxTab = {
             $.lastState.change(id); 
         });
     },
-    openTab: function (icon, url, text, loadNow) {
+    openTab: function (icon, url, text, loadNow, callback) {
         var opened = $tabs.find('li[url="' + url + '"]');
         if (opened.size() == 0) {
             var index = $tabs.tabs("length") ;
             if (index == 10 - 1) alert('打开的窗口太多'); else {
                 $tabs.tabs("add", "#ui-tabs-" + index, text);
+                if (callback) callback($tabs.children('.ui-tabs-panel'));
                 //$.autoHeight({}, true);
                 $tabs.tabs("select", index).find('li.ui-tabs-active').attr('url', url).attr('index', index).attr('icon', icon);
                 if (loadNow) $.ajaxTab.tabCheckLoad(index);

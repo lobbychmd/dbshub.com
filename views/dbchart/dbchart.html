@@ -1,0 +1,48 @@
+﻿<style>
+    .ui-tabs-panel{  overflow: auto;}
+</style>
+<div section="nav">
+    <ul>
+        {{each dbviews}}
+            <li><a href="/project/${_id}" title="布局layout">${Caption}</a></li>
+        {{/each}}
+        <li><a href="#/flowchart/view/000000000000000000000000" title="新视图">新视图</a></li>
+    </ul>
+</div>
+
+<div id="tabs" align="auto" layout="v">
+    <ul align="top">
+        <li><a href="#tabs-1">demo</a></li>
+    </ul>
+    <div id="tabs-1" align="auto" style="padding: 0px;" >
+        <div style="width: 2000px;height:1500px;padding: 0px;" id='flowView'></div>
+    </div>
+</div>
+ {{partial "_tmpl.ejs"}} 
+<script>
+    $(function () {
+        $('#tabs').ajaxTabs({ a_selector: "#nav a",
+            saveState: function () { }, restoreState: function () { },
+            create: function (tab) {
+                tab.attr('align', 'auto').css('padding', '0px');
+                $.autoHeight({}, true);
+            }
+        });
+
+        $.ajaxSetup({ cache: false });
+        $('#flowView').thumbnail();
+        $('#flowView').dbchart_demo();
+        $.autoHeight({}, false, function () {
+            $('#flowView').thumbnail({ resetThumb: true });
+
+        });
+
+        $('#joinflow').click(function () {
+            $.get('/data/table?tableName=' + $('#pickTable').val(), function (data) {
+                var node = $('#tpTable').tmpl(data).appendTo('#flowView').attr('id', data.TableName);
+                $('#flowView').flowchart({ add: data.TableName });
+            })
+
+        });
+    });
+</script>

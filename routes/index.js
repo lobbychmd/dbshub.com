@@ -6,7 +6,7 @@ var db = require('config').db();
 exports.index = function (req, res) {
     //var auth = snsauth.snsauth();
     account.projects(function (items) {
-        db.collection('Project').findOne({_id: db.ObjectID(req.params.id)}, function(err, doc){
+        db.collection('Project').findOne({ _id: db.ObjectID(req.params.id) }, function (err, doc) {
             res.render('index.html', { toolbar: null, projects: items, project: doc });
         });
     });

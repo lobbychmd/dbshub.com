@@ -6,12 +6,18 @@ exports.projects = function (callback) {
     auth.demo_data();
 
     var query_prjs = {};
-    query_prjs = auth.limit(query_prjs, "_id", 'dev', null, null, function (query) {
-        //限制只有开发者才可以浏览
-        config.db().collection('Project').find(query).toArray(function (err, items) {
-            callback(items);
-        });
-    });
+
+    new fitnode.seq_async([
+            function (data, callback) {
+                auth.limit(query_prjs, "_id", 'dev', null, null, callback);
+            },
+            function (query, callback) {
+                config.db().collection('Project').find(query).toArray(callback);
+            },
+        ],
+        function (data) {
+            callback(data[1]);
+        }).exec();
 
     //auth.filter(config.db().collection('Project').find(query_prjs), 'dev', null, null, function (items) {
     //    callback(items);
