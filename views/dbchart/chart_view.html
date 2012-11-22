@@ -1,7 +1,12 @@
-﻿<div style="width: 2000px;height:1500px;padding: 0px;" id='flowView${view._id}'></div>
+﻿<div style="width: 2000px;height:1500px;padding: 0px;" id='flowView${view._id}' viewid='${view._id}'>
+    {{each view.Data}}
+        {{partial({Schema: Schema, Position: Position}) "_tmpl_table_node.html"  }}
+    {{/each}}
+</div>
 <script>
     $(function () {
         $('#flowView${view._id}').thumbnail();
-        $('#flowView${view._id}').dbchart_demo();
+        //$('#flowView${view._id}').dbchart_demo();
+        $('#flowView${view._id}').dbchart().flowchart();
     });
 </script>

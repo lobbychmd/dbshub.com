@@ -25,6 +25,8 @@
         $(function () {
             $.initLayout();
             $('[section=nav]').appendTo('#nav');
+            if ($('#toolbar').children().size() == 0) $('#toolbar').hide();
+            else $('#toolbar button').button();
         });
     </script>
 
@@ -37,7 +39,7 @@
         <a href="/documentation">文档</a>
     </header>
     <div align="top" class="header" style="height: 60px;"></div>
-    <div align="top" class="toolbar" style="height: 30px;">
+    <div align="top" class="toolbar" id ="toolbar" style="height: 30px;">
         {{partial(toolbar) "_toolbar.html"}}
     </div>
     <div align="auto" layout="h" id="main" style="height: 100px;">

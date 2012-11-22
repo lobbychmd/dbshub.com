@@ -4,7 +4,7 @@
 <div section="nav">
     <ul>
         {{each dbviews}}
-            <li><a href="/project/${_id}" title="布局layout">${Caption}</a></li>
+            <li><a href="#/flowchart/view/${_id}" title="布局layout">${Caption}</a></li>
         {{/each}}
         <li><a href="#/flowchart/view/000000000000000000000000" title="新视图">新视图</a></li>
     </ul>
@@ -24,7 +24,7 @@
         $('#tabs').ajaxTabs({ a_selector: "#nav a",
             saveState: function () { }, restoreState: function () { },
             create: function (tab) {
-                tab.attr('align', 'auto').css('padding', '0px');
+                tab.attr('align', 'auto').css('padding', '0px').parent().layout();
                 $.autoHeight({}, true);
             }
         });
@@ -36,7 +36,18 @@
             $('#flowView').thumbnail({ resetThumb: true });
 
         });
-
+        $('#toolbar button[cmd=save]').click(function () {
+            var panel = $('#tabs .ui-tabs-panel[aria-hidden=false]');
+            var data = [];
+            panel.find('.flowNode').each(function () {
+                data.push({ TableName: $(this).attr('nodeid'), Position: [$(this).css('left'), $(this).css('top')] });
+            });
+            $.post('/flowchart/save', {
+                _id: panel.children('div.flowchart').attr('viewid'),
+                Caption: $('#tabs>ul>li.ui-tabs-active>a').text(),
+                Data: data
+            });
+        });
         $('#joinflow').click(function () {
             $.get('/data/table?tableName=' + $('#pickTable').val(), function (data) {
                 var node = $('#tpTable').tmpl(data).appendTo('#flowView').attr('id', data.TableName);

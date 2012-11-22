@@ -25,3 +25,8 @@ nav {float: left}
 .thumbContainer { position: relative}
 .thumbnail {position:  absolute; border: 1px solid #000; height: 100px; width: 100px; margin: 5px; background: #fff; z-index: 999}
 .thumb {position:  absolute; border: 1px solid red;cursor: move}
+
+/*  工具条 */
+.toolbar { padding: 0 0 0 32px}
+.toolbar .ui-button {height: 24px;}
+.toolbar .ui-button span.ui-button-text-only {padding: 0.1em 1em}

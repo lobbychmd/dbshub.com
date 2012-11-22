@@ -1,5 +1,6 @@
 ﻿$.autoHeightSetting = {};
 $.autoHeightEvent = [];
+
 $.autoHeight = function (setting, init, callback) {
     for (var i in setting)
         $.autoHeightSetting[i] = setting[i];
@@ -13,7 +14,6 @@ $.autoHeight = function (setting, init, callback) {
     }
     $.resizeW();
     $(window).trigger('resize.layout', []);
-
 }
 
 $.resizeW = function () {

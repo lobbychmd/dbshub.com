@@ -1,0 +1,12 @@
+﻿<div class="table flowNode" style='width:200px;left:${Position[0]};top: ${Position[1]}' nodeId = '${TableName}'>
+    <div class="nodeLayer headLayer" >${Schema.TableName}<a class='edit dialog' href='/flowchart/edit/${Schema._id}'></a></div>
+    {{each Schema.cols}}
+        <div linkTo='${linkTo}' class='nodeLayer{{if(PK)}} pk{{/if}}' ${PK} 
+        type='type${Type}' nodeLayerId='${ColumnName}'>
+            <span class='indicator'>>></span>
+            ${ColumnName}
+            <span class='linePoint'></span>
+        </div>
+    {{/each}}
+</div>
+
