@@ -1,68 +1,68 @@
 ﻿
 
 $.fn.flowchart_node = function (option, chart) {
-    return this.each(function(){
+    return this.each(function () {
         $(this).click(function () {
-                $(this).closest('.flowchart').find('.flowNode').removeClass('sel');
-                $(this).addClass('sel');
-                $(chart).thumbnail({thumb:true});
+            $(this).closest('.flowchart').find('.flowNode').removeClass('sel');
+            $(this).addClass('sel');
+            $(chart).thumbnail({ thumb: true });
 
-            })
+        })
             .draggable(
-                { handle: option? option.handle : null,
+                { handle: option ? option.handle : null,
                     stop: function (event, ui) {
-                
-                    //$(this).flowchart_linkTo(canvas);
-                    $(chart).flowchart({redraw: true});
-                    $(chart).thumbnail({thumb:true});   
-                }
-                    //连线控制
-            }).find('.linePoint').click(function () {
-                //第一次点，开始连线
-                if (!$(this).closest('.flowchart').hasClass('lineStart')) {
-                    $(this).addClass('lineStart').closest('.flowNode').addClass('lineStart').closest('.flowchart').addClass('lineStart');
-                }
-                return false;
-            }).end().find('.nodeLayer').click(function () {
-                $(this).closest('.flowNode').find('.nodeLayer').removeClass('sel');
-                $(this).addClass('sel');
-                //自己点自己，取消
-                var linePoint = $(this).find('.linePoint');
-                if (linePoint.hasClass('lineStart')) {
-                    linePoint.removeClass('lineStart').closest('.flowNode').removeClass('lineStart').closest('.flowchart').removeClass('lineStart');
-                } else {
-                    var start = $(chart).find('.linePoint.lineStart').closest('.nodeLayer');
-                    if (start.size() == 0) { }
-                    else if (start.closest('.flowNode').attr('nodeId') == $(this).closest('.flowNode').attr('nodeId')) {
-                        //自己连自己兄弟，啥也不干
-                    } else {
-                        var end = $(this);
-                        var linkTos = start.attr('linkTo') ? start.attr('linkTo').split(' ') : [];
-                        var linkTos1 = end.attr('linkTo') ? end.attr('linkTo').split(' ') : [];
-                        var s = $(this).closest('.flowNode').attr('nodeId') + '.' + $(this).attr('nodeLayerId');
-                        var s1 = start.closest('.flowNode').attr('nodeId') + '.' + start.attr('nodeLayerId');
 
-                        if ($.inArray(s, linkTos) >= 0) {
-                            alert('删除');
-                            delete linkTos[$.inArray(s, linkTos)];
-                            start.attr('linkTo', linkTos.join(' '))
-                        }
-                        else if ($.inArray(s1, linkTos1) >= 0) {
-                            alert('删除');
-                            delete linkTos1[$.inArray(s1, linkTos1)];
-                            end.attr('linkTo', linkTos1.join(' '));
-                        } else {
-                            linkTos.push(s);
-                            start.attr('linkTo', linkTos.join(' '))
-                        }
-                        start.attr('linkTo', linkTos.join(' '))
-                        start.find('.linePoint.lineStart').removeClass('lineStart').closest('.flowNode').removeClass('lineStart').closest('.flowchart').removeClass('lineStart');
-                        $(chart).flowchart({redraw: true});
+                        //$(this).flowchart_linkTo(canvas);
+                        $(chart).flowchart({ redraw: true });
+                        $(chart).thumbnail({ thumb: true });
                     }
-                }
+                    //连线控制
+                }).find('.linePoint').click(function () {
+                    //第一次点，开始连线
+                    if (!$(this).closest('.flowchart').hasClass('lineStart')) {
+                        $(this).addClass('lineStart').closest('.flowNode').addClass('lineStart').closest('.flowchart').addClass('lineStart');
+                    }
+                    return false;
+                }).end().find('.nodeLayer').click(function () {
+                    $(this).closest('.flowNode').find('.nodeLayer').removeClass('sel');
+                    $(this).addClass('sel');
+                    //自己点自己，取消
+                    var linePoint = $(this).find('.linePoint');
+                    if (linePoint.hasClass('lineStart')) {
+                        linePoint.removeClass('lineStart').closest('.flowNode').removeClass('lineStart').closest('.flowchart').removeClass('lineStart');
+                    } else {
+                        var start = $(chart).find('.linePoint.lineStart').closest('.nodeLayer');
+                        if (start.size() == 0) { }
+                        else if (start.closest('.flowNode').attr('nodeId') == $(this).closest('.flowNode').attr('nodeId')) {
+                            //自己连自己兄弟，啥也不干
+                        } else {
+                            var end = $(this);
+                            var linkTos = start.attr('linkTo') ? start.attr('linkTo').split(' ') : [];
+                            var linkTos1 = end.attr('linkTo') ? end.attr('linkTo').split(' ') : [];
+                            var s = $(this).closest('.flowNode').attr('nodeId') + '.' + $(this).attr('nodeLayerId');
+                            var s1 = start.closest('.flowNode').attr('nodeId') + '.' + start.attr('nodeLayerId');
 
-            });
-        });
+                            if ($.inArray(s, linkTos) >= 0) {
+                                alert('删除');
+                                delete linkTos[$.inArray(s, linkTos)];
+                                start.attr('linkTo', linkTos.join(' '))
+                            }
+                            else if ($.inArray(s1, linkTos1) >= 0) {
+                                alert('删除');
+                                delete linkTos1[$.inArray(s1, linkTos1)];
+                                end.attr('linkTo', linkTos1.join(' '));
+                            } else {
+                                linkTos.push(s);
+                                start.attr('linkTo', linkTos.join(' '))
+                            }
+                            start.attr('linkTo', linkTos.join(' '))
+                            start.find('.linePoint.lineStart').removeClass('lineStart').closest('.flowNode').removeClass('lineStart').closest('.flowchart').removeClass('lineStart');
+                            $(chart).flowchart({ redraw: true });
+                        }
+                    }
+
+                });
+    });
 }
 
 $.fn.flowchart = function (option) {

@@ -1,0 +1,18 @@
+﻿<div style="width: 2000px;height:1500px;padding: 0px;" id='flowView'></div>
+<script>
+    $(function () {
+        $('#flowView').thumbnail();
+        $('#flowView').dbchart_demo();
+        $.autoHeight({}, false, function () {
+            $('#flowView').thumbnail({ resetThumb: true });
+
+        });
+        $('#joinflow').click(function () {
+            $.get('/data/table?tableName=' + $('#pickTable').val(), function (data) {
+                var node = $('#tpTable').tmpl(data).appendTo('#flowView').attr('id', data.TableName);
+                $('#flowView').flowchart({ add: data.TableName });
+            })
+
+        });
+    });
+</script>

@@ -1,5 +1,5 @@
 ﻿<div style="width: 2000px;height:1500px;padding: 0px;" id='flowView${view._id}' viewid='${view._id}'>
-    {{each view.Data}}
+    {{each view.Position}}
         {{partial({Schema: Schema, Position: Position}) "_tmpl_table_node.html"  }}
     {{/each}}
 </div>
