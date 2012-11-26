@@ -97,6 +97,8 @@ $.tabState = {  //状态保留专用
 $.fitui.render_li = function (parent, data) {
     for (var i in data) {
         var li = $('<li><span></span><ul></ul></li>').appendTo(parent).children('span').text(data[i].text).end();
+        for (var j in data[i])
+            if ((j != "text") && (j != "children") ) li.attr(j, data[i][j]);
         if (data[i].children) {
             $.fitui.render_li(li.children('ul'), data[i].children);
         }
@@ -117,7 +119,8 @@ $.fn.ajaxtree = function (option) {
                 var newli = ul.children('li.newNode');
                 var url = option.url + "?";
                 for (var i in option.fields)
-                    url += option.fields[i] + "=" + li.attr(option.fields[i]) + "&"; //alert(url);
+                    if (li.attr(option.fields[i]))  
+                        url += option.fields[i] + "=" + li.attr(option.fields[i]) + "&"; //alert(url);
                 ul.indicator({ insert: true })
                 $.get(url, function (data) {
                     ul.children('li[fake]').remove();

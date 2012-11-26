@@ -28,7 +28,7 @@
  {{partial "_tmpl.ejs"}} 
 <script>
     $(function () {
-        $("#tree").ajaxtree({url: '/flowchart/tree', fields: ['type', '_id']});
+        $("#tree").ajaxtree({url: '/flowchart/tree', fields: ['type', '_id', 'parent_type', 'middleware', 'sub_type']});
         $('#tabs').ajaxTabs({ a_selector: "#nav a",
             saveState: function () { }, restoreState: function () { },
             create: function (tab) {

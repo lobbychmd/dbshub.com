@@ -59,6 +59,8 @@ exports.save = function (req, res) {
 };
 
 exports.tree = function (req, res) {
-    res.json([{text: 'asdf'}, {text: 'xxxx', children: [{text:'hahaha'}]}]);
+    new fitnode.doctree(db, require('config').doctree_config).get(req.query, function(data){
+        res.json(data);
+    });
 
 };
