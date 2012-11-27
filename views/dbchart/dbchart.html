@@ -13,7 +13,7 @@
                 <li><a href="#/flowchart/view/000000000000000000000000" title="新视图">新视图</a></li>
             </ul>
         </li>
-        <li type="tables" _id=""><span class="folder">表</span>
+        <li data="type=tables" _id=""><span class="folder">表</span>
             <ul>
                 <li fake=1></li>
             </ul>
@@ -28,7 +28,7 @@
  {{partial "_tmpl.ejs"}} 
 <script>
     $(function () {
-        $("#tree").ajaxtree({url: '/flowchart/tree', fields: ['type', '_id', 'parent_type', 'middleware', 'sub_type']});
+        $("#tree").ajaxtree({url: '/flowchart/tree'});
         $('#tabs').ajaxTabs({ a_selector: "#nav a",
             saveState: function () { }, restoreState: function () { },
             create: function (tab) {
