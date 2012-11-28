@@ -94,17 +94,21 @@ $.tabState = {  //状态保留专用
 };
 
 /**********   树    **************/
-$.fitui.render_li = function (parent, data) {
+$.fitui.render_li = function (parent, data, href) {
     for (var i in data) {
-        var li = $('<li><span></span><ul></ul></li>').appendTo(parent).children('span').text(data[i].text).end();
+        var li = $('<li><span><a></a></span><ul></ul></li>').appendTo(parent).find('a').text(data[i].text).end();
         var url = '';
         for (var j in data[i])
             if ((j != "text") && (j != "children")) url = url + j + '=' + data[i][j] + '&'; //li.attr(j, data[i][j]);
         li.attr('data', url);
+        if (href) li.find('a').attr('href', href + "?" + url);
+
         if (data[i].children) {
-            $.fitui.render_li(li.children('ul'), data[i].children);
+            $.fitui.render_li(li.children('ul'), data[i].children, href);
         }
         else $('<li fake=1>').appendTo(li.children('ul'));
+
+        li.children('span').addClass('folder').addClass(data[i]['type']);
     }
 }
 
@@ -113,20 +117,18 @@ $.fn.ajaxtree = function (option) {
         if (!option) option = {};
         option.collapsed = true;
 
-        var tree = $(this);
+        //treeview 插件自带文件夹的图标
+        var tree = $(this).addClass('filetree'); 
         option.toggle = function (data, ui) {
             var li = $(ui).parent();
             var ul = li.children('ul');
             if (ul.children('li[fake]').size() > 0) {
                 var newli = ul.children('li.newNode');
                 var url = option.url + "?" + li.attr('data');
-                //for (var i in option.fields)
-                  //  if (li.attr(option.fields[i]))  
-                    //    url += option.fields[i] + "=" + li.attr(option.fields[i]) + "&"; //alert(url);
                 ul.indicator({ insert: true })
                 $.get(url, function (data) {
                     ul.children('li[fake]').remove();
-                    $.fitui.render_li(ul, data);
+                    $.fitui.render_li(ul, data, option.href);
                     ul.indicator({ remove: true });
                     if (ul.children().size() > 0) {
                         ul.ajaxtree(option);
@@ -142,5 +144,27 @@ $.fn.ajaxtree = function (option) {
            // $.lastState.save();
         };
         $(this).treeview(option);
+    });
+}   
+
+
+/**********   自动文档编辑    **************/
+$.fitui.tmpl = function () {
+    var markup = '<div><span>${key}</span><input value="${value}" /></div>';
+    $.template('tpMeta', markup);
+}
+
+$.fitui.meta2array = function (doc) {
+    var result = [];
+    for(var i in doc) result.push({key: i, value: doc[i]});
+    return result;
+}
+
+$.fn.metaDesign = function (doc, config) {
+    return this.each(function () {
+        $.fitui.tmpl();
+
+        var data = $.fitui.meta2array(doc);
+        $.tmpl('tpMeta', data).appendTo(this);
     });
 }   

@@ -28,8 +28,8 @@
  {{partial "_tmpl.ejs"}} 
 <script>
     $(function () {
-        $("#tree").ajaxtree({url: '/flowchart/tree'});
-        $('#tabs').ajaxTabs({ a_selector: "#nav a",
+        $("#tree").ajaxtree({url: '/flowchart/tree', href: '#/data/doc'});
+        $('#tabs').ajaxTabs({ a_selector: "#tree a",
             saveState: function () { }, restoreState: function () { },
             create: function (tab) {
                 tab.attr('align', 'auto').css('padding', '0px').parent().layout();

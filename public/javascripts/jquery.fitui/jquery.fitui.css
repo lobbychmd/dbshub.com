@@ -30,3 +30,7 @@ nav {float: left}
 .toolbar { padding: 0 0 0 32px}
 .toolbar .ui-button {height: 24px;}
 .toolbar .ui-button span.ui-button-text-only {padding: 0.1em 1em}
+
+/*  ajaxTree 树  */
+/*  由于节点类型是由数据(配置)决定的，因此下面的样式样例要按具体类型扩展，在项目中设置  */
+.filetree li.expandable span.tables, .filetree span.leaf.tables {background: url("images/ajaxtree/tables.png") no-repeat scroll 0 0 transparent}
