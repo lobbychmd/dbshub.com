@@ -1,9 +1,15 @@
-﻿<style>
+﻿
+<style>
     .ui-tabs-panel{  overflow: auto;}
     #tabs.ui-tabs .ui-tabs-nav li.ui-tabs-active a {cursor: pointer }
 </style>
 <div section="nav">
     <ul id="tree">
+        <li class="open"><span class="folder">捷径</span>
+            <ul>
+                <li><a href="#/data/doc?table=MetaTable&_id=4fb9e62362de5d0f208411ed&" title="tAcceptCoupon">tAcceptCoupon</a></li>
+            </ul>
+        </li>
         <li class="open"><span class="folder">视图</span>
             <ul>
                 {{each dbviews}}
@@ -19,6 +25,7 @@
             </ul>
         </li>
     </ul>
+    {{partial "../public/javascripts/jquery.fitui/tpMeta.ejs"}}
 </div>
 
 <div id="tabs" align="auto" layout="v">

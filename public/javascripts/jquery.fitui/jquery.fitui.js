@@ -148,23 +148,72 @@ $.fn.ajaxtree = function (option) {
 }   
 
 
-/**********   自动文档编辑    **************/
-$.fitui.tmpl = function () {
-    var markup = '<div><span>${key}</span><input value="${value}" /></div>';
-    $.template('tpMeta', markup);
+/**********            通用文档编辑        **************/
+/**********   这个要同时引入模板 tpMeta.ejs **************/
+$.fitui.tmpl = function () {$.template('tpMeta', '<div><span>${key}</span><input value="${value}" /></div>');}
+$.fitui.meta2tmpl = function (doc, config, path) {
+    var pa = [];
+    var prop_tmpl = { readonly: false, reference: false, isInput: true, editor: 'text' };
+    for (var i in doc) {
+        var c = config[i];
+        var array = c && c.type;
+        var paths = path?  path + '.' + i:i;
+        if (array) {
+            for (var j in doc[i])
+                doc[i][j] = $.fitui.meta2tmpl(doc[i][j], c.type, paths + '.' + j);
+        }
+        pa.push({ array: !!array, data: $.extend({ caption: c ? c.caption : i, value: doc[i], path: paths }, prop_tmpl) });
+    }
+    return pa;
 }
-
-$.fitui.meta2array = function (doc) {
-    var result = [];
-    for(var i in doc) result.push({key: i, value: doc[i]});
-    return result;
-}
-
-$.fn.metaDesign = function (doc, config) {
+$.fn.metaDesign = function (doc, type, config) {
     return this.each(function () {
-        $.fitui.tmpl();
+        $(this).addClass('metaObject').attr('title', type);//基础路径
 
-        var data = $.fitui.meta2array(doc);
-        $.tmpl('tpMeta', data).appendTo(this);
+        var data = $.fitui.meta2tmpl(doc, config[type], type);
+        
+        //$.fitui.tmpl();
+        //$.tmpl('tpMeta', data).appendTo(this);
+        $('#metaObject').tmpl(data).appendTo(this);
+    });
+}
+
+$.fitui.createPathNav = function (designer, parent, path, text) {
+    if ($(parent).find('[path="' + path + '"]').size() == 0)
+        $('<a href=#>').text(text ? text : path).addClass('changePath').wrap('<li>').parent()
+            .appendTo(parent).attr('path', path).children('a').click(function () {
+                var curr = $(designer).prev('[zw]');
+                if (curr.size() > 0) {
+                    var zwspan = $(designer).find('#' + curr.attr('zw'));
+                    curr.insertAfter(zwspan);
+                    zwspan.remove();
+                    $(designer).show();
+                }
+                //else
+                 {
+                    var id = "zw" + Math.random().toString().substring(2);
+                    var zw = $('<span>').attr('id', id);
+                    var container = $(designer).find('[title="' + $(this).parent().attr('path') + '"]').closest('[path]');
+                    zw.insertBefore(container);
+                    container.insertBefore(designer).attr('zw', id);
+                    $(designer).hide();
+                }
+            }); ;
+}
+$.fn.metaPath = function (designer) {
+    return this.each(function () {
+        $(this).addClass('metaPath').append('<ul>');
+        var ul = $(this).children('ul');
+
+        var basepath = $(designer).attr('title');
+        $.fitui.createPathNav(designer, ul, basepath);
+        $(designer).find('.fullscr').live('click', function () {
+            var title = $(this).attr('title').split('.');
+            var p = '';
+            for (var i in title) {
+                p = p + (p ? '.' : '') + title[i];
+                $.fitui.createPathNav(designer, ul, p, title[i]);
+            }
+        });
     });
 }   

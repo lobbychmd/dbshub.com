@@ -1,0 +1,55 @@
+﻿<script id="metaObject" type="text/x-jquery-tmpl">
+    {{if array}}
+        {{tmpl(data) "#metaPropArray"}}
+    {{else}}
+        <div class="prop" {{if lineShow}}lineShow{{/if}} path="${data.path}">
+            <label >${data.caption}</label>
+            {{tmpl(data) "#editor"}}
+            <a class="fullscr" href="#" title ="${data.path}"></a>
+        </div>
+    {{/if}}
+
+</script>
+
+<script id="metaPropArray" type="text/x-jquery-tmpl">
+    <fieldset prefix=${name} {{if reference}}ref_type=${reference.type} ref_join=${reference.join} {{/if}}>
+        <legend><span >${caption}</span> <a href="#" style="text-decoration:none">▲</a> <a class="fullscr" href="#" title ="${path}"></a></legend>
+        <span class="count" style="display:none"></span>
+        {{each value}}
+            <div class="zip {{if tmplRow }}tmpl{{/if}} inline" >
+                <a href="#" class="delRow"></a>
+                <span class="rowIndex">${$index}</span>) 
+                <a href="#" class="zipRow" style="text-decoration:none">▲</a>
+                <a class="fullscr" href="#" title ="${path}.${$index}"></a>
+                {{tmpl($value) "#metaObject"}}
+            <hr />
+            </div>
+        {{/each}}
+        
+    </fieldset>
+</script>
+
+<script id="editor" type="text/x-jquery-tmpl">  
+    {{if isInput }}
+        <input type="${editor}" {{if editor == "checkbox" }}{{if value}}checked="checked" {{/if}}value="true"{{else}}value ="${value}"{{/if}} 
+    {{else}}
+        <${editor} 
+    {{/if}}
+    {{if tmplRow }}field{{/if}}name='${name}' 
+     path=${path} 
+    {{if scriptType }} scriptType="${scriptType}" {{/if}}
+    {{if typeof selection == "string"}} selection="${selection}" {{/if}}
+    {{if identity }} identity {{/if}}
+    {{if (readonly||reference) }} readonly {{/if}}
+    {{if maxLength}} style='{width:20px}' {{/if}}
+    {{if isInput }}/>{{else}}>{{if editor == "select" }}{{tmpl({selection: selection, selValue: value}) "#select-option"}}{{/if}} ${value}</${editor}>{{/if}}
+
+
+</script>
+
+<script id="select-option" type="text/x-jquery-tmpl">  
+    {{each selection}}
+    <option value="${key}" {{if key == selValue}}selected="selected"{{/if}}>${value}</option>
+    {{/each}}
+    <option value="" {{if undefined==selValue}}selected="selected"{{/if}}></option>
+</script> 

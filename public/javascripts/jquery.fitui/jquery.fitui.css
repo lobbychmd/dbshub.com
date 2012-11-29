@@ -34,3 +34,34 @@ nav {float: left}
 /*  ajaxTree 树  */
 /*  由于节点类型是由数据(配置)决定的，因此下面的样式样例要按具体类型扩展，在项目中设置  */
 .filetree li.expandable span.tables, .filetree span.leaf.tables {background: url("images/ajaxtree/tables.png") no-repeat scroll 0 0 transparent}
+
+/*  通用meta对象编辑器  */
+.metaObject hr {  border-color: #eee}
+.metaObject fieldset{   border-color:#eee; padding:10px;}
+.metaObject legend {   font-size:1.3em; font-weight:bold; color:Blue;}
+.metaObject span.count {   color:#666; display:block;margin:10px;}
+.metaObject a.delRow {background: url(images/delete.png); display:inline-block; width: 16px;height: 16px}
+.metaObject div.zip.tmpl a.delRow {background: url(images/new.png) no-repeat; display:inline-block; width: 42px;height: 16px}
+.metaObject span.rowIndex {display: inline-block; width: 24px;height: 16px;}
+.metaObject div.zip.tmpl span.rowIndex {display: none}
+.metaObject label{width:180px;display:inline-block; text-align:right; margin-right:1px; margin-left:10px;}
+.metaObject [identity],.metaObject [readonly] {background:#ccc;border:1px solid #666}
+
+.metaObject .zip.deleted{  color: red; text-decoration:line-through}
+.metaObject .zip.tmpl{  color: blue}
+1.metaObject .zip.inline>.prop{ display:inline-block; display:none}
+.metaObject .zip.inline>.prop[lineshow]{ display:inline-block;}
+.metaObject .zip.inline>.prop>label{ display:inline;}
+.metaObject .zip textarea{  width:100%; }
+.metaObject textarea{  width:100%}
+.metaObject .CodeMirror{border: 1px solid #ccc;width: 100%}
+.metaObject a.fullscr {background: url(images/fullscr.png); display: inline-block; height: 16px; width: 16px;}
+
+/*  通用meta对象路径  */
+.metaPath {border: 1px solid #DEDEDE; background: #fff} 
+.metaPath ul {display: block; height: 21px; margin: 0; padding: 0;}
+.metaPath ul li {background: url("images/Chevron.gif") no-repeat scroll 100% 0 transparent;
+    display: block; float: left;font-size: 0.9167em;height: 21px;line-height: 21px;margin: 0 6px 0 0;overflow: hidden;
+    padding: 0 10px 0 0;position: relative;
+}
+.metaPath ul li a {display: block;float: left;height: 21px;line-height: 21px;overflow: hidden;position: relative;color: #0E82C7;}
