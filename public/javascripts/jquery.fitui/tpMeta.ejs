@@ -12,11 +12,11 @@
 </script>
 
 <script id="metaPropArray" type="text/x-jquery-tmpl">
-    <fieldset prefix=${name} {{if reference}}ref_type=${reference.type} ref_join=${reference.join} {{/if}}>
+    <fieldset   {{if reference}}ref_type=${reference.type} ref_join=${reference.join} {{/if}} path="${path}">
         <legend><span >${caption}</span> <a href="#" style="text-decoration:none">▲</a> <a class="fullscr" href="#" title ="${path}"></a></legend>
         <span class="count" style="display:none"></span>
         {{each value}}
-            <div class="zip {{if tmplRow }}tmpl{{/if}} inline" >
+            <div class="zip {{if tmplRow }}tmpl{{/if}} inline" path ="${path}.${$index}" >
                 <a href="#" class="delRow"></a>
                 <span class="rowIndex">${$index}</span>) 
                 <a href="#" class="zipRow" style="text-decoration:none">▲</a>

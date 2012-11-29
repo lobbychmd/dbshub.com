@@ -64,4 +64,6 @@ nav {float: left}
     display: block; float: left;font-size: 0.9167em;height: 21px;line-height: 21px;margin: 0 6px 0 0;overflow: hidden;
     padding: 0 10px 0 0;position: relative;
 }
+.metaPath ul li.last{background: #fff} 
 .metaPath ul li a {display: block;float: left;height: 21px;line-height: 21px;overflow: hidden;position: relative;color: #0E82C7;}
+.metaPath ul li.last a{cursor: default} 
