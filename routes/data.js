@@ -24,6 +24,6 @@ exports.tables = function (req, res) {
 exports.doc = function (req, res) {
     var db = config.db();
     db.collection(req.query.table).findOne({_id: db.ObjectID(req.query._id)}, function (err, doc) {
-        res.render("meta/doc.html", {layout:null, toolbar:[], _id: doc._id, str:JSON.stringify( doc)});
+        res.render("meta/doc.html", {layout:null, toolbar:[], _id: doc._id, type:doc._t, str:JSON.stringify( doc)});
     });
 };

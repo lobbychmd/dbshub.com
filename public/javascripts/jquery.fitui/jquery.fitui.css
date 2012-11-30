@@ -18,8 +18,8 @@ nav {float: left}
 
 .headerTabs.ui-tabs li.ui-state-default {
     background:url("/") repeat-x scroll 50% 50%   ; border: 0px;    height: 31px;  }
-.headerTabs.ui-tabs li.ui-state-active{ background: #ddd; border-radius: 0px; height: 30px; }
-
+.headerTabs.ui-tabs li.ui-state-active{ background: #F3F3F3; border-radius: 0px; height: 30px; border-width: 0 1px; border-color: #ddd; border-style: solid; }
+.headerTabs.ui-tabs .ui-tabs-panel {background: #F3F3F3}
 
 /*  缩略图 */
 .thumbContainer { position: relative}
@@ -47,14 +47,20 @@ nav {float: left}
 .metaObject label{width:180px;display:inline-block; text-align:right; margin-right:1px; margin-left:10px;}
 .metaObject [identity],.metaObject [readonly] {background:#ccc;border:1px solid #666}
 
+.metaObject .prop{ margin: 2px 0;}
 .metaObject .zip.deleted{  color: red; text-decoration:line-through}
 .metaObject .zip.tmpl{  color: blue}
-1.metaObject .zip.inline>.prop{ display:inline-block; display:none}
-.metaObject .zip.inline>.prop[lineshow]{ display:inline-block;}
-.metaObject .zip.inline>.prop>label{ display:inline;}
-.metaObject .zip textarea{  width:100%; }
-.metaObject textarea{  width:100%}
 .metaObject .CodeMirror{border: 1px solid #ccc;width: 100%}
+
+.metaObject a.zip{ background: url(images/zip.png); display: inline-block; height: 16px; width: 16px;}
+.metaObject .unzip a.zip{ background: url(images/unzip.png); display: inline-block; height: 16px; width: 16px;}
+.metaObject .unzip .row, .metaObject .unzip .prop, .metaObject .unzip .array{ display:  none}
+.metaObject .unzip .row, .metaObject .unzip .prop[lineshow]{ display:  inline-block}
+.metaObject .unzip>.row, .metaObject .unzip>.prop>label{ display:  inline}
+
+.metaObject div.row{ border: 1px solid gray; margin: 2px; padding: 5px}
+.metaObject div.row.unzip{ border-width: 0 0 1px 0;}
+
 .metaObject a.fullscr {background: url(images/fullscr.png); display: inline-block; height: 16px; width: 16px;}
 
 /*  通用meta对象路径  */
@@ -66,4 +72,6 @@ nav {float: left}
 }
 .metaPath ul li.last{background: #fff} 
 .metaPath ul li a {display: block;float: left;height: 21px;line-height: 21px;overflow: hidden;position: relative;color: #0E82C7;}
-.metaPath ul li.last a{cursor: default} 
+.metaPath ul li.home a {height: 16px; width: 16px;background: url("images/home.gif") no-repeat scroll 100% 0 transparent;}
+.metaPath ul li.last a{cursor: default; color: #000}
+.metaPath {width: auto; background: #fff; height: 22px; padding: 5px;}

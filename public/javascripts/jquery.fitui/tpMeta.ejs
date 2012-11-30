@@ -2,27 +2,27 @@
     {{if array}}
         {{tmpl(data) "#metaPropArray"}}
     {{else}}
-        <div class="prop" {{if lineShow}}lineShow{{/if}} path="${data.path}">
+        <div class="prop" caption="${data.caption}" {{if data.lineshow}}lineshow{{/if}} {{if data.hide}}style='display:none'{{/if}} path="${data.path}">
             <label >${data.caption}</label>
             {{tmpl(data) "#editor"}}
-            <a class="fullscr" href="#" title ="${data.path}"></a>
+            {{if data.designer}}<a class="fullscr" href="#" title ="${data.path}"></a>{{/if}}
         </div>
     {{/if}}
 
 </script>
 
 <script id="metaPropArray" type="text/x-jquery-tmpl">
-    <fieldset   {{if reference}}ref_type=${reference.type} ref_join=${reference.join} {{/if}} path="${path}">
-        <legend><span >${caption}</span> <a href="#" style="text-decoration:none">▲</a> <a class="fullscr" href="#" title ="${path}"></a></legend>
+    <fieldset  class="zip array" caption="${caption}" {{if reference}}ref_type=${reference.type} ref_join=${reference.join} {{/if}} path="${path}">
+        <legend><span >${caption}</span> <a href="#" class="zip" style="text-decoration:none"></a> <a class="fullscr" href="#" title ="${path}"></a></legend>
         <span class="count" style="display:none"></span>
         {{each value}}
-            <div class="zip {{if tmplRow }}tmpl{{/if}} inline" path ="${path}.${$index}" >
+            <div class="row zip unzip {{if tmplrow }}tmpl{{/if}} inline" caption="${$index}" path ="${path}.${$index}" >
                 <a href="#" class="delRow"></a>
                 <span class="rowIndex">${$index}</span>) 
-                <a href="#" class="zipRow" style="text-decoration:none">▲</a>
+                <a href="#" class="zip" style="text-decoration:none"></a>
                 <a class="fullscr" href="#" title ="${path}.${$index}"></a>
+
                 {{tmpl($value) "#metaObject"}}
-            <hr />
             </div>
         {{/each}}
         
@@ -30,20 +30,26 @@
 </script>
 
 <script id="editor" type="text/x-jquery-tmpl">  
-    {{if isInput }}
+    {{if input }}
         <input type="${editor}" {{if editor == "checkbox" }}{{if value}}checked="checked" {{/if}}value="true"{{else}}value ="${value}"{{/if}} 
     {{else}}
         <${editor} 
     {{/if}}
-    {{if tmplRow }}field{{/if}}name='${name}' 
-     path=${path} 
-    {{if scriptType }} scriptType="${scriptType}" {{/if}}
-    {{if typeof selection == "string"}} selection="${selection}" {{/if}}
+    {{if tmplrow }}field{{/if}}name='${name}' 
     {{if identity }} identity {{/if}}
     {{if (readonly||reference) }} readonly {{/if}}
-    {{if maxLength}} style='{width:20px}' {{/if}}
-    {{if isInput }}/>{{else}}>{{if editor == "select" }}{{tmpl({selection: selection, selValue: value}) "#select-option"}}{{/if}} ${value}</${editor}>{{/if}}
 
+    {{if input}}
+        />
+    {{else}}
+        >
+        {{if editor == "select" }}
+            {{tmpl({selection: selection, selValue: value}) "#select-option"}}
+        {{else}}
+            ${value}
+        {{/if}}
+        </${editor}>
+    {{/if}}
 
 </script>
 
