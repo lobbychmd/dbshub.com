@@ -16,11 +16,18 @@ $.autoHeight = function (setting, init, callback) {
     $(window).trigger('resize.layout', []);
 }
 
+$.fn.intcss = function (styleName) {
+    var result = $(this[0]).css(styleName);
+    result = parseInt(result.substring(0, result.length - 2));
+    return result;
+}
+
 $.resizeW = function () {
     var h = document.documentElement.clientHeight;
     if (window.console) console.log($.autoHeightSetting);
     for (var i in $.autoHeightSetting) {
-        $(i).css('height', (h - $.autoHeightSetting[i]) + "px");
+        //$(i).css('height', (h - $.autoHeightSetting[i] - margintop - marginbottom) + "px");
+        $(i).css('height', (h - $.autoHeightSetting[i] - $(i).intcss('margin-top') - $(i).intcss('margin-bottom')) + "px");
     }
 }
 
@@ -44,22 +51,23 @@ $.fn.layout = function () {
                 var content = spliter.next().layout();
                 var parent = $(this);
                 $(this).children('[align]').each(function () {
-                    setting['#' + this.id] = root ? 0 : document.documentElement.clientHeight - parent.height();
+                    setting['#' + this.id] = root ? 0 : document.documentElement.clientHeight - parent.height() +$(this).intcss('padding-top')+$(this).intcss('padding-bottom');
                 });
                 $("<div style='clear:both'>").appendTo(this);
             } else {
                 var contents = [];
-                var hOffset = 0;
+                var hOffset = $(this).intcss('padding-top') + $(this).intcss('padding-bottom');
                 $(this).children().each(function () {
                     var align = $(this).attr('align');
                     if (align) {
                         if (align != 'auto')
-                            hOffset += $(this).height();
+                            hOffset += $(this).outerHeight(true);
                         else contents.push(this);
                     }
                 });
 
                 for (var i in contents) {
+                    delete setting['#' + contents[i].id];
                     setting['#' + contents[i].id] = hOffset + (root ? 0 : document.documentElement.clientHeight - $(this).height());
                 }
             }

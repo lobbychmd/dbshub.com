@@ -1,12 +1,18 @@
 <style>
-    .metaObject, .metaPath {margin: 5px; font-size: 0.88em;}
+    .metaObject{margin: 5px; font-size: 0.88em;}
+    .metaPath { float: left;width: 400px}
+    .tbdesigner {border: 1px solid #DEDEDE; background: #fff    }
 </style>
-<div id="path${_id}" style="" align="top"></div>
-<div id="design${_id}" align="auto">
+
+<div id="path_p${_id}" align="top" layout="h" style='height: 32px;margin: 5px;font-size: 0.88em'>
+    <div id="path${_id}" style="width: 400px" align="left"></div>
+    <div align="auto" id="toolbar${_id}" class='tbdesigner'></div>
 </div>
 
+<div id="design${_id}" align="auto" style="overflow: auto" ></div>
+
 <script>
-    $('#design${_id}').metaDesign({{html str}}, "${type}",
+    $('#design${_id}').jsoneditor({{html str}}, "${type}",
         {
             MetaModule: {
                             Caption: { caption: "模块名称" },
@@ -22,10 +28,10 @@
                                 Queries: { caption: '所用查询', editor: 'textarea', maxLength: 100  },
                                 PageFlow: { caption: '流程定义', editor: 'textarea', 
                                     children: {
-                                        ID: {caption: '流程ID'},
-                                        Summary: {caption: '流程摘要'},
+                                        ID: {caption: '流程ID', lineshow: true},
+                                        Summary: {caption: '流程摘要', lineshow: true},
                                         Description: {caption: '流程描述'},
-                                        State: {caption: '流程状态', editor:'select', selection: [{ key: "fsNew", value: "新增" }, { key: "fsNormal", value: "未审核"}, { key: "fsAuditing", value: "审核中"}, { key: "fsAudited", value: "审核完成"}] },
+                                        State: {caption: '流程状态', editor:'select', selection: [{ key: "fsNew", value: "新增" }, { key: "fsNormal", value: "未审核"}, { key: "fsAuditing", value: "审核中"}, { key: "fsAudited", value: "审核完成"}] , lineshow: true},
                                         SaveBiz: {caption: '保存业务逻辑'},
                                         Action: {caption: '可执行动作', 
                                             children:{
@@ -191,6 +197,9 @@
                                     FuncID: { caption: '权限ID', lineShow: true },
                                     FuncName: { caption: '权限说明', lineShow: true }
                                 }
-                            });
-    $('#path${_id}').metaPath('#design${_id}').parent().layout();
+                            })
+    .createNavigation('#path${_id}', {homePath: "${type}"});
+    $(function(){
+        $('#design${_id}').parent().layout();        
+    });
 </script>

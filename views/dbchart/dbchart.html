@@ -26,7 +26,7 @@
             </ul>
         </li>
     </ul>
-    {{partial "../public/javascripts/jquery.fitui/tpMeta.ejs"}}
+    {{partial "../public/javascripts/jquery.fitui/tmpl.jsoneditor.ejs"}}
 </div>
 
 <div id="tabs" align="auto" layout="v">
@@ -40,7 +40,8 @@
         $('#tabs').ajaxTabs({ a_selector: "#tree a",
             saveState: function () { }, restoreState: function () { },
             create: function (tab) {
-                tab.attr('align', 'auto').attr('layout', 'v').css('padding', '0px').parent().layout();
+                tab.attr('align', 'auto')
+                    .attr('layout', 'v').css('padding', '0px').parent().layout();
                 $.autoHeight({}, true);
                 $('#tabs>ul>li>a').unbind('click.rename');
                 $('#tabs>ul>li.ui-tabs-active>a').bind('click.rename', function () {
