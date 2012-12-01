@@ -36,15 +36,16 @@ nav {float: left}
 .filetree li.expandable span.tables, .filetree span.leaf.tables {background: url("images/ajaxtree/tables.png") no-repeat scroll 0 0 transparent}
 
 /*  通用meta对象编辑器  */
+.metaObject {border-left: 5px solid yellow; padding-left:  5px;}
 .metaObject hr {  border-color: #eee}
-.metaObject fieldset{   border-color:#eee; padding:10px;}
+.metaObject fieldset.array{   border-color:yellow; padding:10px; border-style: solid; border-width: 0 0 0 5px; padding-left:  5px;}
 .metaObject legend {   font-size:1.3em; font-weight:bold; color:Blue;}
 .metaObject span.count {   color:#666; display:block;margin:10px;}
 .metaObject a.delRow {background: url(images/delete.png); display:inline-block; width: 16px;height: 16px}
 .metaObject div.zip.tmpl a.delRow {background: url(images/new.png) no-repeat; display:inline-block; width: 42px;height: 16px}
 .metaObject span.rowIndex {display: inline-block; width: 24px;height: 16px;}
 .metaObject div.zip.tmpl span.rowIndex {display: none}
-.metaObject label{width:180px;display:inline-block; text-align:right; margin-right:1px; margin-left:10px;}
+.metaObject .prop>label{width:180px;display:inline-block; text-align:left; margin-right:1px; margin-left:10px;}
 .metaObject [identity],.metaObject [readonly] {background:#ccc;border:1px solid #666}
 
 .metaObject .prop{ margin: 2px 0;}

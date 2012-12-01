@@ -16,13 +16,14 @@
         <legend><span >${caption}</span> <a href="#" class="zip" style="text-decoration:none"></a> <a class="fullscr" href="#" title ="${path}"></a></legend>
         <span class="count" style="display:none"></span>
         {{each value}}
-            <div class="row zip unzip {{if tmplrow }}tmpl{{/if}} inline" caption="${$index}" path ="${path}.${$index}" >
+            <div class="row zip unzip {{if tmplrow }}tmpl{{/if}} inline" caption="${$index}(${summary})" path ="${path}.${$index}" >
                 <a href="#" class="delRow"></a>
                 <span class="rowIndex">${$index}</span>) 
                 <a href="#" class="zip" style="text-decoration:none"></a>
                 <a class="fullscr" href="#" title ="${path}.${$index}"></a>
 
-                {{tmpl($value) "#metaObject"}}
+                {{if typeof $value == "string"}} {{tmpl($value) "#editor"}}
+                {{else}} {{tmpl($value) "#metaObject"}} {{/if}}
             </div>
         {{/each}}
         

@@ -1,6 +1,18 @@
 ﻿/**********            通用文档编辑        **************/
 /**********   这个要同时引入模板 tmpl.jsoneditor.ejs **************/
 $.fitui.jsoneditor = {
+    prop_tmpl: { readonly: false, reference: false, editor: 'textbox', lineshow: false },
+    prop2tmpl: function (name, path, value, /*tmplrow, */config) {
+        var c = config;
+
+        var data = { caption: c ? c.caption : i, value: value, path: path, name: name, /* tmplrow: tmplrow,*/
+            input: c && c.editor != 'textarea' && c.editor != 'select'
+        };
+        $.extend(data, $.fitui.jsoneditor.prop_tmpl);
+        $.extend(data, c);
+        data.children = null;
+        return data;
+    },
     meta2tmpl: function (doc, configure, path, name_prefix, tmplrow) {
         var config = $.extend({
             _id: { caption: 'id', readonly: true },
@@ -11,24 +23,35 @@ $.fitui.jsoneditor = {
         for (var i in config) { //按照配置来，而不是按照数据属性来(必须设定配置)
             //for (var i in doc) { 
             var c = config[i];
-            var array = c && c.children;
+            var array = c && (c.children || c.split);
             var paths = path ? path + '.' + i : i;
             var name = name_prefix ? name_prefix + '[' + i + ']' : i;
             if (array) {
-                if (c && c.editor) { doc[i] = eval(doc[i]); }
-                if (!doc[i]) doc[i] = [];
-                doc[i].push({  });
-                for (var j in doc[i])
-                    doc[i][j] = $.fitui.jsoneditor.meta2tmpl(doc[i][j], c.children, paths + '.' + j, name + '[' + j + ']', doc[i].length - 1 == j);
+                //字符串数组
+                if (c && c.split) {
+                    doc[i] = doc[i] ? doc[i].toString().split(c.split) : [];
+                    if (!doc[i]) doc[i] = [];
+                    doc[i].push("");
+                    for (var j in doc[i]) {
+                        var data = $.fitui.jsoneditor.prop2tmpl(name + '[' + j + ']', paths + '.' + j, doc[i][j], {caption: "值", editor: c.roweditor, lineshow: true});
+                        doc[i][j] = { array: false, data: data };
+                    }
+                }
+                //对象数组
+                else {
+                    if (c && c.editor) { doc[i] = eval(doc[i]); }
+                    if (!doc[i]) doc[i] = [];
+                    doc[i].push({});
+                    for (var j in doc[i]) {
+                        doc[i][j] = $.fitui.jsoneditor.meta2tmpl(doc[i][j], c.children, paths + '.' + j, name + '[' + j + ']', doc[i].length - 1 == j);
+                        //用关键字段的值来标识行
+                        for (var k in doc[i][j]) if (doc[i][j][k].data.key) { doc[i][j].summary = doc[i][j][k].data.value; break; }
+                    }
+                }
                 doc[i][doc[i].length - 1]["tmplrow"] = true;
             }
-            var data = { caption: c ? c.caption : i, value: doc[i], path: paths, name: name, tmplrow: tmplrow,
-                input: c && c.editor != 'textarea' && c.editor != 'select'
-            };
-            $.extend(data, prop_tmpl);
-            $.extend(data, c);
-            data.children = null;
-            pa.push({ array: !!array, data: data });
+
+            pa.push({ array: !!array, data: $.fitui.jsoneditor.prop2tmpl(name, paths, doc[i], /*tmplrow, */c) });
         }
         return pa;
     },
@@ -48,12 +71,9 @@ $.fitui.jsoneditor = {
                 var rowCount = fieldset.children('div.zip').size();
                 row.clone(true).unbind('change.tmpl').removeClass('tmpl').insertBefore(row).find('[fieldname]').each(function () {
                     $(this).attr('name', $(this).attr('fieldname').replace(/\[(\d+)\]/i, "[" + (rowCount - 1) + "]")).removeAttr('fieldname');
-                    //var re = new RegExp("\[(\\d+)\]", "ig"); var n = $(this).attr('fieldname'); var r = n.match(re);
-                    //$(this).attr('name', n.replace("[" + r[r.length - 1] + RegExp.rightContext, "[" + (rowCount - 1) + RegExp.rightContext)).removeAttr('fieldname');
                 }).end().find('span.rowIndex').text(rowCount).end().find('[identity]').val(rowCount).end().focus();
                 $(this).val('');
             }
-            //fieldset.trigger('change');
         }).end().find("a.delRow").live("click", function () {
 
             var fieldset = $(this).closest('fieldset');
