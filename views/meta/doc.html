@@ -18,13 +18,13 @@
                             Caption: { caption: "模块名称" },
                             ModuleID: { caption: "模块编号" },
                             ParentID: { caption: "上层模块编号" },
-                            Path: { caption: "模块路径(Url)" , designer: "sd"},
+                            Path: { caption: "模块路径(Url)" , designer: ["sd"]},
                             Queryies: { caption: "所用查询" },
                             Bizes: { caption: "所用业务逻辑" },
                             ModulePages: { caption: "页面", children:{
                                 PageID: { caption: '页面ID', lineshow: true, key:true },
                                 PageType: { caption: '页面类型', editor: "select", selection: [{ key: "0", value: "查询" }, { key: "1", value: "录入"}], lineshow: true },
-                                UI: { caption: '界面配置',  scriptType: 'application/json', editor: 'textarea' },
+                                UI: { caption: '界面配置',  editor: 'textarea', designer:["codemirror"] },
                                 Queries: { caption: '所用查询', editor: 'textarea', maxLength: 100  },
                                 PageFlow: { caption: '流程定义', editor: 'textarea', 
                                     children: {

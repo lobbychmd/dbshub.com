@@ -3,9 +3,15 @@
         {{tmpl(data) "#metaPropArray"}}
     {{else}}
         <div class="prop" caption="${data.caption}" {{if data.lineshow}}lineshow{{/if}} {{if data.hide}}style='display:none'{{/if}} path="${data.path}">
-            <label >${data.caption}</label>
+            <label >${data.caption}{{if data.designer}}
+                {{each data.designer}}
+                    <a  designer="${$value}" href="#" ></a>
+                {{/each}}
+                <a  designer="editor" href="#" style="display:none"></a>
+                <a class="fullscr" href="#" title ="${data.path}"></a>
+            {{/if}}</label>
             {{tmpl(data) "#editor"}}
-            {{if data.designer}}<a class="fullscr" href="#" title ="${data.path}"></a>{{/if}}
+            
         </div>
     {{/if}}
 
@@ -36,6 +42,7 @@
     {{else}}
         <${editor} 
     {{/if}}
+    class="editor"
     {{if tmplrow }}field{{/if}}name='${name}' 
     {{if identity }} identity {{/if}}
     {{if (readonly||reference) }} readonly {{/if}}

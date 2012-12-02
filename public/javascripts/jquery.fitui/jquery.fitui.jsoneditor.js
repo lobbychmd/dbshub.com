@@ -33,7 +33,7 @@ $.fitui.jsoneditor = {
                     if (!doc[i]) doc[i] = [];
                     doc[i].push("");
                     for (var j in doc[i]) {
-                        var data = $.fitui.jsoneditor.prop2tmpl(name + '[' + j + ']', paths + '.' + j, doc[i][j], {caption: "值", editor: c.roweditor, lineshow: true});
+                        var data = $.fitui.jsoneditor.prop2tmpl(name + '[' + j + ']', paths + '.' + j, doc[i][j], { caption: "值", editor: c.roweditor, lineshow: true });
                         doc[i][j] = { array: false, data: data };
                     }
                 }
@@ -103,17 +103,61 @@ $.fitui.jsoneditor = {
             }
             return false;
         });
+    },
+    codeMirrors: {},
+    designer: {
+        codemirror: function (texteditor, show) {
+            if (show) {
+                var width = $(texteditor).width(); 
+                
+                var codem = CodeMirror.fromTextArea(texteditor, {
+                    lineNumbers: true,
+                    matchBrackets: true,
+                    //mode: $(texteditor).attr('scriptType')//"text/x-plsql"
+                }); 
+                $.fitui.jsoneditor.codeMirrors[$(texteditor).attr("name")] = codem;
+                $(texteditor).parent().find('.CodeMirror>.CodeMirror-scroll').width(width + "px");
+                return $(texteditor).parent().find('.CodeMirror');
+
+            }
+            else {
+                if ($.fitui.jsoneditor.codeMirrors[$(this).attr("name")])
+                    $.fitui.jsoneditor.codeMirrors[$(this).attr("name")].toTextArea();
+                else alert("codemirror " + $(this).attr("name") + " not found.");
+            }
+        }
+    },
+
+    toggleDesigner: function (main) {
+        $(main).find('a[designer]').click(function () {
+            var p = $(this).closest('.prop');
+            //隐藏当前编辑器
+            p.find('.editor.designer').remove();
+            var editor = p.find('.editor').hide();
+
+            var designer = $(this).attr('designer');
+            //显示编辑器
+            if (designer == 'editor') editor.show();
+            else $.fitui.jsoneditor.designer[$(this).attr('designer')](editor[0], true).addClass('editor').addClass('designer');
+
+            
+            //隐藏和显示图标
+            $(main).find('a[designer]').show();
+            $(this).hide();
+            return false;
+        });
     }
 };
 
 $.fn.jsoneditor = function (doc, type, config) {
     return this.each(function () {
-        $(this).addClass('metaObject').attr('title', type); //基础路径
+        $(this).addClass('jsoneditor').attr('title', type); //基础路径
         var data = $.fitui.jsoneditor.meta2tmpl(doc, config[type], type);
         console.log({ all: data });
         $('#metaObject').tmpl(data).appendTo(this);
         $.fitui.jsoneditor.zip($(this).find('a.zip'));
         $.fitui.jsoneditor.tmplRowEditor(this, false);
+        $.fitui.jsoneditor.toggleDesigner(this);
     });
 }
 

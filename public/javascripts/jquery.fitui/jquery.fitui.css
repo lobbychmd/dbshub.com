@@ -36,33 +36,37 @@ nav {float: left}
 .filetree li.expandable span.tables, .filetree span.leaf.tables {background: url("images/ajaxtree/tables.png") no-repeat scroll 0 0 transparent}
 
 /*  通用meta对象编辑器  */
-.metaObject {border-left: 5px solid yellow; padding-left:  5px;}
-.metaObject hr {  border-color: #eee}
-.metaObject fieldset.array{   border-color:yellow; padding:10px; border-style: solid; border-width: 0 0 0 5px; padding-left:  5px;}
-.metaObject legend {   font-size:1.3em; font-weight:bold; color:Blue;}
-.metaObject span.count {   color:#666; display:block;margin:10px;}
-.metaObject a.delRow {background: url(images/delete.png); display:inline-block; width: 16px;height: 16px}
-.metaObject div.zip.tmpl a.delRow {background: url(images/new.png) no-repeat; display:inline-block; width: 42px;height: 16px}
-.metaObject span.rowIndex {display: inline-block; width: 24px;height: 16px;}
-.metaObject div.zip.tmpl span.rowIndex {display: none}
-.metaObject .prop>label{width:180px;display:inline-block; text-align:left; margin-right:1px; margin-left:10px;}
-.metaObject [identity],.metaObject [readonly] {background:#ccc;border:1px solid #666}
+.jsoneditor {border-left: 5px solid yellow; padding-left:  5px;}
+.jsoneditor hr {  border-color: #eee}
+.jsoneditor fieldset.array{   border-color:yellow; padding:10px; border-style: solid; border-width: 0 0 0 5px; padding-left:  5px;}
+.jsoneditor legend {   font-size:1.3em; font-weight:bold; color:Blue;}
+.jsoneditor span.count {   color:#666; display:block;margin:10px;}
+.jsoneditor a.delRow {background: url(images/delete.png); display:inline-block; width: 16px;height: 16px}
+.jsoneditor div.zip.tmpl a.delRow {background: url(images/new.png) no-repeat; display:inline-block; width: 42px;height: 16px}
+.jsoneditor span.rowIndex {display: inline-block; width: 24px;height: 16px;}
+.jsoneditor div.zip.tmpl span.rowIndex {display: none}
+.jsoneditor .prop>label{width:180px;display:inline-block; text-align:left; margin-right:1px; margin-left:10px;}
+.jsoneditor [identity],.jsoneditor [readonly] {background:#ccc;border:1px solid #666}
 
-.metaObject .prop{ margin: 2px 0;}
-.metaObject .zip.deleted{  color: red; text-decoration:line-through}
-.metaObject .zip.tmpl{  color: blue}
-.metaObject .CodeMirror{border: 1px solid #ccc;width: 100%}
+.jsoneditor .prop{ margin: 2px 0;}
+.jsoneditor .zip.deleted{  color: red; text-decoration:line-through}
+.jsoneditor .zip.tmpl{  color: blue}
+.jsoneditor .CodeMirror{border: 1px solid #ccc;width: 100%}
 
-.metaObject a.zip{ background: url(images/zip.png); display: inline-block; height: 16px; width: 16px;}
-.metaObject .unzip a.zip{ background: url(images/unzip.png); display: inline-block; height: 16px; width: 16px;}
-.metaObject .unzip .row, .metaObject .unzip .prop, .metaObject .unzip .array{ display:  none}
-.metaObject .unzip .row, .metaObject .unzip .prop[lineshow]{ display:  inline-block}
-.metaObject .unzip>.row, .metaObject .unzip>.prop>label{ display:  inline}
+.jsoneditor a.zip{ background: url(images/zip.png); display: inline-block; height: 16px; width: 16px;}
+.jsoneditor .unzip a.zip{ background: url(images/unzip.png); display: inline-block; height: 16px; width: 16px;}
+.jsoneditor .unzip .row, .jsoneditor .unzip .prop, .jsoneditor .unzip .array{ display:  none}
+.jsoneditor .unzip .row, .jsoneditor .unzip .prop[lineshow]{ display:  inline-block}
+.jsoneditor .unzip>.row, .jsoneditor .unzip>.prop>label{ display:  inline}
 
-.metaObject div.row{ border: 1px solid gray; margin: 2px; padding: 5px}
-.metaObject div.row.unzip{ border-width: 0 0 1px 0;}
+.jsoneditor div.row{ border: 1px solid gray; margin: 2px; padding: 5px}
+.jsoneditor div.row.unzip{ border-width: 0 0 1px 0;}
 
-.metaObject a.fullscr {background: url(images/fullscr.png); display: inline-block; height: 16px; width: 16px;}
+.jsoneditor a.fullscr {background: url(images/fullscr.png); display: inline-block; height: 16px; width: 16px;}
+
+/*  通用meta对象属性设计器  */
+.jsoneditor a[designer=editor] {background: url(images/metadesigner/editor.png); display: inline-block; height: 16px; width: 16px;}
+.jsoneditor a[designer=codemirror] {background: url(images/metadesigner/codemirror.png); display: inline-block; height: 16px; width: 16px;}
 
 /*  通用meta对象路径  */
 .metaPath {border: 1px solid #DEDEDE; background: #fff} 
