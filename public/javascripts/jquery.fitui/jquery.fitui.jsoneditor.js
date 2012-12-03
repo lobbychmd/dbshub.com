@@ -162,7 +162,7 @@ $.fitui.jsoneditor = {
             }
             else {
                 $.post('/flowchart/json2str?path=' + path, designer.serializeArray(), function(data){
-                    console.log(data);
+                    //console.log(data);
                     $(texteditor).val(data);
                     designer.remove();
                     if (callback) callback();
@@ -170,7 +170,19 @@ $.fitui.jsoneditor = {
             }
         },
         moduleurl: function (texteditor, designer, show, callback) {
-            alert(1);
+            if (show){
+                return $('#tpModuleUrl').tmpl({name: $(texteditor).attr('name')}).insertBefore(texteditor).addClass('moduleurl');
+            }else {
+                var v = designer.find('input[type=radio]:checked').val();
+                var mid = $(texteditor).closest('.jsoneditor').find('[name=ModuleID]').val();
+                if (v == "stdreceipt")
+                    $(texteditor).val("/module/stdr?mid=" + mid);
+                else if (v =="stdquery")
+                    $(texteditor).val("/module/query/" + designer.find('.queryName').val() + "?mid=" + mid);
+                else $(texteditor).val(designer.find('.url').val());
+                designer.remove();
+                callback();
+            }
         }
     },
 

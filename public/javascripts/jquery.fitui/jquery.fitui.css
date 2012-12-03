@@ -70,6 +70,9 @@ nav {float: left}
 .jsoneditor a[designer=json] {background: url(images/metadesigner/json.png); display: inline-block; height: 16px; width: 16px;}
 .jsoneditor a[designer=moduleurl] {background: url(images/metadesigner/moduleurl.png); display: inline-block; height: 16px; width: 16px;}
 
+/*  自定义meta对象属性设计器  */
+.moduleurl {display: inline-block}
+
 /*  通用meta对象路径  */
 .metaPath {border: 1px solid #DEDEDE; background: #fff} 
 .metaPath ul {display: block; height: 21px; margin: 0; padding: 0;}

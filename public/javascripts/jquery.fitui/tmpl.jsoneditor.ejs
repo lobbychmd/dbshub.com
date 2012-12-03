@@ -72,3 +72,13 @@
     {{/each}}
     <option value="" {{if undefined==selValue}}selected="selected"{{/if}}></option>
 </script> 
+
+
+<script id="tpModuleUrl" type="text/x-jquery-tmpl">  
+    <ul>
+
+        <li><input name ="${name}" type="radio" value="stdreceipt">通用单据模块</li>
+        <li><input name ="${name}" type="radio" value="stdquery">通用查询模块, 查询名<input class="queryName"></li>
+        <li><input name ="${name}" type="radio" value="custom">特殊模块<input class="url"></li>
+    </ul>
+</script> 
