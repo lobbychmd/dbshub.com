@@ -38,14 +38,14 @@ nav {float: left}
 /*  通用meta对象编辑器  */
 .jsoneditor {border-left: 5px solid yellow; padding-left:  5px;}
 .jsoneditor hr {  border-color: #eee}
-.jsoneditor fieldset.array{   border-color:yellow; padding:10px; border-style: solid; border-width: 0 0 0 5px; padding-left:  5px;}
+.jsoneditor fieldset.array{  display: inline-block; border-color:yellow; padding:10px; border-style: solid; border-width: 0 0 0 5px; padding-left:  5px;}
 .jsoneditor legend {   font-size:1.3em; font-weight:bold; color:Blue;}
 .jsoneditor span.count {   color:#666; display:block;margin:10px;}
 .jsoneditor a.delRow {background: url(images/delete.png); display:inline-block; width: 16px;height: 16px}
 .jsoneditor div.zip.tmpl a.delRow {background: url(images/new.png) no-repeat; display:inline-block; width: 42px;height: 16px}
 .jsoneditor span.rowIndex {display: inline-block; width: 24px;height: 16px;}
 .jsoneditor div.zip.tmpl span.rowIndex {display: none}
-.jsoneditor .prop>label{width:180px;display:inline-block; text-align:left; margin-right:1px; margin-left:10px;}
+.jsoneditor .prop>label{min-width:123px;display:inline-block; text-align:left; margin-right:1px; margin-left:10px; vertical-align: top}
 .jsoneditor [identity],.jsoneditor [readonly] {background:#ccc;border:1px solid #666}
 
 .jsoneditor .prop{ margin: 2px 0;}
@@ -67,6 +67,8 @@ nav {float: left}
 /*  通用meta对象属性设计器  */
 .jsoneditor a[designer=editor] {background: url(images/metadesigner/editor.png); display: inline-block; height: 16px; width: 16px;}
 .jsoneditor a[designer=codemirror] {background: url(images/metadesigner/codemirror.png); display: inline-block; height: 16px; width: 16px;}
+.jsoneditor a[designer=json] {background: url(images/metadesigner/json.png); display: inline-block; height: 16px; width: 16px;}
+.jsoneditor a[designer=moduleurl] {background: url(images/metadesigner/moduleurl.png); display: inline-block; height: 16px; width: 16px;}
 
 /*  通用meta对象路径  */
 .metaPath {border: 1px solid #DEDEDE; background: #fff} 

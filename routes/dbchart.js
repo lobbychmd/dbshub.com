@@ -55,7 +55,6 @@ exports.save = function (req, res) {
         c.insert(req.body);
         res.send('ok');
     });
-
 };
 
 exports.tree = function (req, res) {
@@ -63,4 +62,14 @@ exports.tree = function (req, res) {
         res.json(data);
     });
 
+};
+
+exports.json2str = function (req, res) {
+    var path = req.query['path'].split('.');
+    var data = req.body;
+    for (var i in path) {
+        console.log(path[i]);
+        if (data[path[i]]) data = data[path[i]];
+    }
+    res.send(JSON.stringify(data));
 };

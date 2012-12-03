@@ -13,50 +13,64 @@ $.fitui.jsoneditor = {
         data.children = null;
         return data;
     },
-    meta2tmpl: function (doc, configure, path, name_prefix, tmplrow) {
+    array2tmpl: function(value, config, path, name_prefix, handleStr){
+        //字符串数组
+        if (handleStr && config && config.split) {
+            value = value ? value.toString().split(config.split) : [];
+            if (!value) value = [];
+            value.push("");
+            for (var j in value) {
+                var data = $.fitui.jsoneditor.prop2tmpl(name_prefix + '[' + j + ']', path + '.' + j, value[j], { caption: "值", editor: config.roweditor, lineshow: true });
+                value[j] = { array: false, data: data };
+            }
+        }
+        //对象数组
+        else {
+            if (handleStr && config && config.editor ) {try { value = eval(value); }catch(e){ value=[]}}
+            if (!value) value = [];
+            value.push({});
+            for (var j in value){
+                value[j] = $.fitui.jsoneditor.object2tmpl(value[j], config.children, path + '.' + j, name_prefix + '[' + j + ']', value.length - 1 == j);
+                //用关键字段的值来标识行
+                for (var k in value[j]) if (value[j][k].data.key) { value[j].summary = value[j][k].data.value; break; }
+            }
+            
+        }
+        value[value.length - 1]["tmplrow"] = true;
+        return value; //如果传进来的value 是字符串必须返回，如果是数组就不必
+    },
+
+    object2tmpl: function (doc, configure, path, name_prefix, tmplrow) {
         var config = $.extend({
             _id: { caption: 'id', readonly: true },
             _t: { hide: true }
         }, configure);
         var pa = [];
-        var prop_tmpl = { readonly: false, reference: false, editor: 'textbox', lineshow: false };
         for (var i in config) { //按照配置来，而不是按照数据属性来(必须设定配置)
-            //for (var i in doc) { 
             var c = config[i];
-            var array = c && (c.children || c.split);
+            var array = c && c.children && !c.editor;
+
             var paths = path ? path + '.' + i : i;
             var name = name_prefix ? name_prefix + '[' + i + ']' : i;
+            var value = doc[i];
             if (array) {
-                //字符串数组
-                if (c && c.split) {
-                    doc[i] = doc[i] ? doc[i].toString().split(c.split) : [];
-                    if (!doc[i]) doc[i] = [];
-                    doc[i].push("");
-                    for (var j in doc[i]) {
-                        var data = $.fitui.jsoneditor.prop2tmpl(name + '[' + j + ']', paths + '.' + j, doc[i][j], { caption: "值", editor: c.roweditor, lineshow: true });
-                        doc[i][j] = { array: false, data: data };
-                    }
-                }
-                //对象数组
-                else {
-                    if (c && c.editor) { doc[i] = eval(doc[i]); }
-                    if (!doc[i]) doc[i] = [];
-                    doc[i].push({});
-                    for (var j in doc[i]) {
-                        doc[i][j] = $.fitui.jsoneditor.meta2tmpl(doc[i][j], c.children, paths + '.' + j, name + '[' + j + ']', doc[i].length - 1 == j);
-                        //用关键字段的值来标识行
-                        for (var k in doc[i][j]) if (doc[i][j][k].data.key) { doc[i][j].summary = doc[i][j][k].data.value; break; }
-                    }
-                }
-                doc[i][doc[i].length - 1]["tmplrow"] = true;
+                $.fitui.jsoneditor.array2tmpl(doc[i], c, paths, name, false);
+            }
+            var data = $.fitui.jsoneditor.prop2tmpl(name, paths, value, /*tmplrow, */c) ;
+            if (array) data.jsonvalue = doc[i];
+            if (!c.editor && array) delete data["editor"];
+            if (c.editor && (c.children||c.split)) {
+                //designer是从配置extend 过来的，属于引用对象，不能直接修改它，否则影响下一次
+                data["designer"] = data["designer"]?eval(JSON.stringify(data["designer"])) : [];
+                data["designer"].push("json");
             }
 
-            pa.push({ array: !!array, data: $.fitui.jsoneditor.prop2tmpl(name, paths, doc[i], /*tmplrow, */c) });
+            pa.push({ array: !!array, data: data});
         }
         return pa;
     },
     zip: function (a) {
-        $(a).click(function () {
+        $(a).live('click', function () {
             var container = $(this).parent().closest('.zip');
             if (container.hasClass('unzip')) container.removeClass('unzip');
             else container.addClass('unzip');
@@ -104,9 +118,16 @@ $.fitui.jsoneditor = {
             return false;
         });
     },
-    codeMirrors: {},
+    getConfigByPath: function(path){
+        var c = $.fitui.jsoneditor.config;
+        var paths = path.split('.');
+        for(var i in paths)
+            if (c[paths[i]]) c = c[paths[i]];
+            else c = c.children;
+        return c;
+    },
     designer: {
-        codemirror: function (texteditor, show) {
+        codemirror: function (texteditor, designer, show, callback) {
             if (show) {
                 var width = $(texteditor).width(); 
                 
@@ -115,35 +136,73 @@ $.fitui.jsoneditor = {
                     matchBrackets: true,
                     //mode: $(texteditor).attr('scriptType')//"text/x-plsql"
                 }); 
+                if (!$.fitui.jsoneditor["codeMirrors"]) $.fitui.jsoneditor["codeMirrors"] = {};
                 $.fitui.jsoneditor.codeMirrors[$(texteditor).attr("name")] = codem;
                 $(texteditor).parent().find('.CodeMirror>.CodeMirror-scroll').width(width + "px");
                 return $(texteditor).parent().find('.CodeMirror');
 
             }
             else {
-                if ($.fitui.jsoneditor.codeMirrors[$(this).attr("name")])
-                    $.fitui.jsoneditor.codeMirrors[$(this).attr("name")].toTextArea();
-                else alert("codemirror " + $(this).attr("name") + " not found.");
+                if ($.fitui.jsoneditor.codeMirrors[$(texteditor).attr("name")])
+                    $.fitui.jsoneditor.codeMirrors[$(texteditor).attr("name")].toTextArea();
+                else alert("codemirror " + $(texteditor).attr("name") + " not found.");
+                if (callback) callback();
             }
+        },
+        json: function(texteditor, designer, show, callback){
+            var path = $(texteditor).closest('.prop').attr('path');
+            if (show){
+                var data = $(texteditor).val();
+                var name = $(texteditor).attr('name');
+                var c = $.fitui.jsoneditor.getConfigByPath (path);
+            
+                data = $.fitui.jsoneditor.array2tmpl(data, c, path, name, true);
+                $(texteditor).hide();
+                return $('#metaPropArray').tmpl({readonly: false, jsonvalue: data}).insertBefore(texteditor);
+            }
+            else {
+                $.post('/flowchart/json2str?path=' + path, designer.serializeArray(), function(data){
+                    console.log(data);
+                    $(texteditor).val(data);
+                    designer.remove();
+                    if (callback) callback();
+                });
+            }
+        },
+        moduleurl: function (texteditor, designer, show, callback) {
+            alert(1);
         }
     },
 
     toggleDesigner: function (main) {
-        $(main).find('a[designer]').click(function () {
+        $(main).find('a[designer]').live('toggle', function(){
             var p = $(this).closest('.prop');
             //隐藏当前编辑器
-            p.find('.editor.designer').remove();
-            var editor = p.find('.editor').hide();
-
+            var editor = p.children('.editor:not(.designer)');
             var designer = $(this).attr('designer');
             //显示编辑器
             if (designer == 'editor') editor.show();
-            else $.fitui.jsoneditor.designer[$(this).attr('designer')](editor[0], true).addClass('editor').addClass('designer');
+            else $.fitui.jsoneditor.designer[$(this).attr('designer')](editor[0], null, true).addClass('editor').addClass('designer').attr('designer', $(this).attr('designer'));
 
-            
             //隐藏和显示图标
-            $(main).find('a[designer]').show();
+            p.find('a[designer]').show();
             $(this).hide();
+            return false;
+        }).live('click', function () {
+            var p = $(this).closest('.prop');
+            //隐藏当前编辑器
+            var a = this;
+            var currdesign = p.find('.editor.designer');
+            var editor = p.children('.editor:not(.designer)');
+            if (currdesign.size() ==1) {
+                $.fitui.jsoneditor.designer[currdesign.attr('designer')](editor[0], currdesign, false, function(){
+                    $(a).trigger('toggle');
+                });
+            }
+            else {
+                editor.hide();
+                $(a).trigger('toggle');
+            }
             return false;
         });
     }
@@ -151,8 +210,10 @@ $.fitui.jsoneditor = {
 
 $.fn.jsoneditor = function (doc, type, config) {
     return this.each(function () {
+        $.fitui.jsoneditor.config = config; //先记录下来
+
         $(this).addClass('jsoneditor').attr('title', type); //基础路径
-        var data = $.fitui.jsoneditor.meta2tmpl(doc, config[type], type);
+        var data = $.fitui.jsoneditor.object2tmpl(doc, config[type], type);
         console.log({ all: data });
         $('#metaObject').tmpl(data).appendTo(this);
         $.fitui.jsoneditor.zip($(this).find('a.zip'));

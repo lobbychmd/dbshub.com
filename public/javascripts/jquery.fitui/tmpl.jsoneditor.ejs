@@ -1,27 +1,32 @@
 ﻿<script id="metaObject" type="text/x-jquery-tmpl">
-    {{if array}}
-        {{tmpl(data) "#metaPropArray"}}
-    {{else}}
-        <div class="prop" caption="${data.caption}" {{if data.lineshow}}lineshow{{/if}} {{if data.hide}}style='display:none'{{/if}} path="${data.path}">
-            <label >${data.caption}{{if data.designer}}
-                {{each data.designer}}
-                    <a  designer="${$value}" href="#" ></a>
-                {{/each}}
-                <a  designer="editor" href="#" style="display:none"></a>
-                <a class="fullscr" href="#" title ="${data.path}"></a>
-            {{/if}}</label>
+    <div class="prop" caption="${data.caption}" {{if data.lineshow}}lineshow{{/if}} {{if data.hide}}style='display:none'{{/if}} path="${data.path}">
+        <label >${data.caption}
+
+        {{if data.designer || (array && data.editor)}}
+            {{each data.designer}}
+                <a  designer="${$value}" href="#" ></a>
+            {{/each}}
+            <a  designer="editor" href="#" style="display:none"></a>
+        <a class="fullscr" href="#" title ="${data.path}"></a>
+
+        {{/if}}</label>
+        {{if array}}
+            {{tmpl(data) "#metaPropArray"}}
+        {{/if}}
+        {{if data.editor}}
             {{tmpl(data) "#editor"}}
-            
-        </div>
-    {{/if}}
+        {{/if}}        
+    </div>
+    
 
 </script>
 
 <script id="metaPropArray" type="text/x-jquery-tmpl">
-    <fieldset  class="zip array" caption="${caption}" {{if reference}}ref_type=${reference.type} ref_join=${reference.join} {{/if}} path="${path}">
-        <legend><span >${caption}</span> <a href="#" class="zip" style="text-decoration:none"></a> <a class="fullscr" href="#" title ="${path}"></a></legend>
+    <fieldset class="zip array" caption="${caption}" {{if reference}}ref_type=${reference.type} ref_join=${reference.join} {{/if}} path="${path}"
+        {{if typeof(editor) =="string"}} style = "display:none" {{/if}}>
+        <legend><span >${caption111}</span> <a href="#" class="zip" style="text-decoration:none"></a> <a class="fullscr" href="#" title ="${path}"></a></legend>
         <span class="count" style="display:none"></span>
-        {{each value}}
+        {{each jsonvalue}}
             <div class="row zip unzip {{if tmplrow }}tmpl{{/if}} inline" caption="${$index}(${summary})" path ="${path}.${$index}" >
                 <a href="#" class="delRow"></a>
                 <span class="rowIndex">${$index}</span>) 

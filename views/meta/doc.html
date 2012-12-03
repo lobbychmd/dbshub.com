@@ -18,7 +18,7 @@
                             Caption: { caption: "模块名称" },
                             ModuleID: { caption: "模块编号" },
                             ParentID: { caption: "上层模块编号" },
-                            Path: { caption: "模块路径(Url)" , designer: ["sd"]},
+                            Path: { caption: "模块路径(Url)" , designer: ["moduleurl"]},
                             Queryies: { caption: "所用查询" },
                             Bizes: { caption: "所用业务逻辑" },
                             ModulePages: { caption: "页面", children:{
@@ -26,7 +26,7 @@
                                 PageType: { caption: '页面类型', editor: "select", selection: [{ key: "0", value: "查询" }, { key: "1", value: "录入"}], lineshow: true },
                                 UI: { caption: '界面配置',  editor: 'textarea', designer:["codemirror"] },
                                 Queries: { caption: '所用查询', editor: 'textarea', maxLength: 100  },
-                                PageFlow: { caption: '流程定义', editor: 'textarea', 
+                                PageFlow: { caption: '流程定义', editor: 'textarea', designer:["codemirror"] ,
                                     children: {
                                         ID: {caption: '流程ID', lineshow: true, key: true},
                                         Summary: {caption: '流程摘要', lineshow: true},
@@ -39,7 +39,7 @@
                                                 Biz: {caption: '业务逻辑', lineshow: true},
                                                 Description: {caption: '描述'}
                                             }},
-                                        BlackList: {caption: '黑名单', editor: 'textarea', split:',', roweditor: 'textbox'},
+                                        BlackList: {caption: '黑名单', editor: 'textarea', split:',', roweditor: 'textbox', designer:['codemirror']},
                                         WhiteList: {caption: '白名单', editor: 'textarea', split:',', roweditor: 'textbox'},
                                     },
                                     scriptType: 'application/json', jsonType: "FlowItem" },
