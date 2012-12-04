@@ -18,13 +18,15 @@ $.autoHeight = function (setting, init, callback) {
 
 $.fn.intcss = function (styleName) {
     var result = $(this[0]).css(styleName);
-    result = parseInt(result.substring(0, result.length - 2));
+    try {
+        result = parseInt(result.substring(0, result.length - 2));
+    } catch (e) { result = 0; }
     return result;
 }
 
 $.resizeW = function () {
     var h = document.documentElement.clientHeight;
-    if (window.console) console.log($.autoHeightSetting);
+    //if (window.console) console.log($.autoHeightSetting);
     for (var i in $.autoHeightSetting) {
         //$(i).css('height', (h - $.autoHeightSetting[i] - margintop - marginbottom) + "px");
         $(i).css('height', (h - $.autoHeightSetting[i] - $(i).intcss('margin-top') - $(i).intcss('margin-bottom')) + "px");
@@ -32,29 +34,49 @@ $.resizeW = function () {
 }
 
 
-$.fn.layout = function () {
+/*******  隐藏的控件不要做 layout ，取尺寸会有问题，显示再 layout    ******/
+$.fn.layout = function (test) {
     return this.each(function () {
         var layout_type = $(this).attr('layout');
         if (layout_type) {
             var root = this.tagName == 'BODY';
             var setting = {};
             if (layout_type == 'h') {
+                var nav = $(this).children('[align=left]').css('float', 'left').last().bind('resize.layout', function () {
+                    var l = $(this).outerWidth(true);
+                    var p = $(this).closest('[layout]');
+                    l += p.children('[align=spliter]').outerWidth(true);
+                    var content = p.children('[align=auto]').css('margin-left', l);
+
+                    //临时方案
+                    if (content[0] && content[0].tagName == "TEXTAREA") 
+                        content.width(p.innerWidth() - p.intcss('padding-left') - p.intcss('padding-right') - l - 50);
+                }).trigger('resize.layout', []);
                 var spliter = $(this).children('[align=spliter]').draggable({
                     axis: "x", stop: function () { $(this).trigger('resize.split'); }
                 }).bind('resize.split', function () {
                     var l = $(this).offset().left;
                     var nav = $(this).prev().width(l);
-                    var content = $(this).next().css('margin-left', l + $(this).width());
+                    //var content = $(this).next().css('margin-left', l + $(this).width());
+                    $(this).closest('[layout]').children('[align=left]:last').trigger('resize.layout');
                     $(this).css('left', 0);
-                }).trigger('resize.split', []);
-
-                var content = spliter.next().layout();
-                var parent = $(this);
-                $(this).children('[align]').each(function () {
-                    setting['#' + this.id] = root ? 0 : document.documentElement.clientHeight - parent.height() +$(this).intcss('padding-top')+$(this).intcss('padding-bottom');
                 });
+                var content = spliter.next(); //.layout();
+                var parent = $(this);
+
                 $("<div style='clear:both'>").appendTo(this);
-            } else {
+                if (!test) {
+                    $(this).children('[align]').each(function () {
+                        setting['#' + this.id] = root ? 0 : document.documentElement.clientHeight - parent.height() + $(this).intcss('padding-top') + $(this).intcss('padding-bottom');
+                    });
+
+
+
+
+
+
+                }
+            } else if (layout_type == 'v') {
                 var contents = [];
                 var hOffset = $(this).intcss('padding-top') + $(this).intcss('padding-bottom');
                 $(this).children().each(function () {
@@ -71,6 +93,7 @@ $.fn.layout = function () {
                     setting['#' + contents[i].id] = hOffset + (root ? 0 : document.documentElement.clientHeight - $(this).height());
                 }
             }
+            console.log($(this).attr('path') ? $(this).attr('path') : $(this).attr('id'));
             $.autoHeight(setting, false);
 
             $(this).children('[layout]').each(function () {

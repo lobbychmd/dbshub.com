@@ -1,0 +1,83 @@
+<style>
+    fieldset.uidesigner {width: auto;min-height: 300px; padding: 10px;   }
+    .uiitem {width: auto;border: 1px solid gray; padding: 10px 10px 0 10px;margin: 3px 0;}
+    .uiitem.focus { background: yellow }
+    .uiitem > div { height: 30px; }
+    .uiitem > fieldset{ margin: 10px 0; display: none}
+    .uiitem:hover > fieldset{ display: block;}
+    .uiitem.focus > fieldset{ display: block;}
+    .uiitem.tmpl {border: 1px dotted gray; }
+    .uiitem.tmpl>fieldset {display: none; }
+    .uiitem-label {display: none;font-weight: bold;margin-bottom: 1em}
+    .uiitem-icon {float: left;height: 32px;width: 32px; border: 1px solid gray ;margin: -5px 5px -5px 0;vertical-align: middle;}
+    input.ui { display: block; vertical-align: middle; float: left;}
+    .uiitem-description {display: block; margin-left: 300px; margin: 0 0 0 240px;padding: 2px; width: auto; height: 32px;}
+</style>
+
+<fieldset class="uidesigner">
+    
+</fieldset>
+
+<script>
+    var uis = [
+                {
+                    value: "iui-form",
+                    label: "Form",
+                    desc: "存放录入框的容器，所有录入框都必须放入一个Form 里面.",
+                    icon: "form.png"
+                },
+                {
+                    value: "iui-queryparams",
+                    label: "QueryParams",
+                    desc: "查询条件录入界面.根据查询参数自动生成",
+                    icon: "queryparams.png"
+                },
+                {
+                    value: "iui-toolbar",
+                    label: "Toolbar",
+                    desc: "工具条，下级是各种按钮",
+                    icon: "toolbar.png"
+                }
+            ];
+
+    var tmplitem = function (item) {
+        $(item).click(function () {
+            $(this).closest('.uidesigner').find('.uiitem').removeClass('focus');
+            $(this).addClass('focus');
+            return false;
+        }).closest('.uidesigner').click(function(){
+            $(this).find('.uiitem').removeClass('focus');
+        });
+        $(item).find('.ui').autocomplete({
+            minLength: 0,
+            source: uis,
+            focus: function (event, ui) {
+                $("#ui").val(ui.item.label);
+                return false;
+            },
+            select: function (event, ui) {
+                var p = $(this).closest('.uiitem');
+                p.find('.ui').val('').end().find('.uiitem-description').text('');
+                tmplitem($("#tpuiitem").tmpl({
+                    "ui": ui.item.label,
+                    "id": ui.item.value,
+                    "description": ui.item.desc,
+                    "icon": ui.item.icon
+                }).insertBefore(p).removeClass('tmpl'));
+                return false;
+            }
+        }).data("autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
+                    .data("item.autocomplete", item)
+                    .append("<a>" + item.label + "<br>" + item.desc + "</a>")
+                    .appendTo(ul);
+        };
+    }
+
+    $(function () {
+        tmplitem($("#tpuiitem").tmpl([{ tmpl: true}]).appendTo(".uidesigner"));
+
+    });
+
+
+</script>

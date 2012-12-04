@@ -24,7 +24,7 @@
                             ModulePages: { caption: "页面", children:{
                                 PageID: { caption: '页面ID', lineshow: true, key:true },
                                 PageType: { caption: '页面类型', editor: "select", selection: [{ key: "0", value: "查询" }, { key: "1", value: "录入"}], lineshow: true },
-                                UI: { caption: '界面配置',  editor: 'textarea', designer:["codemirror"] },
+                                UI: { caption: '界面配置',  editor: 'textarea', designer:["codemirror", "ui"] },
                                 Queries: { caption: '所用查询', editor: 'textarea', maxLength: 100  },
                                 PageFlow: { caption: '流程定义', editor: 'textarea', designer:["codemirror"] ,
                                     children: {

@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
 var Enumerable = require('linq');
-var metaTable = require('metaTable').metaTable;
 var db = require('config').db();
 var fitnode = require('fitnode');
 var metaTable = require('metaTable').metaTable; 

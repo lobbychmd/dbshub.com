@@ -72,7 +72,9 @@ $.fitui.jsoneditor = {
     zip: function (a) {
         $(a).live('click', function () {
             var container = $(this).parent().closest('.zip');
-            if (container.hasClass('unzip')) container.removeClass('unzip');
+            if (container.hasClass('unzip')) {
+                container.removeClass('unzip').children('[layout]').layout();
+            }
             else container.addClass('unzip');
         });
     },
@@ -171,7 +173,21 @@ $.fitui.jsoneditor = {
         },
         moduleurl: function (texteditor, designer, show, callback) {
             if (show){
-                return $('#tpModuleUrl').tmpl({name: $(texteditor).attr('name')}).insertBefore(texteditor).addClass('moduleurl');
+                var url = $(texteditor).val();
+                var type = url.match( /^\/module\/stdr\?mid=\w+$/) ? "stdreceipt" : null;
+                if (!type){
+                    var m = url.match( /^\/module\/query\/(\w+)\?mid=\w+$/)
+                    if (m){
+                        type = "stdquery";
+                        var query = m[1].toString();
+                    }else {
+                        type = "custom";
+                    }
+                }
+                return $('#tpModuleUrl').tmpl({name: $(texteditor).attr('name'), type: type, query: query, url: type == "custom"?url:""}).insertBefore(texteditor).addClass('moduleurl')
+                    .find('input:text').change(function(){ 
+                        $(this).prev().click();
+                    }).end();
             }else {
                 var v = designer.find('input[type=radio]:checked').val();
                 var mid = $(texteditor).closest('.jsoneditor').find('[name=ModuleID]').val();
@@ -180,6 +196,14 @@ $.fitui.jsoneditor = {
                 else if (v =="stdquery")
                     $(texteditor).val("/module/query/" + designer.find('.queryName').val() + "?mid=" + mid);
                 else $(texteditor).val(designer.find('.url').val());
+                designer.remove();
+                callback();
+            }
+        },
+        ui: function (texteditor, designer, show, callback) {
+            if (show){
+                return $('#tpUIDesigner').tmpl({name: $(texteditor).attr('name')}).insertBefore(texteditor).addClass('uidesigner');
+            }else {
                 designer.remove();
                 callback();
             }
@@ -227,7 +251,7 @@ $.fn.jsoneditor = function (doc, type, config) {
         $(this).addClass('jsoneditor').attr('title', type); //基础路径
         var data = $.fitui.jsoneditor.object2tmpl(doc, config[type], type);
         console.log({ all: data });
-        $('#metaObject').tmpl(data).appendTo(this);
+        $('#metaObject').tmpl(data).appendTo(this).layout(true);
         $.fitui.jsoneditor.zip($(this).find('a.zip'));
         $.fitui.jsoneditor.tmplRowEditor(this, false);
         $.fitui.jsoneditor.toggleDesigner(this);
@@ -274,7 +298,8 @@ $.fn.createNavigation = function (nav, option) {
                 var container = $(this).closest('[path]').show().removeClass('unzip');
 
                 zw.insertBefore(container);
-                container.insertBefore($(designer).children().eq(0)).attr('zw', id);
+                container.insertBefore($(designer).children().eq(0)).attr('zw', id)
+                    .css('marginleft', container.css('margin-left')).css('margin-left', 0);
                 $(designer).children().not(container).hide();
 
                 return false;

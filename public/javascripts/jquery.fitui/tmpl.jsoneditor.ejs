@@ -1,6 +1,6 @@
 ﻿<script id="metaObject" type="text/x-jquery-tmpl">
-    <div class="prop" caption="${data.caption}" {{if data.lineshow}}lineshow{{/if}} {{if data.hide}}style='display:none'{{/if}} path="${data.path}">
-        <label >${data.caption}
+    <div class="prop" layout="h" caption="${data.caption}" {{if data.lineshow}}lineshow{{/if}} {{if data.hide}}style='display:none'{{/if}} path="${data.path}">
+        <div class="label" align="left" id="label_${data.path}" ><span>${data.caption}</span>
 
         {{if data.designer || (array && data.editor)}}
             {{each data.designer}}
@@ -9,7 +9,7 @@
             <a  designer="editor" href="#" style="display:none"></a>
         <a class="fullscr" href="#" title ="${data.path}"></a>
 
-        {{/if}}</label>
+        {{/if}}</div>
         {{if array}}
             {{tmpl(data) "#metaPropArray"}}
         {{/if}}
@@ -22,12 +22,12 @@
 </script>
 
 <script id="metaPropArray" type="text/x-jquery-tmpl">
-    <fieldset class="zip array" caption="${caption}" {{if reference}}ref_type=${reference.type} ref_join=${reference.join} {{/if}} path="${path}"
+    <fieldset align="auto"  id="array_${path}" class="zip array" caption="${caption}" {{if reference}}ref_type=${reference.type} ref_join=${reference.join} {{/if}} path="${path}"
         {{if typeof(editor) =="string"}} style = "display:none" {{/if}}>
         <legend><span >${caption111}</span> <a href="#" class="zip" style="text-decoration:none"></a> <a class="fullscr" href="#" title ="${path}"></a></legend>
         <span class="count" style="display:none"></span>
         {{each jsonvalue}}
-            <div class="row zip unzip {{if tmplrow }}tmpl{{/if}} inline" caption="${$index}(${summary})" path ="${path}.${$index}" >
+            <div  class="row zip unzip {{if tmplrow }}tmpl{{/if}} inline" caption="${$index}(${summary})" path ="${path}.${$index}" >
                 <a href="#" class="delRow"></a>
                 <span class="rowIndex">${$index}</span>) 
                 <a href="#" class="zip" style="text-decoration:none"></a>
@@ -49,9 +49,10 @@
     {{/if}}
     class="editor"
     {{if tmplrow }}field{{/if}}name='${name}' 
+    id='editor_${path}' 
     {{if identity }} identity {{/if}}
     {{if (readonly||reference) }} readonly {{/if}}
-
+    {{if editor == "textarea" }} align = 'auto' rows=5 {{/if}}
     {{if input}}
         />
     {{else}}
@@ -77,8 +78,39 @@
 <script id="tpModuleUrl" type="text/x-jquery-tmpl">  
     <ul>
 
-        <li><input name ="${name}" type="radio" value="stdreceipt">通用单据模块</li>
-        <li><input name ="${name}" type="radio" value="stdquery">通用查询模块, 查询名<input class="queryName"></li>
-        <li><input name ="${name}" type="radio" value="custom">特殊模块<input class="url"></li>
+        <li><input name ="${name}" type="radio" value="stdreceipt" {{if type=="stdreceipt"}}checked=checked{{/if}}>通用单据模块</li>
+        <li><input name ="${name}" type="radio" value="stdquery" {{if type=="stdquery"}}checked=checked{{/if}}>通用查询模块, 查询名<input class="queryName" value="${value}"></li>
+        <li><input name ="${name}" type="radio" value="custom"  {{if type=="custom"}}checked=checked{{/if}}>特殊模块<input class="url" value="${url}" ></li>
     </ul>
 </script> 
+
+<script id="tpUIDesigner" type="text/x-jquery-tmpl">  
+    <fieldset>
+
+        
+    </fieldset>
+</script> 
+
+<script id="tpuiitem" type="text/x-jquery-tmpl">
+    <div class="uiitem {{if tmpl}}tmpl{{/if}}">
+        <div>
+            <div class="uiitem-label">Select a ui (type "j" for a start):</div>
+            <img class="uiitem-icon" src="/images/${icon}" class="ui-state-default" alt="" />
+            <input class="ui" value="${ui}"/>
+            <input type="hidden" class="uiitem-id" value="${id}"/>
+            <p class="uiitem-description">${description}</p>
+        </div>
+        {{if tmpl}}
+        {{else}}
+            <fieldset>
+                {{if children}}
+                    {{each children}}
+                        {{tmpl(${value}) "#tpuiitem"}}
+                    {{/each}}
+                {{/if}}
+                {{tmpl({tmpl: true}) "#tpuiitem"}}
+            </fieldset>
+            
+        {{/if}}
+    </div>
+</script>

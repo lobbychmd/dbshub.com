@@ -55,6 +55,8 @@ app.get('/flowchart/tree', require('./routes/dbchart').tree);
 app.post('/flowchart/save', require('./routes/dbchart').save);
 app.post('/flowchart/json2str', require('./routes/dbchart').json2str);
 
+app.get('/demo/uidesigner', require('./routes/demo').uidesigner);
+
 app.get('/documentation', require('./routes/documentation').index);
 app.get('/documentation/:name', require('./routes/documentation').doc);
 
