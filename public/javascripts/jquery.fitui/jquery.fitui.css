@@ -105,12 +105,13 @@ fieldset.uidesigner {width: auto;min-height: 300px; padding: 10px;position:  rel
 fieldset.uidesigner .uiitem {width: auto;border: 1px solid gray; padding: 10px 10px 6px 10px;margin: 3px 0;}
 fieldset.uidesigner .uiitem.focus { background: #E6E6E6 }
 fieldset.uidesigner .uiitem > div { height: 30px; }
-fieldset.uidesigner .uiitem > fieldset{ margin: 10px 0; display: none}
-fieldset.uidesigner .uiitem:hover > fieldset{ display: block;}
+fieldset.uidesigner .uiitem > fieldset.empty{ margin: 10px 0; display: none;}
+fieldset.uidesigner .uiitem:hover > fieldset>.uiitem.tmpl{ display: block;}
 fieldset.uidesigner .uiitem.focus > fieldset{ display: block;}
-fieldset.uidesigner .uiitem.tmpl {border: 1px dotted gray; }
+fieldset.uidesigner .uiitem.tmpl {border: 1px dotted gray; display: none;}
 fieldset.uidesigner .uiitem.tmpl>fieldset {display: none; }
 fieldset.uidesigner .uiitem-label {display: none;font-weight: bold;margin-bottom: 1em}
-fieldset.uidesigner .uiitem-icon {float: left;height: 32px;width: 32px; border: 1px solid gray ;margin: -5px 5px -5px 0;vertical-align: middle;}
+fieldset.uidesigner .uiitem-icon {float: left;height: 32px;width: 32px; margin: -5px 5px -5px 0;vertical-align: middle;}
+fieldset.uidesigner .uiitem.tmpl .uiitem-icon {border: 1px solid gray ;}
 fieldset.uidesigner input.ui { display: block; vertical-align: middle; float: left;}
 fieldset.uidesigner .uiitem-description {display: block; margin-left: 300px; margin: 0 0 0 240px;padding: 2px; width: auto; height: 32px;}

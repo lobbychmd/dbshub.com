@@ -86,30 +86,37 @@
 
 <script id="tpUIDesigner" type="text/x-jquery-tmpl">  
     <fieldset>
+        
+    </fieldset>
+</script> 
+
+<script id="tpuiitemArray" type="text/x-jquery-tmpl">  
         {{if children}}
                 {{tmpl(children) "#tpuiitem"}}
         {{/if}}
         {{tmpl({tmpl: true}) "#tpuiitem"}}
         
-    </fieldset>
 </script> 
 
 <script id="tpuiitem" type="text/x-jquery-tmpl">
-    <div class="uiitem {{if tmpl}}tmpl{{/if}}" id="${itemid}">
+    <div class="uiitem {{if tmpl}}tmpl{{/if}}" id="${itemid}"
+        {{each attrs}}
+            ${key}="${value}" 
+        {{/each}}
+    >
         <div>
             <div class="uiitem-label">Select a ui (type "j" for a start):</div>
             <img class="uiitem-icon" src="${icon}" class="ui-state-default" alt="" />
-            <input class="ui" value="${ui}"/>
+            <input class="ui" value="${ui}" {{if tmpl}}{{else}}readonly{{/if}}/>
             <input type="hidden" class="uiitem-id" value="${id}"/>
             <p class="uiitem-description">${description}</p>
         </div>
         {{if tmpl}}
         {{else}}
-            <fieldset>
-                {{if children}}
-                    {{each children}}
-                        {{tmpl(${value}) "#tpuiitem"}}
-                    {{/each}}
+            <fieldset
+                {{if children.length>0 }}
+                    > {{tmpl(children) "#tpuiitem"}}
+                {{else}} class="empty" >
                 {{/if}}
                 {{tmpl({tmpl: true}) "#tpuiitem"}}
             </fieldset>

@@ -214,6 +214,10 @@ $.uidesignerSetup({
     },
     Toolbar: { desc:"工具条，下级是各种按钮",
         property:{name: {} }
-    }
-
+    },
+    lfTabs:{desc: "多页面标签"},
+    page:{desc: "页面"},
+    xyEditorItems:{desc: "字段录入框集合"},
+    xyGrid:{desc: "可录入的明细表格"},
+    xyQuickRec:{desc: "快速录入控制"},
 }});

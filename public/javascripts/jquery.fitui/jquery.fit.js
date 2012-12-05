@@ -17,3 +17,9 @@ $.lastState = {
 
     }
 }
+
+$.dic2array = function (data) {
+    var result = [];
+    for (var i in data) result.push({ key: i, value: data[i] });
+    return result;
+}
