@@ -163,7 +163,7 @@ $.fitui.jsoneditor = {
                 return $('#metaPropArray').tmpl({readonly: false, jsonvalue: data}).insertBefore(texteditor);
             }
             else {
-                $.post('/flowchart/json2str?path=' + path, designer.serializeArray(), function(data){
+                $.post($.fitui.jsoneditor.json2strurl + '?path=' + path, designer.serializeArray(), function(data){
                     //console.log(data);
                     $(texteditor).val(data);
                     designer.remove();
@@ -202,7 +202,23 @@ $.fitui.jsoneditor = {
         },
         ui: function (texteditor, designer, show, callback) {
             if (show){
-                return $('#tpUIDesigner').tmpl({name: $(texteditor).attr('name')}).insertBefore(texteditor).addClass('uidesigner');
+                var evalResult = [{Value: -1, item: {children: []}}];
+                var txt = $(texteditor).val().split('\n');
+                for(var i in txt){
+                    var s = $.trim(txt[i]);
+                    if (s){
+                        var indent = txt[i].indexOf(s);
+                        s = s.substring(0, s.indexOf(' '));
+                        var item = {ui: s, icon: $.fitui.uidesigner["uiiconpath"] + s + ".png", description:s, id:s, children:[]};
+                        
+                        for (var i = evalResult.length - 1; i >= 0; i--)
+                            if (evalResult[i].Value < indent) {
+                                evalResult[i].item.children.push(item);
+                            }
+                        evalResult.push({item: item, Value: indent});
+                    }
+                }
+                return $('#tpUIDesigner').tmpl(evalResult[0].item).insertBefore(texteditor).uidesigner();
             }else {
                 designer.remove();
                 callback();
@@ -244,12 +260,15 @@ $.fitui.jsoneditor = {
     }
 };
 
-$.fn.jsoneditor = function (doc, type, config) {
-    return this.each(function () {
-        $.fitui.jsoneditor.config = config; //先记录下来
+$.jsoneditorSetup = function (option) {
+    $.fitui.jsoneditor.config = option.config; //先记录下来
+    $.fitui.jsoneditor.json2strurl = option.json2strurl; //先记录下来
+}
 
+$.fn.jsoneditor = function (doc, type) {
+    return this.each(function () {
         $(this).addClass('jsoneditor').attr('title', type); //基础路径
-        var data = $.fitui.jsoneditor.object2tmpl(doc, config[type], type);
+        var data = $.fitui.jsoneditor.object2tmpl(doc, $.fitui.jsoneditor.config[type], type);
         console.log({ all: data });
         $('#metaObject').tmpl(data).appendTo(this).layout(true);
         $.fitui.jsoneditor.zip($(this).find('a.zip'));
@@ -258,11 +277,10 @@ $.fn.jsoneditor = function (doc, type, config) {
     });
 }
 
-$.fn.createNavigation = function (nav, option) {
+$.fn.jsoneditorcreateNavigation = function (nav, option) {
     return this.each(function () {
         var designer = this;
         if (option && option.reset) {
-
             //放回原处
             // var currPath = ul.children('li.last').attr('path');
             // if (currPath != $(designer).attr('title')) {
@@ -306,4 +324,87 @@ $.fn.createNavigation = function (nav, option) {
             });
         }
     });
+}
+
+/************ UI 设计器 **************/
+$.fitui.uidesigner = {
+    prop2tmpl: function (element, type, itemid) {
+        var result = { props: [], itemid: itemid };
+        for (var i in $.fitui.uidesigner.config[type])
+            result.props.push({ key: i, value: $(element).attr(i) });
+        return result;
+    },
+    uiitem: function (item) {
+        $(item).children('div').children('.uiitem-description, .ui, .uiitem-id').click(function () {
+            var designer = $(this).closest('.uidesigner');
+            var item = $(this).closest('.uiitem');
+            designer.find('.uiitem').removeClass('focus');
+
+            item.addClass('focus');
+            var pe = $('.uipropedit');
+            var id = item.attr('id');
+            if (pe.attr('itemid') == id) { }
+            else {
+                if (pe.size() > 0) pe.closest('.ui-dialog').remove();
+                $('#tpuipropedit').tmpl($.fitui.uidesigner.prop2tmpl(this, "PageButton", id)).appendTo(designer).dialog().find('input').change(function () {
+                    var uiitem = $('#' + $(this).closest('.uipropedit').attr('itemid'));
+                    uiitem.attr($(this).attr('key'), $(this).val());
+                });
+            }
+            return false;
+        });
+    },
+    tmplitem: function (item) {
+        $(item).find('.ui').autocomplete({
+            minLength: 0,
+            source: $.fitui.uidesigner.uis,
+            focus: function (event, ui) {
+                $("#ui").val(ui.item.label);
+                return false;
+            },
+            select: function (event, ui) {
+                var p = $(this).closest('.uiitem');
+                p.find('.ui').val('').end().find('.uiitem-description').text('');
+                var newitem = $("#tpuiitem").tmpl({
+                    "ui": ui.item.label,
+                    "id": ui.item.value,
+                    "description": ui.item.desc,
+                    "icon": ui.item.icon,
+                    itemid: 'uiitem' + Math.random().toString().substring(2)
+                }).insertBefore(p).removeClass('tmpl');
+                $.fitui.uidesigner.uiitem(newitem);
+                $.fitui.uidesigner.tmplitem(newitem.find('.uiitem.tmpl'));
+                return false;
+            }
+        }).data("autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
+                    .data("item.autocomplete", item)
+                    .append("<a>" + item.label + "<br>" + item.desc + "</a>")
+                    .appendTo(ul);
+        };
+    }
+};
+$.uidesignerSetup = function(option){
+    $.fitui.uidesigner["config"] = option.config;
+    $.fitui.uidesigner["uiiconpath"] = option.uiiconpath;
+    
+    $.fitui.uidesigner.uis = []; //自动完成下拉的配置
+    for(var i in option.config){
+        $.fitui.uidesigner.uis.push({
+            value: "ui" + i,
+            icon: i,
+            label: i,
+            desc: option.config[i].desc
+        });
+    }
+}
+$.fn.uidesigner = function(){
+    return this.each(function(){
+        $(this).addClass('uidesigner')
+        .click(function () {
+            $(this).find('.uiitem').removeClass('focus');
+        });
+        //$.fitui.uidesigner.tmplitem($("#tpuiitem").tmpl([{ tmpl: true}]).appendTo(".uidesigner"));
+    });
+
 }

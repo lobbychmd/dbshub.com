@@ -86,16 +86,19 @@
 
 <script id="tpUIDesigner" type="text/x-jquery-tmpl">  
     <fieldset>
-
+        {{if children}}
+                {{tmpl(children) "#tpuiitem"}}
+        {{/if}}
+        {{tmpl({tmpl: true}) "#tpuiitem"}}
         
     </fieldset>
 </script> 
 
 <script id="tpuiitem" type="text/x-jquery-tmpl">
-    <div class="uiitem {{if tmpl}}tmpl{{/if}}">
+    <div class="uiitem {{if tmpl}}tmpl{{/if}}" id="${itemid}">
         <div>
             <div class="uiitem-label">Select a ui (type "j" for a start):</div>
-            <img class="uiitem-icon" src="/images/${icon}" class="ui-state-default" alt="" />
+            <img class="uiitem-icon" src="${icon}" class="ui-state-default" alt="" />
             <input class="ui" value="${ui}"/>
             <input type="hidden" class="uiitem-id" value="${id}"/>
             <p class="uiitem-description">${description}</p>
@@ -113,4 +116,18 @@
             
         {{/if}}
     </div>
+</script>
+
+
+<script id="tpuipropedit" type="text/x-jquery-tmpl">
+        <div class="uipropedit" title="属性设置" itemid="${itemid}">
+            <div>
+                {{each props}}
+                <div class="proprow">
+                    <span class='key'>${key}</span>
+                    <span class='value'><input key = "${key}" value="${value}" /></span>
+                </div>
+                {{/each}}
+            </div>
+        </div>    
 </script>

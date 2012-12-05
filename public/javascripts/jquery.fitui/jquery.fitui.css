@@ -81,7 +81,7 @@ nav {float: left}
 .moduleurl {display: inline-block}
 .uidesigner {width: auto; min-height: 300px;}
 
-/*  通用meta对象路径  */
+/*  通用meta对象导航  */
 .metaPath {border: 1px solid #DEDEDE; background: #fff} 
 .metaPath ul {display: block; height: 21px; margin: 0; padding: 0;}
 .metaPath ul li {background: url("images/Chevron.gif") no-repeat scroll 100% 0 transparent;
@@ -93,3 +93,24 @@ nav {float: left}
 .metaPath ul li.home a {height: 16px; width: 16px;background: url("images/home.gif") no-repeat scroll 100% 0 transparent;}
 .metaPath ul li.last a{cursor: default; color: #000}
 .metaPath {width: auto; background: #fff; height: 22px; padding: 5px;}
+
+/*  UI 设计器  */
+div.uipropedit {width: 200px; min-height: 300px; background: #fff}
+div.uipropedit div.proprow {background: rgb(240,240, 240);padding: 1px}
+div.uipropedit div.proprow>span {display: block;height: 22px;}
+div.uipropedit span.key{width: 87px; float: left; background: rgb(240,240, 240); text-align: right; padding: 1px 3px; }
+div.uipropedit span.value{width: auto; margin-left: 100px; background: #fff; }
+    
+fieldset.uidesigner {width: auto;min-height: 300px; padding: 10px;position:  relative; }
+fieldset.uidesigner .uiitem {width: auto;border: 1px solid gray; padding: 10px 10px 6px 10px;margin: 3px 0;}
+fieldset.uidesigner .uiitem.focus { background: #E6E6E6 }
+fieldset.uidesigner .uiitem > div { height: 30px; }
+fieldset.uidesigner .uiitem > fieldset{ margin: 10px 0; display: none}
+fieldset.uidesigner .uiitem:hover > fieldset{ display: block;}
+fieldset.uidesigner .uiitem.focus > fieldset{ display: block;}
+fieldset.uidesigner .uiitem.tmpl {border: 1px dotted gray; }
+fieldset.uidesigner .uiitem.tmpl>fieldset {display: none; }
+fieldset.uidesigner .uiitem-label {display: none;font-weight: bold;margin-bottom: 1em}
+fieldset.uidesigner .uiitem-icon {float: left;height: 32px;width: 32px; border: 1px solid gray ;margin: -5px 5px -5px 0;vertical-align: middle;}
+fieldset.uidesigner input.ui { display: block; vertical-align: middle; float: left;}
+fieldset.uidesigner .uiitem-description {display: block; margin-left: 300px; margin: 0 0 0 240px;padding: 2px; width: auto; height: 32px;}

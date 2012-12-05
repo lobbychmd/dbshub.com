@@ -1,7 +1,13 @@
 <style>
-    fieldset.uidesigner {width: auto;min-height: 300px; padding: 10px;   }
-    .uiitem {width: auto;border: 1px solid gray; padding: 10px 10px 0 10px;margin: 3px 0;}
-    .uiitem.focus { background: yellow }
+    div.uipropedit {width: 200px; min-height: 300px; background: #fff}
+    div.uipropedit div.proprow {background: rgb(240,240, 240);padding: 1px}
+    div.uipropedit div.proprow>span {display: block;height: 22px;}
+    div.uipropedit span.key{width: 87px; float: left; background: rgb(240,240, 240); text-align: right; padding: 1px 3px; }
+    div.uipropedit span.value{width: auto; margin-left: 100px; background: #fff; }
+    
+    fieldset.uidesigner {width: auto;min-height: 300px; padding: 10px;position:  relative; }
+    .uiitem {width: auto;border: 1px solid gray; padding: 10px 10px 6px 10px;margin: 3px 0;}
+    .uiitem.focus { background: #E6E6E6 }
     .uiitem > div { height: 30px; }
     .uiitem > fieldset{ margin: 10px 0; display: none}
     .uiitem:hover > fieldset{ display: block;}
@@ -15,8 +21,11 @@
 </style>
 
 <fieldset class="uidesigner">
+
     
 </fieldset>
+
+
 
 <script>
     var uis = [
@@ -40,14 +49,53 @@
                 }
             ];
 
-    var tmplitem = function (item) {
-        $(item).click(function () {
-            $(this).closest('.uidesigner').find('.uiitem').removeClass('focus');
-            $(this).addClass('focus');
+    var ucConfig = {
+        PageButton: {
+            type: { hint: '类型' },
+            name: {},
+            caption: {},
+            hint: {},
+            form: {},
+            biz: {},
+            action: {},
+            moduleID: {},
+            href: {}
+        },
+        QueryParams: {
+            name: {}, mq: {}, fieldMeta: {}, grid: {}, button: {}
+        },
+        xyForm: { name: {}, method: {}, action: {}, table: {} },
+        Toolbar: { name: {} }
+    };
+
+    var prop2tmpl = function (element, type, itemid) {
+        var result = { props: [], itemid: itemid };
+        for (var i in ucConfig[type])
+            result.props.push({ key: i, value: $(element).attr(i) });
+        return result;
+    }
+
+    var uiitem = function (item) {
+        $(item).children('div').children('.uiitem-description, .ui, .uiitem-id').click(function () {
+            var designer = $(this).closest('.uidesigner');
+            var item = $(this).closest('.uiitem');
+            designer.find('.uiitem').removeClass('focus');
+
+            item.addClass('focus');
+            var pe = $('.uipropedit');
+            var id = item.attr('id');
+            if (pe.attr('itemid') == id) { }
+            else {
+                if (pe.size() > 0) pe.closest('.ui-dialog').remove();
+                $('#tpuipropedit').tmpl(prop2tmpl(this, "PageButton", id)).appendTo(designer).dialog().find('input').change(function () {
+                    var uiitem = $('#' + $(this).closest('.uipropedit').attr('itemid'));
+                    uiitem.attr($(this).attr('key'), $(this).val());
+                });
+            }
             return false;
-        }).closest('.uidesigner').click(function(){
-            $(this).find('.uiitem').removeClass('focus');
         });
+    }
+    var tmplitem = function (item) {
         $(item).find('.ui').autocomplete({
             minLength: 0,
             source: uis,
@@ -58,12 +106,15 @@
             select: function (event, ui) {
                 var p = $(this).closest('.uiitem');
                 p.find('.ui').val('').end().find('.uiitem-description').text('');
-                tmplitem($("#tpuiitem").tmpl({
+                var newitem = $("#tpuiitem").tmpl({
                     "ui": ui.item.label,
                     "id": ui.item.value,
                     "description": ui.item.desc,
-                    "icon": ui.item.icon
-                }).insertBefore(p).removeClass('tmpl'));
+                    "icon": ui.item.icon,
+                    itemid: 'uiitem' + Math.random().toString().substring(2)
+                }).insertBefore(p).removeClass('tmpl');
+                uiitem(newitem);
+                tmplitem(newitem.find('.uiitem.tmpl'));
                 return false;
             }
         }).data("autocomplete")._renderItem = function (ul, item) {
@@ -75,6 +126,9 @@
     }
 
     $(function () {
+        $('.uidesigner').click(function () {
+            $(this).find('.uiitem').removeClass('focus');
+        });
         tmplitem($("#tpuiitem").tmpl([{ tmpl: true}]).appendTo(".uidesigner"));
 
     });
