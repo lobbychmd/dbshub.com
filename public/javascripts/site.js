@@ -189,35 +189,161 @@ $.jsoneditorSetup({config: {
 $.uidesignerSetup({
     uiiconpath: "/images/uidesigner/",
     config: {
-    PageButton: {
-        desc:"工具条的各种按钮",
-        property:{
-            type: { hint: '类型' },
-            name: {},
-            caption: {},
-            hint: {},
-            form: {},
-            biz: {},
-            action: {},
-            moduleID: {},
-            href: {}
-        }
-    },
-    QueryParams: {
-        desc:"查询条件录入界面.根据查询参数自动生成",
-        property:{
-            name: {}, mq: {}, fieldMeta: {}, grid: {}, button: {}
-        }
-    },
-    xyForm: { desc:"存放录入框的容器，所有录入框都必须放入一个Form 里面",
-        property:{name: {}, method: {}, action: {}, table: {} }
-    },
-    Toolbar: { desc:"工具条，下级是各种按钮",
-        property:{name: {} }
-    },
-    lfTabs:{desc: "多页面标签"},
-    page:{desc: "页面"},
-    xyEditorItems:{desc: "字段录入框集合"},
-    xyGrid:{desc: "可录入的明细表格"},
-    xyQuickRec:{desc: "快速录入控制"},
-}});
+        PageButton: {
+            desc:"工具条的各种按钮",
+            property: {
+                type: { desc: '类型，有save(保存)、new（新增）、report（报表）、edit（编辑）' },
+                name: { desc: '名字，同一个页面不能重复' },
+                caption: {desc: '按钮文字' },
+                hint: {desc: '提示' },
+                form: {desc: '相关联的窗体名字' },
+                biz: {desc: '提交后执行的业务逻辑' },
+                action: {desc: '相关窗体提交的地址 url，如果已经设定了biz 属性，可不录入' },
+                moduleID: {},
+                href: {desc: '提交后跳转的地址。#表示停留在原页面，空表示刷新当前页面' }
+            }
+        },
+        QueryParams: {
+            desc:"查询条件录入界面.根据查询参数自动生成",
+            property:{
+                name: {desc: '名字，同一个页面不能重复' }, 
+                mq: {desc: '查询名' }, 
+                fieldMeta: {desc: '情景。一般是查询名_p' }, 
+                grid: {desc: '存放查询结果表格控件的名字' }, 
+                button: {desc: '执行查询结果的按钮名字' }
+            }
+        },
+        xyForm: { 
+			desc:"存放录入框的容器，所有录入框都必须放入一个Form 里面",
+            property:{
+                name: {desc: '名字，同一个页面不能重复' }, 
+                method: {desc: '窗体提交的方法，一般是 post'}, 
+                action: {desc: '窗体提交地址url，如果相关按钮以及设置了，可不录入' }, 
+                table: {desc: '数据表名，在详细页面总表单使用时需设置，跟主表查询名一致，会将表单内设置的表中没有的字段生成隐藏的input，在其他位置使用不需要设置'} 
+			}
+        },
+        Toolbar: { 
+			desc:"工具条，下级是各种按钮",
+            property:{
+				name: {desc: '名字，同一个页面不能重复' } 
+			}
+        },
+        lfTabs:{
+			desc: "多页面标签，下级控件page",
+			property:{
+				name: {desc: '名字，同一个页面不能重复' },
+				Width: {desc: '选项页面宽度，设置值为：auto 或数字' },
+				Height: {desc: '选项页面高度，设置值为：auto 或数字' },
+				pageCaption: {desc: '页面名称数组，方式：[页面1,页面2...]，按顺序对应下级page控件' }
+			}
+		},
+        page:{
+			desc: "页面，lfTabs的下级控件，对应lfTabs的pageCaption数组的个数"
+		},
+        xyEditorItems:{
+			desc: "字段录入框集合，一般用于主表字段录入，还可作为快速录入xyQuickRec控件的下级控件，供快速录入调用",
+			property:{
+				name: {desc: '名字，同一个页面不能重复' },
+				table: {desc: '数据表名，字段列表对应的表，主表跟查询名一致，从表为对应查询+.序号，序号从0开始，0表示查询中的第一个脚本' },
+				items: {desc: '显示的字段列表，不设置默认显示table的所有字段' },
+				Width: {desc: '字段录入框宽度，方式：{field1:25,field2:30,...}，未设置的字段未默认值' }
+			}
+		},
+        xyGrid:{
+			desc: "xyGridTable的上级控件，作为它的外边框，优化显示效果"
+		},
+		xyGridTable:{
+			desc: "可录入的明细表格，在上级增加xyGrid控件增加边框控制，一般为从表使用，可配合xyQuickRec快速录入控件",
+			property:{
+				name: {desc: '名字，同一个页面不能重复' },
+				table: {desc: '数据表名，对应查询+.序号，序号从0开始，0表示查询中的第一个脚本' },
+				UpdateTag: {desc: '行数据的更新标志，与对应biz业务过程的更新标志一致' },
+				FastInputID: {desc: '绑定的快速录入控件的name，目前只能绑定控件xyQuickRec' },
+				items: {desc: '明细表格显示的字段列表，不设置默认显示table的所有字段' }
+			}
+		},
+        xyQuickRec:{
+			desc: "快速录入控件，配合控件xyGridTable使用，与其同级使用，需配置下级控件xyEditorItems",
+			property:{
+				name: {desc: '名字，同一个页面不能重复' },
+				table: {desc: '数据表名，对应查询+.序号，序号从0开始，0表示查询中的第一个脚本' },
+				KeyField: {desc: '关键字段，快速录入控件的首字段，明细表格的行定位字段' },
+				GridID: {desc: '绑定的明细表格控件的name，目前只能绑定控件xyGridTable' }
+			}
+		},
+		xyFieldset:{
+			desc: "fieldset标签，用于页面内容区域划分",
+			property:{
+				name: {desc: '名字，同一个页面不能重复' },
+				title: {desc: 'fieldset的legend中的文字' }
+			}
+		},
+		xyDcGrid:{
+			desc: "关联字段表格录入框（每个字段都有smartlookup，都是ID字段、都有对应的描述字段，例如ID字段店号对应描述字段店名），数据量大不建议使用，不方便大数据量录入",
+			property:{
+				name: {desc: '名字，同一个页面不能重复' },
+				table: {desc: '数据表名，对应查询+.序号，序号从0开始，0表示查询中的第一个脚本' },
+				items: {desc: '行字段列表定义，方式：{ID字段:描述字段，ID字段：描述字段...}' },
+				UpdateTag: {desc: '行数据的更新标志，与对应biz业务过程的更新标志一致' }
+			}
+		},
+		lfDcGrid:{
+			desc: "xyDcGrid控件优化版，关联字段表格录入框（每个字段都有smartlookup，都是ID字段、都有对应的描述字段，例如ID字段店号对应描述字段店名），数据量大不建议使用，不方便大数据量录入",
+			property:{
+				name: {desc: '名字，同一个页面不能重复' },
+				table: {desc: '数据表名，对应查询+.序号，序号从0开始，0表示查询中的第一个脚本' },
+				items: {desc: '行字段列表定义，方式：{ID字段:描述字段，ID字段：描述字段...}' },
+				UpdateTag: {desc: '行数据的更新标志，与对应biz业务过程的更新标志一致' }
+			}
+		},
+		lfCheckTable:{
+			desc: "同级结构数据选择控件，将table数据表中的数据根据KeyFieldName.KeyFieldDesc的方式列出来勾选",
+			property:{
+				name: {desc: '名字，同一个页面不能重复' },
+				Caption:{desc: '描述文字' },
+				table: {desc: '数据表名，对应查询加".序号"，序号从0开始，0表示查询中的第一个脚本' },
+				KeyFieldName: {desc: '关键字段名称，如店号ID' },
+				KeyFieldDesc: {desc: '关键字段对应的描述字段名称，如店号对应的店名Name' },
+				ck:{desc:'行是否选中的标志字段，值1为选中、null为未选'},
+				UpdateTag: {desc: '行数据的更新标志，与对应biz业务过程的更新标志一致' }
+			}
+		},
+		xyLayout:{
+			desc: "主题控件（BugFree风格），下级包含xyLayoutHead、xyLayoutMenu、xyLayoutPage"
+		},
+		xyLayoutHead:{
+			desc: "主题控件xyLayout的构造控件，处于xyLayout控件的下级，用于构造该主题最上方抬头、用户信息区域",
+			property:{
+				HomeUrl: {desc: 'LOGO文字超链接URL，一般设置为首页的URL' },
+				logostr:{desc: '描述文字' }
+			}
+		},
+		xyLayoutMenu:{
+			desc: "主题控件xyLayout的构造控件，处于xyLayout控件的下级，用于构造该主题左边的菜单区域，可构造调用CS模块的菜单",
+			property:{
+				cs: {desc: '是否构造调用CS程序的菜单，值为true则构建的菜单单击时调用CS模块，为false则构建的菜单为BS跳转超链接' }
+			}
+		},
+		xyLayoutPage:{
+			desc: "主题控件xyLayout的构造控件，处于xyLayout控件的下级，用于构造该主题中心模块页面区域"
+		},
+		lfLayout:{
+			desc: "主题控件，仿微软风格，比较完整的布局控件，下级包含lfLayout_head、lfLayout_menu、lfLayout_page、lfLayout_foot"
+		},
+		lfLayout_head:{
+			desc: "主题控件lfLayout的构造控件，处于lfLayout控件的下级，用于构造该主题上方LOGO、用户信息区域，LOGO图片路径写死为/Content/linkfern.png，下级可配置工具条控件lfUserBar"
+		},
+		lfUserBar:{
+			desc: "工具条控件，目前用于lfLayout_head的下级，菜单暂写死，仅修改密码可用"
+		},
+		lfLayout_menu:{
+			desc: "主题控件lfLayout的构造控件，处于lfLayout控件的下级，用于构造该主题左边的菜单区域外框（无菜单），下级需使用菜单构造控件构造菜单"
+		},
+		lfLayout_page:{
+			desc: "主题控件lfLayout的构造控件，处于lfLayout控件的下级，用于构造该主题中心模块页面区域"
+		},
+		lfLayout_foot:{
+			desc: "主题控件xyLayout的构造控件，处于xyLayout控件的下级，用于构造该主题最下方页脚区域，已写死为：上海灵蕨信息科技有限公司"
+		}
+    }
+});

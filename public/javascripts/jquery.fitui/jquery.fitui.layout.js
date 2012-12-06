@@ -65,16 +65,10 @@ $.fn.layout = function (test) {
                 var parent = $(this);
 
                 $("<div style='clear:both'>").appendTo(this);
-                if (!test) {
+                if ($(this).attr('align') == "auto" && !test) {
                     $(this).children('[align]').each(function () {
                         setting['#' + this.id] = root ? 0 : document.documentElement.clientHeight - parent.height() + $(this).intcss('padding-top') + $(this).intcss('padding-bottom');
                     });
-
-
-
-
-
-
                 }
             } else if (layout_type == 'v') {
                 var contents = [];

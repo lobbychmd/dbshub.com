@@ -135,7 +135,7 @@ $.fitui.jsoneditor = {
                 
                 var codem = CodeMirror.fromTextArea(texteditor, {
                     lineNumbers: true,
-                    matchBrackets: true,
+                    matchBrackets: true
                     //mode: $(texteditor).attr('scriptType')//"text/x-plsql"
                 }); 
                 if (!$.fitui.jsoneditor["codeMirrors"]) $.fitui.jsoneditor["codeMirrors"] = {};
@@ -212,7 +212,7 @@ $.fitui.jsoneditor = {
                         //try {
                             var attrs = $.dic2array(eval("(" + s.substring(s.indexOf(' ')+1) +")"));
                         //} catch(e){var attrs = [ ];}
-                        var item = {ui: ui, icon: $.fitui.uidesigner["uiiconpath"] + ui + ".png", id:ui, attrs:attrs, children:[]};
+                        var item = {ui: ui, id:ui, attrs:attrs, children:[]};
                         
                         for (var i = evalResult.length - 1; i >= 0; i--)
                             if (evalResult[i].Value < indent) {
@@ -225,6 +225,8 @@ $.fitui.jsoneditor = {
                 if (console) console.log(evalResult[0].item)
                 return $('#tpUIDesigner').tmpl().insertBefore(texteditor).uidesigner(evalResult[0].item);
             }else {
+                
+                $(texteditor).val(designer.uidesigner2txt());
                 designer.remove();
                 callback();
             }
@@ -299,7 +301,7 @@ $.fn.jsoneditorcreateNavigation = function (nav, option) {
         else {
             var basepath = $(designer).attr('title');
             $(nav).navigation({ homePath: option.homePath, change: function (path) {
-                $(designer).createNavigation(nav, { reset: true });
+                $(designer).jsoneditorcreateNavigation(nav, { reset: true });
                 if (path == $(designer).attr('title')) //最顶层
                     $(designer).children().show();
                 else {
@@ -333,19 +335,27 @@ $.fn.jsoneditorcreateNavigation = function (nav, option) {
 
 /************ UI 设计器 **************/
 $.fitui.uidesigner = {
+    /* 处理一下以便调用模板jqtpl */
     data2tmpl: function (data) {
         var c = $.fitui.uidesigner.config[data.ui];
         if (c && c.desc) data.description =  c.desc;
+        data.itemid= 'uiitem' + Math.random().toString().substring(2);
+        data.icon = $.fitui.uidesigner["uiiconpath"] + data.ui + ".png"; 
         for(var i in data.children){
             $.fitui.uidesigner.data2tmpl(data.children[i]);
         }
+        return data;
     },
+
+    /* 将一个页面DOM 元素（.uiitem）  的各个属性取出来，生成json，准备渲染属性编辑器的 jqtpl */
     prop2tmpl: function (element, type, itemid) {
-        var result = { props: [], itemid: itemid };
+        var result = { props: [], itemid: itemid, uitype: $(element).children('div').children('input.ui').val() };
         for (var i in $.fitui.uidesigner.config[type].property)
             result.props.push({ key: i, value: $(element).attr(i) });
         return result;
     },
+
+    /* 点击的时候将自身属性生成属性编辑器，属性编辑器改变的时候反过来设置 attr */
     uiitem: function (item) {
         $(item).children('div').children('.uiitem-description, .ui, .uiitem-id').click(function () {
             var designer = $(this).closest('.uidesigner');
@@ -358,14 +368,19 @@ $.fitui.uidesigner = {
             if (pe.attr('itemid') == id) { }
             else {
                 if (pe.size() > 0) pe.closest('.ui-dialog').remove();
-                $('#tpuipropedit').tmpl($.fitui.uidesigner.prop2tmpl(this, item.children('div').children('input.ui').val(), id)).appendTo(designer).dialog().find('input').change(function () {
+                $('#tpuipropedit').tmpl($.fitui.uidesigner.prop2tmpl(item, item.children('div').children('input.ui').val(), id)).appendTo(designer).dialog().find('input').change(function () {
                     var uiitem = $('#' + $(this).closest('.uipropedit').attr('itemid'));
                     uiitem.attr($(this).attr('key'), $(this).val());
+                }).focus(function(){
+                    var key = $.trim($(this).closest('.proprow').find('.key').text());
+                    var pe = $(this).closest('.uipropedit');
+                    pe.find('.propdesc').text($.fitui.uidesigner.config[pe.attr('uitype')].property[key]["desc"]);
                 });
             }
             return false;
         });
     },
+
     tmplitem: function (item) {
         $(item).find('.ui').autocomplete({
             minLength: 0,
@@ -377,13 +392,11 @@ $.fitui.uidesigner = {
             select: function (event, ui) {
                 var p = $(this).closest('.uiitem');
                 p.find('.ui').val('').end().find('.uiitem-description').text('');
-                var newitem = $("#tpuiitem").tmpl({
+                var newitem = $("#tpuiitem").tmpl(
+                    $.fitui.uidesigner.data2tmpl({
                     "ui": ui.item.label,
-                    "id": ui.item.value,
-                    "description": ui.item.desc,
-                    "icon": ui.item.icon,
-                    itemid: 'uiitem' + Math.random().toString().substring(2)
-                }).insertBefore(p).removeClass('tmpl');
+                    "id": ui.item.value, children:[]
+                })).insertBefore(p).removeClass('tmpl').parent().removeClass('empty');
                 $.fitui.uidesigner.uiitem(newitem);
                 $.fitui.uidesigner.tmplitem(newitem.find('.uiitem.tmpl'));
                 return false;
@@ -396,11 +409,15 @@ $.fitui.uidesigner = {
         };
     }
 };
+
+/******* 初始化，config 是json格式的配置，包含了各种UI控件的字段信息， 描述信息*******/
+/******* uiiconpath 是控件图标位置                                        *******/
 $.uidesignerSetup = function(option){
     $.fitui.uidesigner["config"] = option.config;
     $.fitui.uidesigner["uiiconpath"] = option.uiiconpath;
     
-    $.fitui.uidesigner.uis = []; //自动完成下拉的配置
+    //uis 是按照 autocomplete 的格式
+    $.fitui.uidesigner.uis = []; 
     for(var i in option.config){
         $.fitui.uidesigner.uis.push({
             value: "ui" + i,
@@ -410,18 +427,44 @@ $.uidesignerSetup = function(option){
         });
     }
 }
+
+/******* 将页面UI设计器变成UI配置（文本格式，缩进代表上下级关系） *******/
+$.fn.uidesigner2txt = function(){
+    var txt = "";
+    var f = function(parent, indent){
+        parent.children('.uiitem:not(.tmpl)').each(function(){
+            for(var i = 0; i< indent + 4;i++) txt += ' ';
+            var ui = $(this).children('div').children('input.ui').val(); //类型
+            txt += ui + ' {';
+            var config = $.fitui.uidesigner["config"][ui];
+            if (config){
+                config = config.property;
+                for (var i in config)
+                    txt += i + ": '" + ($(this).attr(i)?$(this).attr(i):"") + "',";
+            }
+            txt += "}\n";
+            f($(this).children('fieldset'), indent + 4);
+        });
+    }
+    f(this.eq(0), 0);
+    return txt;
+}
+
+/******* 页面的UI 设计器 *******/
 $.fn.uidesigner = function(data){
     return this.each(function(){
         $.fitui.uidesigner.data2tmpl(data);
 
         $(this).addClass('uidesigner').append($('#tpuiitemArray').tmpl(data))
         .click(function () {
-            $(this).find('.uiitem').removeClass('focus');
-        }).find('.uiitem').each(function(){
+            //$(this).find('.uiitem').removeClass('focus');
+        }).find('.uiitem:not(.tmpl)').each(function(){
             $.fitui.uidesigner.uiitem(this);
 
+        }).end().find('.uiitem.tmpl').each(function(){
+            $.fitui.uidesigner.tmplitem(this);
         });
-        //$.fitui.uidesigner.tmplitem($("#tpuiitem").tmpl([{ tmpl: true}]).appendTo(".uidesigner"));
+
     });
 
 }
