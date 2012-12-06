@@ -1,20 +1,35 @@
 <style>
     .metaObject{margin: 5px; font-size: 0.88em;}
     .metaPath { float: left;width: 400px}
-    .tbdesigner {border: 1px solid #DEDEDE; background: #fff    }
+    .tbdesigner {border: 1px solid #DEDEDE; background: #fff ;padding: 4px;   }
+    .tbdesigner>a{display: inline-block; height: 16px; width: 16px;}
+    .tbdesigner a.preview{background: url('/images/preview.png'); vertical-align: middle;}
 </style>
 
 <div id="path_p${_id}" align="top" layout="h" style='height: 32px;margin: 5px;font-size: 0.88em'>
     <div id="path${_id}" style="width: 400px" align="left"></div>
-    <div align="auto" id="toolbar${_id}" class='tbdesigner' style='height: 32px;'></div>
+    <div align="auto" id="toolbar${_id}" class='tbdesigner' style='height: 24px;'>
+        <a href="#" class="preview"></a>
+    </div>
 </div>
 
-<div id="design${_id}" align="auto" style="overflow: auto" ></div>
+<div id="design${_id}" align="auto" style="overflow: auto; border: 1px solid #d3d3d3; margin: 5px;" ></div>
+<div id="preview${_id}" align="auto" style="overflow: auto; border: 1px solid #d3d3d3; margin: 5px;display: none" ></div>
 
+<script src="/javascripts/uicontrols/uicontrols.js" type="text/javascript"></script>
+<script src="/javascripts/LAB.min.js" type="text/javascript"></script>
 <script>
     $('#design${_id}').jsoneditor({{html str}}, "${type}")
     .jsoneditorcreateNavigation('#path${_id}', {homePath: "${type}"});
     $(function(){
-        $('#design${_id}').parent().layout();        
+        $('#design${_id}').parent().layout();    
+        $('a.preview').click(function () {
+            $( "#design${_id}" ).hide( 'slide', {}, 1000, function(){
+                    $( "#preview${_id}" ).show( 'slide', {}, function(){
+                        $( "#preview${_id}" ).preview($("[name='ModulePages[1][UI]']").val());
+                    } );
+                } );
+            return false;
+        });    
     });
 </script>

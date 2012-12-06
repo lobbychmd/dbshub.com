@@ -202,28 +202,8 @@ $.fitui.jsoneditor = {
         },
         ui: function (texteditor, designer, show, callback) {
             if (show){
-                var evalResult = [{Value: -1, item: {children: []}}];
-                var txt = $(texteditor).val().split('\n');
-                for(var i in txt){
-                    var s = $.trim(txt[i]);
-                    if (s){
-                        var indent = txt[i].indexOf(s);
-                        var ui = s.substring(0, s.indexOf(' '));
-                        //try {
-                            var attrs = $.dic2array(eval("(" + s.substring(s.indexOf(' ')+1) +")"));
-                        //} catch(e){var attrs = [ ];}
-                        var item = {ui: ui, id:ui, attrs:attrs, children:[]};
-                        
-                        for (var i = evalResult.length - 1; i >= 0; i--)
-                            if (evalResult[i].Value < indent) {
-                                evalResult[i].item.children.push(item);
-                                break;
-                            }
-                        evalResult.push({item: item, Value: indent});
-                    }
-                }
-                if (console) console.log(evalResult[0].item)
-                return $('#tpUIDesigner').tmpl().insertBefore(texteditor).uidesigner(evalResult[0].item);
+                
+                return $('#tpUIDesigner').tmpl().insertBefore(texteditor).uidesigner($(texteditor).val());
             }else {
                 
                 $(texteditor).val(designer.uidesigner2txt());
@@ -335,6 +315,30 @@ $.fn.jsoneditorcreateNavigation = function (nav, option) {
 
 /************ UI 设计器 **************/
 $.fitui.uidesigner = {
+    DataFromTxt: function (txt) {
+        var evalResult = [{ Value: -1, item: { children: []}}];
+        txt = txt.split('\n');
+        for (var i in txt) {
+            var s = $.trim(txt[i]);
+            if (s) {
+                var indent = txt[i].indexOf(s);
+                var ui = s.substring(0, s.indexOf(' '));
+                //try {
+                var attrs = $.dic2array(eval("(" + s.substring(s.indexOf(' ') + 1) + ")"));
+                //} catch(e){var attrs = [ ];}
+                var item = { ui: ui, id: ui, attrs: attrs, children: [] };
+
+                for (var i = evalResult.length - 1; i >= 0; i--)
+                    if (evalResult[i].Value < indent) {
+                        evalResult[i].item.children.push(item);
+                        break;
+                    }
+                evalResult.push({ item: item, Value: indent });
+            }
+        }
+        if (console) console.log(evalResult[0].item)
+        return evalResult[0].item;
+    },
     /* 处理一下以便调用模板jqtpl */
     data2tmpl: function (data) {
         var c = $.fitui.uidesigner.config[data.ui];
@@ -429,6 +433,8 @@ $.uidesignerSetup = function(option){
 }
 
 /******* 将页面UI设计器变成UI配置（文本格式，缩进代表上下级关系） *******/
+/*        <div name="aa" biz="xxxModify"><input class=ui value="PageButton"></div> */
+/* 转换为  PageButton {name: "aa", biz: "xxxModify",}  */
 $.fn.uidesigner2txt = function(){
     var txt = "";
     var f = function(parent, indent){
@@ -451,17 +457,21 @@ $.fn.uidesigner2txt = function(){
 }
 
 /******* 页面的UI 设计器 *******/
-$.fn.uidesigner = function(data){
-    return this.each(function(){
+$.fn.uidesigner = function (txt, option) {
+    if (option&& option.getdata) { 
+        return $.fitui.uidesigner.DataFromTxt(txt);
+    }
+    else return this.each(function () {
+        var data = $.fitui.uidesigner.DataFromTxt(txt);
         $.fitui.uidesigner.data2tmpl(data);
 
         $(this).addClass('uidesigner').append($('#tpuiitemArray').tmpl(data))
         .click(function () {
             //$(this).find('.uiitem').removeClass('focus');
-        }).find('.uiitem:not(.tmpl)').each(function(){
+        }).find('.uiitem:not(.tmpl)').each(function () {
             $.fitui.uidesigner.uiitem(this);
 
-        }).end().find('.uiitem.tmpl').each(function(){
+        }).end().find('.uiitem.tmpl').each(function () {
             $.fitui.uidesigner.tmplitem(this);
         });
 
