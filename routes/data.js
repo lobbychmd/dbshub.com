@@ -27,3 +27,4 @@ exports.doc = function (req, res) {
         res.render("meta/doc.html", {layout:null, toolbar:[], _id: doc._id, type:doc._t, str:JSON.stringify( doc)});
     });
 };
+

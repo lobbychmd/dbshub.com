@@ -87,7 +87,6 @@ $.fn.layout = function (test) {
                     setting['#' + contents[i].id] = hOffset + (root ? 0 : document.documentElement.clientHeight - $(this).height());
                 }
             }
-            console.log($(this).attr('path') ? $(this).attr('path') : $(this).attr('id'));
             $.autoHeight(setting, false);
 
             $(this).children('[layout]').each(function () {

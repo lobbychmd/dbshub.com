@@ -37,9 +37,9 @@ app.configure('production', function(){
 
 // Routes
 var login = require('fitnode').login_filter;
-
-app.get('/account/login', require('./routes/account').login)
-app.post('/account/signin', require('./routes/account').signin)
+app.get('/jqtpl', require('./routes/utils').jqtpl);
+app.get('/account/login', require('./routes/account').login);
+app.post('/account/signin', require('./routes/account').signin);
 //app.get('/account/login', routes.account.login)
 app.get('/', login, routes.index);
 app.get('/project/:id', login, routes.index);
@@ -47,6 +47,8 @@ app.get('/tables', routes.tables);
 app.get('/data/tables', require('./routes/data').tables);
 app.get('/data/table', require('./routes/data').table);
 app.get('/data/doc', require('./routes/data').doc);
+app.get('/emulator/page', require('./routes/emulator').page);
+ 
 app.get('/flowchart/index', require('./routes/dbchart').index);
 app.get('/flowchart/view/demo_view', require('./routes/dbchart').demo_view);
 app.get('/flowchart/view/:id', require('./routes/dbchart').view);

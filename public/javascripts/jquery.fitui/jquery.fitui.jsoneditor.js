@@ -324,9 +324,10 @@ $.fitui.uidesigner = {
                 var indent = txt[i].indexOf(s);
                 var ui = s.substring(0, s.indexOf(' '));
                 //try {
-                var attrs = $.dic2array(eval("(" + s.substring(s.indexOf(' ') + 1) + ")"));
+                var params = eval("(" + s.substring(s.indexOf(' ') + 1) + ")");  //这是字典(给模拟器用)
+                var attrs = $.dic2array(params); //这是数组，给设计器用
                 //} catch(e){var attrs = [ ];}
-                var item = { ui: ui, id: ui, attrs: attrs, children: [] };
+                var item = { ui: ui, id: ui, params: params, attrs: attrs, children: [] };
 
                 for (var i = evalResult.length - 1; i >= 0; i--)
                     if (evalResult[i].Value < indent) {
