@@ -1,14 +1,36 @@
 ﻿<header></header>
 <h1>{{if project}} ${project.ProjectName} {{/if}}</h1>
-<div section="nav">
-    <ul>
-        {{each projects}}
-            <li><a href="/project/${_id}" title="布局layout">${ProjectName}</a></li>
-        {{/each}}
+<div section="nav" style="padding: 5px;">
+    <ul id="tree">
+        <li class="open"><span class="folder">捷径</span>
+            <ul>
+                <li><a href="#/data/doc?table=MetaTable&_id=4fb9e62362de5d0f208411ed&" title="tAcceptCoupon">tAcceptCoupon</a></li>
+                <li><a href="#/data/doc?table=MetaModule&_id=507297f35722eb4838cde197&" title="收货对帐">收货对帐</a></li>
+                <li><a href="#/data/doc?table=MetaModule&_id=507297f45722eb4838cde1bc&" title="发票录入及结算单审核">发票录入及结算单审核</a></li>
+                
+                <li><a href="#/demo/uidesigner" title="UI设计">UI设计</a></li>
+            </ul>
+        </li>
+        <li class="open"><span class="folder">视图</span>
+            <ul>
+                {{each dbviews}}
+                <li><a href="#/flowchart/view/${_id}" title="布局layout">${Caption}</a></li>
+                {{/each}}
+                <li><a href="#/flowchart/view/demo_view" title="demo">demo</a></li>
+                <li><a href="#/flowchart/view/000000000000000000000000" title="新视图">新视图</a></li>
+            </ul>
+        </li>
+        <li data="type=tables" _id=""><span class="folder">表</span>
+            <ul>
+                <li fake=1></li>
+            </ul>
+        </li>
     </ul>
+    {{partial "../public/javascripts/jquery.fitui/tmpl.jsoneditor.ejs"}}
 </div>
+
 <script>
     $(document).ready(function () {
-        
+        $("#tree").ajaxtree({url: '/flowchart/tree', href: '#/data/doc'});
     });
 </script>

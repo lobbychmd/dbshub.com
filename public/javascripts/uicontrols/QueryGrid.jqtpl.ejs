@@ -1,0 +1,53 @@
+<style >
+     table.QueryGrid {
+    border-collapse: collapse;
+    margin: 0 0;
+}
+.QueryGrid .ui-widget-header {
+    background: url("/javascripts/uicontrols/images/qgbg.png") repeat scroll 0 0 transparent;
+    border-bottom: 1px solid #7791AC;
+    height: 35px;
+}
+table.QueryGrid thead tr {
+    height: 30px;
+}
+table.QueryGrid td, table.QueryGrid th {
+    border: 1px solid #EEEEEE;
+    padding: 0.6em 10px;
+    text-align: left;
+}
+</style>
+
+
+<script type='text/x-jquery-tmpl' id="uitpQueryGrid">
+<table id="grid1" class="QueryGrid ui-widget ui-widget-content" style="width: 1214px;">
+ <thead class="ui-widget-header">
+  <tr>
+   {{each pageInfo.DataSet[table].Columns}}
+    <th>${fieldName}</th>
+    {{/each}}
+  
+</tr>
+
+ 
+</thead>
+
+ <tbody>
+    {{tmpl(pageInfo.DataSet[table].Rows) "#uitpQueryGridRow"}}
+     
+ 
+</tbody>
+
+
+</table>
+</script>
+ 
+
+<script type='text/x-jquery-tmpl' id="uitpQueryGridRow">
+ 
+    <tr>
+        
+    </tr>
+    
+</script>
+ 

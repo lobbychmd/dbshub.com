@@ -28,8 +28,10 @@ $.resizeW = function () {
     var h = document.documentElement.clientHeight;
     //if (window.console) console.log($.autoHeightSetting);
     for (var i in $.autoHeightSetting) {
-        //$(i).css('height', (h - $.autoHeightSetting[i] - margintop - marginbottom) + "px");
-        $(i).css('height', (h - $.autoHeightSetting[i] - $(i).intcss('margin-top') - $(i).intcss('margin-bottom')) + "px");
+        $(i).css('height', (h - $.autoHeightSetting[i] 
+                - $(i).intcss('margin-top') - $(i).intcss('margin-bottom')
+                - $(i).intcss('padding-top') - $(i).intcss('padding-bottom')
+            ) + "px");
     }
 }
 
@@ -49,7 +51,7 @@ $.fn.layout = function (test) {
                     var content = p.children('[align=auto]').css('margin-left', l);
 
                     //临时方案
-                    if (content[0] && content[0].tagName == "TEXTAREA") 
+                    if (content[0] && content[0].tagName == "TEXTAREA")
                         content.width(p.innerWidth() - p.intcss('padding-left') - p.intcss('padding-right') - l - 50);
                 }).trigger('resize.layout', []);
                 var spliter = $(this).children('[align=spliter]').draggable({
@@ -85,6 +87,7 @@ $.fn.layout = function (test) {
                 for (var i in contents) {
                     delete setting['#' + contents[i].id];
                     setting['#' + contents[i].id] = hOffset + (root ? 0 : document.documentElement.clientHeight - $(this).height());
+
                 }
             }
             $.autoHeight(setting, false);

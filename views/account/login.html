@@ -17,15 +17,16 @@
     <link href="/javascripts/jquery.fitui/jquery.fitui.css" rel="stylesheet" type="text/css" />
 </head>
 
-<body>
+<body layout="v" id="body" style="padding: 0">
      
     
 <style type="text/css">
-    .simpleLayout{margin-left:200px;margin-right:auto;margin-top:120px; }
-    .simpleLayout>h2{margin -left:-20px;}
+    .simpleLayout{margin:auto;}
+    .simpleLayout #accordion{margin:auto; position: relative; top: 40%}
+    .simpleLayout>h2{margin-left:-20px;}
     #accordion{width:400px; }
 </style>
-<div class='simpleLayout'>
+<div class='simpleLayout' align="auto" id="main">
     <img src="/images/login.png"/>
     <div id="accordion">
 	    <h3><a href="#">登录</a></h3>
@@ -49,10 +50,11 @@
         </div>
     </div>
 
-    <p><a href="/register">注册新帐号</a></p>
+    <p><a href="/register" style="display: none">注册新帐号</a></p>
 </div>
 
 <script>
+    $.initLayout();
     $("#accordion").find('[type=submit]').PageButton().end().accordion();
     if ($("#UserNO").val()) $("[name=Password]").focus(); else $("#UserNO").focus();
 </script>

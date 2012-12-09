@@ -14,7 +14,7 @@ nav>header>h3 { color: #DD4B39}
 /* 标签页(基于 jquery ui) */
 .headerTabs.ui-tabs{border-radius:0px; border: 0px; padding: 0px;}
 .headerTabs.ui-tabs ul { border-width: 0px; padding: 0 0 0 6px;   }
-.headerTabs.ui-tabs .ui-widget-header {background: url("images/header_bg.png") repeat scroll 0 0 transparent;border-top-left-radius:0px;border-bottom-right-radius:0px;border-top-right-radius:0px;border-bottom-left-radius:0px;  }
+.headerTabs.ui-tabs>.ui-widget-header {background: url("images/header_bg.png") repeat scroll 0 0 transparent;border-top-left-radius:0px;border-bottom-right-radius:0px;border-top-right-radius:0px;border-bottom-left-radius:0px;  }
 .headerTabs.ui-tabs .ui-tabs-nav{height:32px;}
 .headerTabs li .ui-icon-close {cursor: pointer; float: left; margin: 0.4em 0.6em 0 0;}
 
@@ -30,8 +30,8 @@ nav>header>h3 { color: #DD4B39}
 
 /*  工具条 */
 .toolbar { padding: 0 0 0 32px}
-.toolbar .ui-button {height: 26px;}
-.toolbar .ui-button-text-only .ui-button-text {padding: 0.1em 1em}
+.toolbar .ui-button {height: 29px;}
+.toolbar .ui-button-text-only .ui-button-text {padding: 0.2em 1.5em}
 
 /*  ajaxTree 树  */
 /*  由于节点类型是由数据(配置)决定的，因此下面的样式样例要按具体类型扩展，在项目中设置  */
