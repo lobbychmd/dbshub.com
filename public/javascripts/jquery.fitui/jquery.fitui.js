@@ -103,14 +103,17 @@ $.fitui.render_li = function (parent, data, href) {
         for (var j in data[i])
             if ((j != "text") && (j != "children")) url = url + j + '=' + data[i][j] + '&'; //li.attr(j, data[i][j]);
         li.attr('data', url);
-        if (href) li.find('a').attr('href', href + "?" + url);
+        if (href && !data[i]["nodeonly"]) li.find('a').attr('href', href + "?" + url);
 
         if (data[i].children) {
             $.fitui.render_li(li.children('ul'), data[i].children, href);
         }
         else $('<li fake=1>').appendTo(li.children('ul'));
 
-        li.children('span').addClass('folder').addClass(data[i]['type']);
+        var span = li.children('span').addClass(data[i]['sub_type']?data[i]['sub_type']:data[i]['type']);
+        if (!data[i].children || data[i].children.length > 0) 
+            span.addClass('folder');
+        else span.addClass('leaf'); 
     }
 }
 

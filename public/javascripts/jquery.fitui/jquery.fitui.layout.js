@@ -46,10 +46,9 @@ $.fn.layout = function (test) {
             if (layout_type == 'h') {
                 var nav = $(this).children('[align=left]').css('float', 'left').last().bind('resize.layout', function () {
                     var l = $(this).outerWidth(true);
-                    var p = $(this).closest('[layout]');
+                    var p = $(this).parent().closest('[layout]');
                     l += p.children('[align=spliter]').outerWidth(true);
                     var content = p.children('[align=auto]').css('margin-left', l);
-
                     //临时方案
                     if (content[0] && content[0].tagName == "TEXTAREA")
                         content.width(p.innerWidth() - p.intcss('padding-left') - p.intcss('padding-right') - l - 50);
@@ -73,6 +72,7 @@ $.fn.layout = function (test) {
                     });
                 }
             } else if (layout_type == 'v') {
+                
                 var contents = [];
                 var hOffset = $(this).intcss('padding-top') + $(this).intcss('padding-bottom');
                 $(this).children().each(function () {

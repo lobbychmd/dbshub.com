@@ -23,7 +23,7 @@ table.QueryGrid td, table.QueryGrid th {
 <table id="grid1" class="QueryGrid ui-widget ui-widget-content" style="width: 1214px;">
  <thead class="ui-widget-header">
   <tr>
-   {{each pageInfo.DataSet[table].Columns}}
+   {{each data.columns}}
     <th>${fieldName}</th>
     {{/each}}
   
@@ -33,8 +33,15 @@ table.QueryGrid td, table.QueryGrid th {
 </thead>
 
  <tbody>
-    {{tmpl(pageInfo.DataSet[table].Rows) "#uitpQueryGridRow"}}
-     
+    {{each data.rows}}
+     <tr>
+        {{each $value}}
+            <td>
+                ${value}
+            </td>
+        {{/each}}
+    </tr>
+    {{/each}}
  
 </tbody>
 
@@ -44,10 +51,7 @@ table.QueryGrid td, table.QueryGrid th {
  
 
 <script type='text/x-jquery-tmpl' id="uitpQueryGridRow">
- 
-    <tr>
-        
-    </tr>
+   
     
 </script>
  

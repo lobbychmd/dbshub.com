@@ -1,7 +1,10 @@
-﻿<header></header>
-<h1>{{if project}} ${project.ProjectName} {{/if}}</h1>
-<div section="nav" style="padding: 5px;">
+﻿<div id="tabs" align="auto" layout="v">
+    <ul align="top">
+    </ul>
+</div>
+<div section="nav" style="padding: 5px;" align="auto" id="navtree" >
     <ul id="tree">
+        <li class="open"><span class="folder">搜索</span></li>
         <li class="open"><span class="folder">捷径</span>
             <ul>
                 <li><a href="#/data/doc?table=MetaTable&_id=4fb9e62362de5d0f208411ed&" title="tAcceptCoupon">tAcceptCoupon</a></li>
@@ -11,16 +14,7 @@
                 <li><a href="#/demo/uidesigner" title="UI设计">UI设计</a></li>
             </ul>
         </li>
-        <li class="open"><span class="folder">视图</span>
-            <ul>
-                {{each dbviews}}
-                <li><a href="#/flowchart/view/${_id}" title="布局layout">${Caption}</a></li>
-                {{/each}}
-                <li><a href="#/flowchart/view/demo_view" title="demo">demo</a></li>
-                <li><a href="#/flowchart/view/000000000000000000000000" title="新视图">新视图</a></li>
-            </ul>
-        </li>
-        <li data="type=tables" _id=""><span class="folder">表</span>
+        <li data="type=root" _id=""><span class="folder">系统</span>
             <ul>
                 <li fake=1></li>
             </ul>
@@ -31,6 +25,15 @@
 
 <script>
     $(document).ready(function () {
-        $("#tree").ajaxtree({url: '/flowchart/tree', href: '#/data/doc'});
+        $("#tree").ajaxtree({ url: '/flowchart/tree', href: '#/data/doc' });
+        $('#tabs').ajaxTabs({ a_selector: "#tree a",
+            saveState: function () { }, restoreState: function () { },
+            create: function (tab) {
+                tab.attr('align', 'auto')
+                    .attr('layout', 'v').css('padding', '0px').parent().layout();
+                $.autoHeight({}, true);
+            }
+        });
+        
     });
 </script>

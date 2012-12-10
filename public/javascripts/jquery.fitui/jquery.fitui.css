@@ -10,6 +10,7 @@ nav {float: left}
 nav>header>h3 { color: #DD4B39}
 
 [align=spliter] { cursor: col-resize;width: 4px; float: left; background: #ddd}
+[layout=v]>[align=auto] { overflow: auto;}
 
 /* 标签页(基于 jquery ui) */
 .headerTabs.ui-tabs{border-radius:0px; border: 0px; padding: 0px;}
@@ -35,6 +36,7 @@ nav>header>h3 { color: #DD4B39}
 
 /*  ajaxTree 树  */
 /*  由于节点类型是由数据(配置)决定的，因此下面的样式样例要按具体类型扩展，在项目中设置  */
+.filetree li > span {padding-left: 18px;}
 .filetree li.expandable span.tables, .filetree span.leaf.tables {background: url("images/ajaxtree/tables.png") no-repeat scroll 0 0 transparent}
 
 /*  通用meta对象编辑器  */

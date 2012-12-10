@@ -41,7 +41,7 @@
 
         $(function () {
             $.initLayout();
-            $('[section=nav]').appendTo('#nav');
+            $('[section=nav]').appendTo('#nav').parent().layout();
             if ($('#toolbar').children().size() == 0) $('#toolbar').hide();
             else $('#toolbar button').button();
         });
@@ -75,7 +75,7 @@
     </div>
     
     <div align="auto" layout="h" id="main" style="height: 100px;">
-        <nav align="left" style="width: 300px;" id="nav">
+        <nav align="left" style="width: 300px;" id="nav" layout="v" >
             <div align="top" class="toolbar" id ="navtoolbar" style="height: 36px;padding-top: 10px;">
                 <h3 style="margin: 0px;color: #DD4B39;font-size: 1.5em;">导航菜单</h3></div>
             <header align="top" id="navheader" style="height:1px;margin-bottom: 10px;"></header>

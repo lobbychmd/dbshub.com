@@ -1,0 +1,76 @@
+
+.header div.left {float: left; margin-right: 20px;}
+.header div.right { float: right; }
+
+.header div.right ol { display: block; list-style: none outside none; margin: 0; padding: 0;}
+.header div.right li { display: inline-block; }
+
+#top-bar { background: none repeat scroll 0 0 #F5F5F5; border: 1px solid #E5E5E5; display: block; height: 22px; width: auto; padding: 4px;}
+#top-bar  > input.ui-button {background: none repeat scroll 0 0 transparent; border: 0 none; color: #234369; height: 16px; margin-bottom: 4px; padding: 0 16px; width: auto;
+                             vertical-align: middle; font-size: 0.75em;}
+#top-bar > input.ui-button#joinflow {
+    background: url('/images/1351569365_DropBox.ico' ) no-repeat scroll 0 0 transparent;
+}
+
+
+
+.tb-design {    border: 1px solid #7791AC; font-size: 0.88em;}
+.tb-design table {
+    border-collapse: collapse
+}
+.tb-design table td, .tb-design table th {
+    border: 1px solid #EEEEEE;
+    padding: 0.6em 10px;
+    text-align: left;
+}
+.tb-design .ui-widget-header {
+    background: url("/images/qgbg.png") repeat scroll 0 0 transparent;
+    border-bottom: 1px solid #7791AC;
+    height: 35px;
+}
+.tb-design span.caption {background: none repeat scroll 0 0 #EEEEEE;border-color: #7791AC;border-style: solid;border-width: 0 0 1px;color: #666666;display: inline-block;font-size: 1.2em;font-weight: bold;padding: 10px 0;text-align: left;width: 100%;}
+.tb-design th a, .tb-design th input {margin: 2px; vertical-align: middle; height: 16px;display: inline-block;}
+.tb-design th a.addIndex {background: url("/images/addIndex.png") no-repeat scroll 0 0 transparent; width: 16px}
+.tb-design th a.index {background: url("/images/index.png") no-repeat scroll 0 0 transparent; width: 16px;}
+.tb-design th a.delIndex {background: url("/images/del.png") no-repeat scroll 0 0 transparent; width: 16px;display: none;}
+.tb-design th a.rename {background: url("/images/rename.png") no-repeat scroll 0 0 transparent; width: 16px;display: none;}
+.tb-design th input {display: none; height: 12px;width: 50px;}
+.tb-design th.editing a.rename, .tb-design th:hover.editing  a.rename{display: none; }
+.tb-design th.editing input, .tb-design th:hover.editing  input{display: inline-block; }
+.tb-design th:hover a.rename, .tb-design th:hover a.delIndex { display: inline-block}
+.tb-design th[indexType=U] a.index {background-image: url("/images/unique.png")}
+.tb-design th[indexType=P] a.index {background-image: url("/images/pk.png")}
+.tb-design td.index {  cursor: pointer;}
+.tb-design td.index span { border: 1px solid #ddd; color: #999; height: 16px; width: 10px; display: inline-block; font-size: 0.88em; padding: 0px 4px;}
+
+.chartContainer {width: auto;}
+canvas.flowchart {background: url("/images/bg.png")}
+
+div.table table {
+    border-collapse: collapse;
+    padding: 0px;
+}
+div.table div.nodeLayer[type=type3] {
+    background:  #C8FFC8    
+}
+
+div.table div.nodeLayer.headLayer {
+    background-color: #DDDDDD;
+    border-top: 0px;
+    text-align: center;
+    padding: 3px;
+}
+
+div.table div.nodeLayer.headLayer a.edit{display: inline-block; float: right; height: 16px; width: 16px; background:  url('/images/1351593422_calendar_edit.ico' ) no-repeat scroll 0 0 transparent}
+div.table  div.nodeLayer.sel {
+    padding-left: 10px;
+}
+
+span.indicator{ display: none;font-size: 0.75em; color: red; padding: 0px;  vertical-align: middle;
+}
+
+div.table div.nodeLayer.sel span.indicator{ display:  inline-block}
+
+div.table div.nodeLayer{
+    
+}

@@ -1,13 +1,30 @@
-﻿<div id="leftToolbar" align="left">
-    <button cmd="design">设计</button>
-    <button cmd="save">保存</button>
-    <button cmd="preview">预览</button>
-    <button cmd="tdd">测试</button>
-    <button cmd="version">版本</button>
-    <button cmd="doc">文档</button>
-</div>
+﻿<script>
+    $.fn.toolbar = function (options) {
+        return this.each(function () {
+            $(this).find("button[cmd]").each(function () {
+                var cmd = $(this).attr('cmd');
+                if (options && options[cmd]){
+                    $(this).show().bind('click', function () { 
+                            options[cmd](cmd); 
+                    });
+                    
+                } else $(this).hide();
 
-<div id="rightToolbar" align="auto" style="text-align: right;padding-right: 20px;">
-    <button cmd="ddl">SQL生成</button>
-    <button cmd="copy">复制</button>
-</div>
+            });
+        });
+     }
+</script>
+
+    <div id="leftToolbar" align="left">
+        <button cmd="design">设计</button>
+        <button cmd="save">保存</button>
+        <button cmd="preview">预览</button>
+        <button cmd="tdd">测试</button>
+        <button cmd="version">版本</button>
+        <button cmd="doc">文档</button>
+    </div>
+
+    <div id="rightToolbar" align="auto" style="text-align: right;padding-right: 20px;">
+        <button cmd="ddl">SQL生成</button>
+        <button cmd="copy">复制</button>
+    </div>
