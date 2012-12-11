@@ -2,7 +2,7 @@
 $.uicontrols.QueryGrid = {
     params2tmpl: function (uiparams, pageInfo) {
         uiparams.pageInfo = pageInfo;
-        var table = pageInfo.DataSet[uiparams.table];
+        var table = pageInfo.dataSet[uiparams.table];
         uiparams.data = { columns: table.Columns, rows: [] };
         for (var i in table.Rows) {
             var row = [];

@@ -55,6 +55,7 @@ nav>header>h3 { color: #DD4B39}
 .jsoneditor [identity],.jsoneditor [readonly] {background:#ccc;border:1px solid #666}
 
 .jsoneditor .prop{ margin: 2px 0;}
+.jsoneditor .prop.hide{ display: none;}
 .jsoneditor .prop.value:hover{ background: rgb(252,255,150)}
 .jsoneditor .row.zip.unzip>.prop.value:hover{ background: #f3f3f3}
 .jsoneditor .zip.deleted{  color: red; text-decoration:line-through}

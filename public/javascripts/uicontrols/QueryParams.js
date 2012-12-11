@@ -1,11 +1,13 @@
 
 $.uicontrols.QueryParams = {
     params2tmpl: function (uiparams, pageInfo) {
-        console.log(pageInfo.Queries.AddInvoice.Params);
+        if (!uiparams.name) uiparams.name = "queryparams1";
+        console.log(uiparams);
         uiparams.groups = [{ caption: "查询条件", queryParams: []}];
-        for (var i in pageInfo.Queries[uiparams.mq].Params)
-            uiparams.groups[0].queryParams.push({DisplayLabel: pageInfo.Queries[uiparams.mq].Params[i].metaField?
-                pageInfo.Queries[uiparams.mq].Params[i].metaField.DisplayLabel: pageInfo.Queries[uiparams.mq].Params[i].ParamName});
+        for (var i in pageInfo.metaQueries[uiparams.mq].Params)
+            uiparams.groups[0].queryParams.push({ DisplayLabel: pageInfo.metaQueries[uiparams.mq].Params[i].metaField ?
+                pageInfo.metaQueries[uiparams.mq].Params[i].metaField.DisplayLabel : pageInfo.metaQueries[uiparams.mq].Params[i].ParamName
+            });
         return uiparams;
     }
 };
@@ -13,22 +15,7 @@ $.uicontrols.QueryParams = {
 $.fn.QueryParams = function () {
     return this.each(function () {
         $(this).children().accordion();
-        var sqp = $(this)//.hide();
-        var grid = $('#' + $(this).attr('grid')).TableAutoWidth().parent();
 
-        var summary = sqp.attr('paramAsString');
-        if (!grid.attr('sqp')) {
-            var title = $('<span class="caption"><a href="#">查询条件:</a>' + ((summary) ? summary : "无") + '</span>').insertBefore(grid.children().eq(0));
-            title.find('a').attr('sqp', sqp.attr('id')).click(function () {
-                var sqp = $('#' + $(this).attr('sqp')).toggle();
-                grid.toggleClass('right');
-                if (grid.hasClass('right')) grid.css('margin-left', sqp.width() + 25);
-                else grid.css('margin-left', 0);
-                return false;
-            });
-            grid.attr('sqp', sqp.attr('id'));
-        }
-        return;
         var g = $(this).find('input[name=ParamGroup]');
         var gi = $(this).find('input[name=pgi]');
         $(this).children().accordion({ active: gi.val() ? parseInt(gi.val()) : 0, change: function (event, ui) {
@@ -43,6 +30,7 @@ $.fn.QueryParams = function () {
 
         var summary = sqp.attr('paramAsString');
         if (!grid.attr('sqp')) {
+
             var title = $('<span class="caption"><a href="#">查询条件:</a>' + ((summary) ? summary : "无") + '</span>').insertBefore(grid.children().eq(0));
             title.find('a').attr('sqp', sqp.attr('id')).click(function () {
                 var sqp = $('#' + $(this).attr('sqp')).toggle();

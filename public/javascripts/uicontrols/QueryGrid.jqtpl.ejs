@@ -24,7 +24,7 @@ table.QueryGrid td, table.QueryGrid th {
  <thead class="ui-widget-header">
   <tr>
    {{each data.columns}}
-    <th>${fieldName}</th>
+    <th>{{if metaField}}${metaField.DisplayLabel}{{else}}${fieldName}{{/if}}</th>
     {{/each}}
   
 </tr>

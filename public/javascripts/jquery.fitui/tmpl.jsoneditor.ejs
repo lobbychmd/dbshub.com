@@ -1,5 +1,5 @@
 ﻿<script id="metaObject" type="text/x-jquery-tmpl">
-    <div class="prop {{if array}}array{{else}}value{{/if}}" layout="h" caption="${data.caption}" {{if data.lineshow}}lineshow{{/if}} {{if data.hide}}style='display:none'{{/if}} path="${data.path}">
+    <div class="prop {{if array}}array{{else}}value{{/if}} {{if data.hide}}hide{{/if}}" layout="h" caption="${data.caption}" {{if data.lineshow}}lineshow{{/if}}  path="${data.path}">
         <div class="label" align="left" id="label_${data.path}" ><span>${data.caption}</span>
 
         {{if data.designer || (array && data.editor)}}

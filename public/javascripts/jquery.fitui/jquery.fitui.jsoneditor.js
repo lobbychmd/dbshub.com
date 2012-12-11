@@ -256,7 +256,7 @@ $.fn.jsoneditor = function (doc, type) {
     return this.each(function () {
         $(this).addClass('jsoneditor').attr('title', type); //基础路径
         var data = $.fitui.jsoneditor.object2tmpl(doc, $.fitui.jsoneditor.config[type], type);
-        console.log({ all: data });
+        if (console) console.log({ all: data });
         $('#metaObject').tmpl(data).appendTo(this).layout(true);
         $.fitui.jsoneditor.zip($(this).find('a.zip'));
         $.fitui.jsoneditor.tmplRowEditor(this, false);
@@ -283,7 +283,7 @@ $.fn.jsoneditorcreateNavigation = function (nav, option) {
             $(nav).navigation({ homePath: option.homePath, change: function (path) {
                 $(designer).jsoneditorcreateNavigation(nav, { reset: true });
                 if (path == $(designer).attr('title')) //最顶层
-                    $(designer).children().show();
+                    $(designer).children(':not(.hide)').show();
                 else {
                     $(designer).find('a.fullscr[title="' + path + '"]').click();
                 }
@@ -297,10 +297,12 @@ $.fn.jsoneditorcreateNavigation = function (nav, option) {
                     $(nav).navigation({ createPath: true, path: p, text: $(designer).find('[caption][path="' + p + '"]').attr('caption') });
                 }
                 $(designer).jsoneditorcreateNavigation(nav, { reset: true });
+
                 var id = "zw" + Math.random().toString().substring(2);
 
                 var zw = $('<span>').attr('id', id);
-                var container = $(this).closest('[path]').show().removeClass('unzip');
+                var container = $(this).closest('[path]').show();
+                if (container.hasClass('unzip')); container.children('a.zip').click();
 
                 zw.insertBefore(container);
                 container.insertBefore($(designer).children().eq(0)).attr('zw', id)
