@@ -18,7 +18,7 @@ $.fn.ajaxTabs = function (option) {
         }
         else {
             $.ajaxTab.setup($(this), option.restoreState);
-            $.lastState.register(this.id, $.tabState.serialize, option.saveState, option.restoreState);
+            $.lastState.register(this.id, option.stateGroup, $.tabState.serialize, option.saveState, option.restoreState);
 
             $(option.a_selector).die("click.withTab").live("click.withTab", function () {
                 var url = $(this).attr('href');
@@ -121,9 +121,14 @@ $.fn.ajaxtree = function (option) {
     return this.each(function () {
         if (!option) option = {};
         option.collapsed = true;
+        var tree = $(this).addClass('filetree');
+        var id = option.rootid?option.rootid: this.id;
+        if (!option.rootid) $.lastState.register(id, option.stateGroup, function () {
+            return  JSON.stringify( tree.find('li.collapsable').map(function(){return $(this).attr('data');}).get());
+        }, option.saveState);
 
         //treeview 插件自带文件夹的图标
-        var tree = $(this).addClass('filetree'); 
+        
         option.toggle = function (data, ui) {
             var li = $(ui).parent();
             var ul = li.children('ul');
@@ -132,11 +137,13 @@ $.fn.ajaxtree = function (option) {
                 var url = option.url + "?" + li.attr('data');
                 ul.indicator({ insert: true })
                 $.get(url, function (data) {
+                    $.lastState.change(id);
+
                     ul.children('li[fake]').remove();
                     $.fitui.render_li(ul, data, option.href);
                     ul.indicator({ remove: true });
                     if (ul.children().size() > 0) {
-                        ul.ajaxtree(option);
+                        ul.ajaxtree($.extend({rootid: id}, option));
                         ul.append(newli);
                     }
                     else if (newli.size() == 1) {
@@ -146,7 +153,7 @@ $.fn.ajaxtree = function (option) {
                 });
 
             }
-           // $.lastState.save();
+            // $.lastState.save();
         };
         $(this).treeview(option);
     });

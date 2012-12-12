@@ -25,18 +25,30 @@
 
 <script>
     $(document).ready(function () {
-        $("#tree").ajaxtree({ url: '/flowchart/tree', href: '#/data/doc' });
+        $("#tree").ajaxtree({ url: '/flowchart/tree', href: '#/data/doc',
+            stateGroup: "tabtree",
+            saveState: function (statestr) {
+                alert(statestr);
+            }, restoreState: function () {
+                alert(1);
+            }
+        });
         $('#tabs').ajaxTabs({ a_selector: "#tree a",
-            saveState: function () { }, restoreState: function () { },
+            stateGroup: "tabtree",
+            saveState: function (statestr) {
+                alert(statestr);
+            }, restoreState: function () {
+                var opentabs = {{html tabstate}};
+                for (var i in opentabs)
+                    $.ajaxTab.openTab(opentabs[i].MetaType, opentabs[i].Url, opentabs[i].Text, false);
+            },
             create: function (tab) {
                 tab.attr('align', 'auto')
                     .attr('layout', 'v').css('padding', '0px').parent().layout();
                 $.autoHeight({}, true);
             }
         });
-        var opentabs = {{html tabstate}};
-        for(var i in opentabs )
-            $.ajaxTab.openTab(opentabs[i].MetaType, opentabs[i].Url, opentabs[i].Text, false);
+
 
     });
 </script>

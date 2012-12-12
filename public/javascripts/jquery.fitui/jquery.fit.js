@@ -1,9 +1,9 @@
 ﻿/* 保存界面状态 */
 $.lastStateSetting = {}; 
 $.lastState = {
-    register: function (id, get, save, load) {
-        $('<span style="display:none"><span>').attr('id', 'statestr_' + id).appendTo('body');
-        $.lastStateSetting[id] = {get: get, save: save, load: load};
+    register: function (id, group, get, save) {
+        $('<span style="display:none"><span>').attr('id', 'statestr_' + id).appendTo('body').attr('group', group);
+        $.lastStateSetting[id] = {get: get, save: save};
     },
     change: function (id) {
         var statestr = $.lastStateSetting[id].get();
@@ -12,7 +12,7 @@ $.lastState = {
         $('#statestr_' + id).text(statestr);
         setTimeout(function(){  
             if ($('#statestr_' + id).text() == statestr)
-                $.lastStateSetting[id].save();
+                $.lastStateSetting[id].save(statestr);
         }, 500);
 
     }
