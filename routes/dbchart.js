@@ -57,7 +57,8 @@ exports.save = function (req, res) {
 };
 
 exports.tree = function (req, res) {
-    new fitnode.doctree(db, require('config').doctree_config).get(req.query, function(data){
+    req.query.ProjectName = req.session.project;
+    new fitnode.doctree(db, require('config').doctree_config).get(req.query, function (data) {
         res.json(data);
     });
 

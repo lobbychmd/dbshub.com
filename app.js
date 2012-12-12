@@ -7,8 +7,6 @@ var express = require('express')
   , routes = require('./routes');
 
 var app = module.exports = express.createServer();
-var db = require('schema');
-db.connect();
 
 // Configuration
 
@@ -36,12 +34,17 @@ app.configure('production', function(){
 });
 
 // Routes
-var login = require('fitnode').login_filter;
+var login = require('filter').login_filter;
+var auth = require('filter').auth_filter;
+
 app.get('/jqtpl', require('./routes/utils').jqtpl);
 app.get('/account/login', require('./routes/account').login);
+app.get('/account/logout', require('./routes/account').logout);
 app.post('/account/signin', require('./routes/account').signin);
 //app.get('/account/login', routes.account.login)
-app.get('/', login, routes.index);
+app.get('/', login, auth, routes.index);
+app.get('/changeprj/:project', login, routes.changeprj);
+
 app.get('/project/:id', login, routes.index);
 app.get('/tables', routes.tables);
 app.get('/data/tables', require('./routes/data').tables);

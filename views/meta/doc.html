@@ -25,7 +25,7 @@
             if (r) {
                 $("#design${_id}").hide('slide', {}, 500, function () {
                     $("#" + cmd + "${_id}").show('slide', {}, 500, function () {
-                        $("#" + cmd + "${_id}").preview($("[name$='ModulePages[" + r[1] + "][UI]']").val());
+                        $("#" + cmd + "${_id}").preview("${_id}", r[1], $("[name$='ModulePages[" + r[1] + "][UI]']").val());
                     });
                 });
             }

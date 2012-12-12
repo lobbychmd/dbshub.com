@@ -23,8 +23,11 @@ exports.tables = function (req, res) {
 
 exports.doc = function (req, res) {
     var db = config.db();
-    db.collection(req.query.table).findOne({_id: db.ObjectID(req.query._id)}, function (err, doc) {
-        res.render("meta/doc.html", {layout:null, toolbar:[], _id: doc._id, type:doc._t, str:JSON.stringify( doc)});
+    db.collection(req.query.table).findOne({ _id: db.ObjectID(req.query._id) }, function (err, doc) {
+        console.log(config.doctree_config[req.query.type].table);
+        res.render("meta/doc.html", { layout: null, toolbar: [], _id: doc._id,
+            type: config.doctree_config[req.query.type].table, str: JSON.stringify(doc)
+        });
     });
 };
 

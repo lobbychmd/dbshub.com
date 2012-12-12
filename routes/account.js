@@ -18,15 +18,18 @@ exports.projects = function (callback) {
         function (data) {
             callback(data[1]);
         }).exec();
-
-    //auth.filter(config.db().collection('Project').find(query_prjs), 'dev', null, null, function (items) {
-    //    callback(items);
-    //});
 }
 
 exports.login = function (req,res) {
     return res.render('account/login.html', {layout:null, toolbar: [], rel: req.query.rel? req.url.substring(req.url.indexOf('rel=') + 4): "/"});
 }
+
+exports.logout = function (req, res) {
+    delete req.session.user;
+    delete req.session.project;
+    res.redirect('/');
+}
+
 
 exports.signin = function (req, res) { 
     if (req.body.UserNO) {
@@ -38,8 +41,7 @@ exports.signin = function (req, res) {
                 hasher.update(req.body.UserNO + req.body.Password);
                 if (doc.Password != hasher.digest('hex')) {
                     res.json({ IsValid: false, Errors: [{ ErrorMessage: "密码不正确", MemberNames: ["UserNO", "Password"] }] });
-                } else
-                {
+                } else {
                     req.session.user = doc;
                     //require('account').getLastPosition(doc._id, function (err, position) {
                     //   if (!err) req.session.project = position;

@@ -41,10 +41,9 @@ $.fitui.jsoneditor = {
     },
 
     object2tmpl: function (doc, configure, path, name_prefix, tmplrow) {
-        var config = $.extend({
-            _id: { caption: 'id', readonly: true },
-            _t: { hide: true }
-        }, configure);
+        var config = $.extend(
+                doc._id?{_id: { caption: 'id', readonly: true },
+                _t: { hide: true }}:{}, configure);
         var pa = [];
         for (var i in config) { //按照配置来，而不是按照数据属性来(必须设定配置)
             var c = config[i];
@@ -75,7 +74,9 @@ $.fitui.jsoneditor = {
             if (container.hasClass('unzip')) {
                 container.removeClass('unzip').children('[layout]').layout();
             }
-            else container.addClass('unzip');
+            else {
+                container.addClass('unzip').children('[layout]').children('.label').css('float', 'none');
+            }
         });
     },
     tmplRowEditor: function (designer, multi) {

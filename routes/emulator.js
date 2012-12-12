@@ -2,9 +2,9 @@ var fitnode = require('fitnode');
 var config = require('config');
 
 /*********** 页面的元数据信息，用来构造页面UI 或者测试 ***************/
-var getFieldMeta = function (fields, context, callback) {
+var getFieldMeta = function (project, fields, context, callback) {
     var db = config.db();
-    var q = { ProjectName: '5072868317f07b7013002040', FieldName: { "$in": fields} };
+    var q = { ProjectName: project, FieldName: { "$in": fields} };
     //暂不考虑情景，待补充
     //if (context) q["Context"] = context;
     //else q["Context"] = { "$in": [null, ''] };
@@ -20,12 +20,12 @@ var getPageMeta = function (_id, page, callback) {
     });
 }
 
-var getQueryMeta = function (queries, callback) {
+var getQueryMeta = function (project, queries, callback) {
     var db = config.db();
     var metaQuery = {};
     new fitnode.seq_asyncArray(
             function (queryName, data, c) {
-                db.collection("MetaQuery").findOne({ QueryName: queryName }, function (err, query) {
+                db.collection("MetaQuery").findOne({ ProjectName: project, QueryName: queryName }, function (err, query) {
                     metaQuery[queryName] = query;
                     c();
                 });
@@ -70,6 +70,7 @@ var getQueryData = function (fields, fieldsMeta, query) {
 
 exports.page = function (req, res) {
     var db = config.db();
+    var project = req.session.project;
     var page;
     new fitnode.seq_async([
         function (params, callback) {
@@ -82,8 +83,7 @@ exports.page = function (req, res) {
         function (params, callback) {
             //取查询元数据
             page.Queries = page.Queries.trim().split(';');
-
-            getQueryMeta(page.Queries, function (queries) {
+            getQueryMeta(project, page.Queries, function (queries) {
                 page.metaQueries = queries;
 
                 callback();
@@ -99,7 +99,7 @@ exports.page = function (req, res) {
                     var fields = new fitnode.sql(metaQuery.Scripts[0].Script).fieldsInclude();
 
                     //构造查询数据
-                    getFieldMeta(fields, metaQuery.QueryName, function (metaFields) {
+                    getFieldMeta(project, fields, metaQuery.QueryName, function (metaFields) {
                         page.metaFields[metaQuery.QueryName] = metaFields;
 
                         page.dataSet[metaQuery.QueryName] = getQueryData(fields, metaFields, metaQuery);
@@ -107,7 +107,7 @@ exports.page = function (req, res) {
 
                         var queryParams = [];
                         for (var p in metaQuery.Params) queryParams.push(metaQuery.Params[p].ParamName);
-                        getFieldMeta(queryParams, metaQuery.QueryName + "_p", function (pMetaFields) {
+                        getFieldMeta(project, queryParams, metaQuery.QueryName + "_p", function (pMetaFields) {
                             page.metaFields[metaQuery.QueryName + "_p"] = pMetaFields;
                             c();
                         });

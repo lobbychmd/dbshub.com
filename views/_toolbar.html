@@ -1,18 +1,20 @@
 ﻿<script>
     $.fn.toolbar = function (options) {
         return this.each(function () {
-            $(this).find("button[cmd]").each(function () {
-                var cmd = $(this).attr('cmd');
-                if (options && options[cmd]){
-                    $(this).show().bind('click', function () { 
-                            options[cmd](cmd); 
-                    });
-                    
-                } else $(this).hide();
+            if (!options) $(this).find('button').button();
+            else
+                $(this).find("#leftToolbar>button[cmd]").each(function () {
+                    var cmd = $(this).attr('cmd');
+                    if (options && options[cmd]) {
+                        $(this).show().unbind('click').bind('click', function () {
+                            options[cmd](cmd);
+                        });
 
-            });
+                    } else $(this).hide();
+
+                });
         });
-     }
+    }
 </script>
 
     <div id="leftToolbar" align="left">

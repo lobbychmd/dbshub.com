@@ -46,15 +46,15 @@ $.uicontrols = {
     }
 };
 
-$.fn.preview = function (uitxt) {
+$.fn.preview = function (moduleid, page, uitxt) {
     return this.each(function () {
         $(this).children().remove();
         var container = this;
         //格式：{ ui: ui, id: ui, params: params, attrs: attrs, children: [] };
         var data = $("<div>").uidesigner(uitxt, { getdata: true });
+        console.log(data);
+        $.get('http://localhost:3000/emulator/page?_id=' + moduleid + '&page=' + page, function (pageInfo) {
 
-        $.get('http://localhost:3000/emulator/page?_id=507297f45722eb4838cde1bc&page=0', function (pageInfo) {
-            
             //pageInfo  包括页面元数据，包含的查询的元数据，包含的查询结果数据（demo）
             //先构造所有ui，然后执行 js
             $.uicontrols.renderUIitem([{ ui: "ModulePage", params: {}, children: data.children}], pageInfo, container, function () {

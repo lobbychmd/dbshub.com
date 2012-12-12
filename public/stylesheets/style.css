@@ -1,7 +1,8 @@
 /* ajaxtree */
-.filetree li.expandable span.theme, .filetree span.leaf.theme {background: url("/images/ajaxtree/theme.png") no-repeat scroll 0 0 transparent}
-.filetree li.expandable span.query, .filetree span.leaf.query {background: url("/images/ajaxtree/query.png") no-repeat scroll 0 0 transparent}
-.filetree li.expandable span.field, .filetree span.leaf.field{background: url("/images/ajaxtree/field.png") no-repeat scroll 0 0 transparent}
-.filetree li.expandable span.module, .filetree span.leaf.module {background: url("/images/ajaxtree/module.png") no-repeat scroll 0 0 transparent}
-.filetree li.expandable span.biz, .filetree span.leaf.biz {background: url("/images/ajaxtree/biz.png") no-repeat scroll 0 0 transparent}
-.filetree li.expandable span.table, .filetree span.leaf.table {background: url("/images/ajaxtree/table.png") no-repeat scroll 0 0 transparent}
+.filetree li.expandable span.themes, .filetree span.leaf.theme {background: url("/images/ajaxtree/theme.png") no-repeat scroll 0 0 transparent}
+.filetree li.expandable span.queries, .filetree span.leaf.query {background: url("/images/ajaxtree/query.png") no-repeat scroll 0 0 transparent}
+.filetree li.expandable span.fields, .filetree span.leaf.field{background: url("/images/ajaxtree/field.png") no-repeat scroll 0 0 transparent}
+.filetree li.expandable span.modules,.filetree li.expandable span.module, .filetree span.leaf.module {background: url("/images/ajaxtree/module.png") no-repeat scroll 0 0 transparent}
+.filetree li.expandable span.bizes, .filetree span.leaf.biz {background: url("/images/ajaxtree/biz.png") no-repeat scroll 0 0 transparent}
+.filetree li.expandable span.tables, .filetree span.leaf.table {background: url("/images/ajaxtree/table.png") no-repeat scroll 0 0 transparent}
+.filetree li.expandable span.connections, .filetree span.leaf.connection{background: url("/images/ajaxtree/connection.png") no-repeat scroll 0 0 transparent}

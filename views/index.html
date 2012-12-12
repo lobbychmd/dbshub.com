@@ -9,7 +9,7 @@
             <ul>
                 <li><a href="#/data/doc?table=MetaTable&_id=4fb9e62362de5d0f208411ed&" title="tAcceptCoupon">tAcceptCoupon</a></li>
                 <li><a href="#/data/doc?table=MetaModule&_id=507297f35722eb4838cde197&" title="收货对帐">收货对帐</a></li>
-                <li><a href="#/data/doc?table=MetaModule&_id=507297f45722eb4838cde1bc&" title="发票录入及结算单审核">发票录入及结算单审核</a></li>
+                <li><a href="#/data/doc?type=module&table=MetaModule&_id=507297f45722eb4838cde1bc&ModuleID=10013" title="发票录入及结算单审核">发票录入及结算单审核</a></li>
                 
                 <li><a href="#/demo/uidesigner" title="UI设计">UI设计</a></li>
             </ul>
@@ -34,6 +34,9 @@
                 $.autoHeight({}, true);
             }
         });
-        
+        var opentabs = {{html tabstate}};
+        for(var i in opentabs )
+            $.ajaxTab.openTab(opentabs[i].MetaType, opentabs[i].Url, opentabs[i].Text, false);
+
     });
 </script>
