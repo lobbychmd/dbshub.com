@@ -14,33 +14,41 @@
                 <li><a href="#/demo/uidesigner" title="UI设计">UI设计</a></li>
             </ul>
         </li>
-        <li data="type=root" _id=""><span class="folder">系统</span>
+        <li class="open" data="type=root&recursion=true" id="project" ><span class="folder">系统</span>
             <ul>
-                <li fake=1></li>
+                
             </ul>
         </li>
     </ul>
     {{partial "../public/javascripts/jquery.fitui/tmpl.jsoneditor.ejs"}}
+
 </div>
 
 <script>
+    var saveState = function (state) {
+        $.post('/account/savestate/TabTree', state);
+    }
+
     $(document).ready(function () {
-        $("#tree").ajaxtree({ url: '/flowchart/tree', href: '#/data/doc',
-            stateGroup: "tabtree",
-            saveState: function (statestr) {
-                alert(statestr);
-            }, restoreState: function () {
-                alert(1);
-            }
+        $.get('/flowchart/tree?type=root&recursion=true', function (data) {
+            $.fitui.render_li($("#tree>li#project>ul"), data, '#/data/doc');
+            $("#tree").ajaxtree({ url: '/flowchart/tree', href: '#/data/doc',
+                stateGroup: "tabtree",
+                stateId: "NavTree",
+                saveState: saveState, restoreState: function () {
+                    alert(1);
+                }
+            });
         });
+
         $('#tabs').ajaxTabs({ a_selector: "#tree a",
+            stateId: "ContentTab",
             stateGroup: "tabtree",
-            saveState: function (statestr) {
-                alert(statestr);
-            }, restoreState: function () {
-                var opentabs = {{html tabstate}};
-                for (var i in opentabs)
-                    $.ajaxTab.openTab(opentabs[i].MetaType, opentabs[i].Url, opentabs[i].Text, false);
+            saveState: saveState, restoreState: function () {
+                var contentTab = {{html tabstate}};
+                if (contentTab) 
+                    for (var i in contentTab.OpenTabs)
+                        $.ajaxTab.openTab(contentTab.OpenTabs[i].MetaType, contentTab.OpenTabs[i].Url, contentTab.OpenTabs[i].Text, false);
             },
             create: function (tab) {
                 tab.attr('align', 'auto')
@@ -48,7 +56,7 @@
                 $.autoHeight({}, true);
             }
         });
-
+        
 
     });
 </script>

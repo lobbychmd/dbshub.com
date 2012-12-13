@@ -41,7 +41,7 @@ app.get('/jqtpl', require('./routes/utils').jqtpl);
 app.get('/account/login', require('./routes/account').login);
 app.get('/account/logout', require('./routes/account').logout);
 app.post('/account/signin', require('./routes/account').signin);
-//app.get('/account/login', routes.account.login)
+app.post('/account/savestate/:group', require('./routes/account').savestate);
 app.get('/', login, auth, routes.index);
 app.get('/changeprj/:project', login, routes.changeprj);
 
@@ -65,6 +65,6 @@ app.get('/demo/uidesigner', require('./routes/demo').uidesigner);
 app.get('/documentation', require('./routes/documentation').index);
 app.get('/documentation/:name', require('./routes/documentation').doc);
 
-app.listen(3000, function(){
-  console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+app.listen(3000, function () {
+    console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 });

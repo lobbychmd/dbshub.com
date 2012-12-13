@@ -1,5 +1,6 @@
 var fitnode = require('fitnode');
 var config = require('config');
+var acc = require('account');
 
 exports.projects = function (callback) {
     var auth = new fitnode.snsauth(config.db(), config.auth_config);
@@ -31,24 +32,37 @@ exports.logout = function (req, res) {
 }
 
 
-exports.signin = function (req, res) { 
+exports.signin = function (req, res) {
     if (req.body.UserNO) {
         config.db().collection('Account').findOne({ UserNO: req.body.UserNO }, function (err, doc) {
-            if (err) res.json({ IsValid: false, Errors: [{ ErrorMessage: err }] });
-            else if (!doc) res.json({ IsValid: false, Errors: [{ ErrorMessage: "无此用户", MemberNames: ["UserNO"] }] });
+            if (err) res.json({ IsValid: false, Errors: [{ ErrorMessage: err}] });
+            else if (!doc) res.json({ IsValid: false, Errors: [{ ErrorMessage: "无此用户", MemberNames: ["UserNO"]}] });
             else {
                 var hasher = require('crypto').createHash('sha1');
                 hasher.update(req.body.UserNO + req.body.Password);
                 if (doc.Password != hasher.digest('hex')) {
-                    res.json({ IsValid: false, Errors: [{ ErrorMessage: "密码不正确", MemberNames: ["UserNO", "Password"] }] });
+                    res.json({ IsValid: false, Errors: [{ ErrorMessage: "密码不正确", MemberNames: ["UserNO", "Password"]}] });
                 } else {
                     req.session.user = doc;
-                    //require('account').getLastPosition(doc._id, function (err, position) {
-                    //   if (!err) req.session.project = position;
+                    new acc.account(req).getState(null, "ProjectName", function (data) {
+                        req.session.project = data;
                         res.json({ IsValid: true });
+                    });
+
                     //});
                 }
             }
         });
-    } else res.json({ IsValid: false, Errors: [{ ErrorMessage: "用户名不能为空", MemberNames: ["UserNO"] }] });
+    } else res.json({ IsValid: false, Errors: [{ ErrorMessage: "用户名不能为空", MemberNames: ["UserNO"]}] });
+}
+
+
+exports.savestate = function (req, res) {
+    //console.log(req.params.group);
+    //console.log(req.body.NavTree);
+    new acc.account(req).saveState(req.session.project, req.params.group, req.body, function () {
+        res.send('ok');
+    });
+
+
 }
