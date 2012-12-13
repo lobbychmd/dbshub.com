@@ -27,7 +27,7 @@ $.fn.ajaxTabs = function (option) {
                     $.ajaxTab.openTab($(this).attr('icon'), url.substring(1),
                         $(this).text() ? $(this).text() : $(this).attr('title'), true,
                         option.create);
-                    $.lastState.change(option.stateId); //打开会切换，切换时会保存,但是有问题, 切换事件发生在未创建tab之前
+                    //$.lastState.change(option.stateId); //打开会切换，切换时会保存,但是有问题, 切换事件发生在未创建tab之前
                 }
                 return false;
             });
@@ -46,8 +46,9 @@ $.ajaxTab = {
         //切换事件必须在还原后绑定，因为还原过程连续ajax，前面的会终止，造成li.url 为空，会造成保存状态事件连续执行且数据有误
         $tabs.tabs({ select: function (event, ui) {
             $.ajaxTab.tabCheckLoad(ui.index);
+            $tabs.attr('currIndex', ui.index);
             $.lastState.change(stateId);
-        } 
+        }
         });
 
         if ($('#tabs').attr("idx")) $tabs.tabs("select", parseInt($('#tabs').attr("idx")));
@@ -84,8 +85,12 @@ $.ajaxTab = {
 
 $.tabState = {  //状态保留专用
     serialize: function (activeTabIndex) {
-        var state = { OpenTabs: [], LastIndex: activeTabIndex != undefined ? activeTabIndex : $('#tabs>ul>li.ui-state-active').attr('index') };
-        $tabs.find('ul>li').each(function () {
+        var index = $tabs.attr('currIndex');
+        if (index) $tabs.removeAttr('currIndex');
+        else $tabs.children('ul').children('li.ui-state-active').attr('index');
+
+        var state = { OpenTabs: [], LastIndex: activeTabIndex != undefined ? activeTabIndex : index };
+        $tabs.children('ul').children('li').each(function () {
             if ($(this).attr('url')) //因为有时候会null， 待查 
                 state.OpenTabs.push({ Url: $(this).attr('url'), Text: $(this).children('a').text(), MetaType: $(this).attr('metatype') });
         });

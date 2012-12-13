@@ -60,7 +60,6 @@ exports.tree = function (req, res) {
     //req.query.ProjectName = req.session.project;
     if (req.query["recursion"])
         new acc(req).getState(req.session.project, "TabTree", function (state) {
-            console.log(state);
             new fitnode.doctree(db, require('config').doctree_config, {ProjectName: req.session.project}, state?state.NavTree:null).get(req.query, function (data) {
                 res.json(data);
             });

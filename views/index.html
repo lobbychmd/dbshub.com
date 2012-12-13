@@ -46,9 +46,12 @@
             stateGroup: "tabtree",
             saveState: saveState, restoreState: function () {
                 var contentTab = {{html tabstate}};
-                if (contentTab) 
+                if (contentTab) {
                     for (var i in contentTab.OpenTabs)
                         $.ajaxTab.openTab(contentTab.OpenTabs[i].MetaType, contentTab.OpenTabs[i].Url, contentTab.OpenTabs[i].Text, false);
+                    $tabs.tabs("select", contentTab.LastIndex);
+                    $.ajaxTab.tabCheckLoad($tabs.find('li.ui-state-active').attr('index'));
+                }
             },
             create: function (tab) {
                 tab.attr('align', 'auto')
@@ -56,7 +59,7 @@
                 $.autoHeight({}, true);
             }
         });
-        
+
 
     });
 </script>
