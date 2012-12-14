@@ -1,7 +1,17 @@
 $.uicontrols = {
+    config:{
+        lfLayout_head: 'lfLayout',
+        lfUserBar: 'lfLayout',
+        lfLayout_menu: 'lfLayout',
+        AccordionMenu: 'lfLayout',
+        lfLayout_page: 'lfLayout',
+        lfLayout_foot: 'lfLayout'
+    },
     loadRequire: function (uiname, callback) {
-        $LAB.script("/javascripts/uicontrols/" + uiname + ".js").wait(function () {
-            $.get('/jqtpl?uiname=' + uiname, function (html) {
+        var fileName = $.uicontrols.config[uiname];
+        if (!fileName) fileName = uiname;
+        $LAB.script("/javascripts/uicontrols/" + fileName + ".js").wait(function () {
+            $.get('/jqtpl?uiname=' + fileName, function (html) {
                 $(html).appendTo('head');
                 callback();
 
@@ -11,20 +21,20 @@ $.uicontrols = {
     renderUIitem: function (uis, pageInfo, container, callback) {
         new seq_asyncArray(
             function (item, params, callback1) {
-                //if (item.ui == "QueryParams" || item.ui == "Toolbar")
                 $.uicontrols.loadRequire(item.ui, function () {
                     if ($.uicontrols[item.ui]) {
+                        alert(item.ui);
                         var htm = $("#uitp" + item.ui).tmpl(
                         //params 是ui 设置的属性，经过一些处理之后生成 UI
                                     $.uicontrols[item.ui].params2tmpl(item.params, pageInfo)
+                                ).appendTo(container );
 
-                                ).appendTo(container);
-
-                        if (item.children && item.children.length > 0)
-                            $.uicontrols.renderUIitem(item.children, pageInfo, htm, function () {
+                        if (item.children && item.children.length > 0){
+                            var uicontainer = $(htm).find('[uicontainer=' + item.params.name + ']');
+                            $.uicontrols.renderUIitem(item.children, pageInfo, uicontainer.size() == 0 ? htm: uicontainer, function () {
                                 callback1();
                             });
-                        else callback1();
+                        }else callback1();
 
                     }
                 });
@@ -36,14 +46,29 @@ $.uicontrols = {
             }
         ).exec();
     },
-    execUIitemJs: function (uis) {
+    execUIitemJs: function (uis, distinctuis) {
+        if (!distinctuis) distinctuis = [];
         for (var i in uis) {
             var item = uis[i];
-            eval("$('." + item.ui + "')." + item.ui + "();");
+            if (distinctuis.indexOf(item.ui) < 0) {
+                eval("$('." + item.ui + "')." + item.ui + "();");
+                distinctuis.push(item.ui);
+            }
             if (item.children && item.children.length > 0)
                 $.uicontrols.execUIitemJs(item.children);
         }
+    },
+    findModulePage: function (data) {
+    var c = data;
+    for (var i in c)
+        if (c[i].ui == "ModulePage")
+            return c[i];
+        else if (c[i].children && (c[i].children.length > 0)) {
+            var r = $.uicontrols.findModulePage(c[i].children);
+            if (r) return r; else continue;
+        } else;// console.log(c[i].ui);
     }
+
 };
 
 $.fn.preview = function (moduleid, page, uitxt) {
@@ -51,15 +76,23 @@ $.fn.preview = function (moduleid, page, uitxt) {
         $(this).children().remove();
         var container = this;
         //格式：{ ui: ui, id: ui, params: params, attrs: attrs, children: [] };
-        var data = $("<div>").uidesigner(uitxt, { getdata: true });
-        console.log(data);
+        //console.log(data);
         $.get('http://localhost:3000/emulator/page?_id=' + moduleid + '&page=' + page, function (pageInfo) {
+            var data = $("<div>").uidesigner(uitxt ? uitxt : pageInfo.UI, { getdata: true });
 
+            if (!uitxt){
+                var layout = $("<div>").uidesigner(pageInfo.layout.LayoutUI, { getdata: true });
+                var modluepage= $.uicontrols.findModulePage(layout.children);
+                modluepage.children = data.children;
+            }
+            
+            var all = 'uitxt' ? [{ ui: "ModulePage", params: {}, children: data.children}]
+                :layout.children;
             //pageInfo  包括页面元数据，包含的查询的元数据，包含的查询结果数据（demo）
             //先构造所有ui，然后执行 js
-            $.uicontrols.renderUIitem([{ ui: "ModulePage", params: {}, children: data.children}], pageInfo, container, function () {
+            $.uicontrols.renderUIitem(all, pageInfo, container, function () {
                 $.uicontrols.execUIitemJs([{ ui: "ModulePage", params: {}, children: data.children}]);
-                alert('ready!');
+                //alert('ready!');
             });
         });
 

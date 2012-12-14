@@ -23,6 +23,7 @@ table.QueryGrid td, table.QueryGrid th {
 <table id="grid1" class="QueryGrid ui-widget ui-widget-content" style="width: 1214px;">
  <thead class="ui-widget-header">
   <tr>
+    <th>选择</th>
    {{each data.columns}}
     <th>{{if metaField}}${metaField.DisplayLabel}{{else}}${fieldName}{{/if}}</th>
     {{/each}}
@@ -37,7 +38,7 @@ table.QueryGrid td, table.QueryGrid th {
      <tr>
         {{each $value}}
             <td>
-                ${value}
+                {{if $index==0 }} <a href="${value}">明细</a> {{else}}${value}{{/if}}
             </td>
         {{/each}}
     </tr>

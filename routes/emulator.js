@@ -20,6 +20,13 @@ var getPageMeta = function (_id, page, callback) {
     });
 }
 
+var getLayout = function (ProjectName, page, callback) {
+    var db = config.db();
+    db.collection("MetaTheme").findOne({ ProjectName: ProjectName }, function (err, lay) {
+        callback(lay);
+    });
+}
+
 var getQueryMeta = function (project, queries, callback) {
     var db = config.db();
     var metaQuery = {};
@@ -61,6 +68,7 @@ var getQueryData = function (fields, fieldsMeta, query) {
                 break;
             }
         }
+        if (!ff["metaField"]) ff["metaField"] = {DisplayLabel: fields[i]}
         dataset.Columns.push(ff);
         dataset.Rows[0][fields[i]] = i;
     }
@@ -73,10 +81,18 @@ exports.page = function (req, res) {
     var project = req.session.project;
     var page;
     new fitnode.seq_async([
+    
         function (params, callback) {
             //取页面元数据
             getPageMeta(req.query._id, req.query.page, function (p) {
                 page = p;
+                callback();
+            });
+        },
+        function (params, callback) {
+            //布局
+            getLayout(req.session.project, req.query.page, function (lay) {
+                page.layout = lay;
                 callback();
             });
         },
@@ -104,6 +120,7 @@ exports.page = function (req, res) {
 
                         page.dataSet[metaQuery.QueryName] = getQueryData(fields, metaFields, metaQuery);
                         page.dataSet[metaQuery.QueryName + ".0"] = page.dataSet[metaQuery.QueryName];
+                        console.log(page.dataSet);
 
                         var queryParams = [];
                         for (var p in metaQuery.Params) queryParams.push(metaQuery.Params[p].ParamName);
@@ -131,4 +148,7 @@ exports.page = function (req, res) {
 
     }).exec();
 };
-  
+
+exports.preview = function (req, res) {
+    res.render("meta/preview.html", {layout: false, _id: req.query._id, page: req.query.page});
+}

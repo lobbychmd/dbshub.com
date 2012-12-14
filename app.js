@@ -51,6 +51,7 @@ app.get('/data/tables', require('./routes/data').tables);
 app.get('/data/table', require('./routes/data').table);
 app.get('/data/doc', require('./routes/data').doc);
 app.get('/emulator/page', require('./routes/emulator').page);
+app.get('/emulator/preview', require('./routes/emulator').preview);
  
 app.get('/flowchart/index', require('./routes/dbchart').index);
 app.get('/flowchart/view/demo_view', require('./routes/dbchart').demo_view);

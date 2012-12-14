@@ -1,0 +1,93 @@
+<script type='text/x-jquery-tmpl' id="uitplfTabs">
+    <div id="xyTabs1" class="lfTabs">
+        <div class="lfTabs_items" style="height: 21px;">
+            <ul>
+                <li no="1" class="actived">基本信息</li>
+            </ul>
+        </div>
+
+        <div class="lfTabs_pages" uicontainer="xyTabs1">
+
+
+
+        </div>
+
+
+    </div>
+
+ 
+</script>
+
+
+
+<style >
+
+.lfTabs {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #818A99;
+    border-image: none;
+    border-style: none none solid solid;
+    border-width: 1px;
+    margin: 10px 0;
+    position: relative;
+}
+.lfTabs .lfTabs_items {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #818A99;
+    border-image: none;
+    border-style: none none solid;
+    border-width: 1px;
+}
+.lfTabs .lfTabs_items ul {
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+}
+.lfTabs .lfTabs_items ul li {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: url("tabs_bg.gif") repeat-x scroll 0 0 transparent;
+    border-color: #818A99;
+    border-image: none;
+    border-style: solid solid solid none;
+    border-width: 1px;
+    cursor: pointer;
+    float: left;
+    list-style: none outside none;
+    padding: 2px 10px 3px;
+}
+.lfTabs .lfTabs_items ul li.actived {
+    background: none repeat scroll 0 0 #EBF3FE;
+    border-bottom-color: #EBF3FE;
+}
+.lfTabs .lfTabs_pages {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #818A99;
+    border-image: none;
+    border-style: none solid none none;
+    border-width: 1px;
+    clear: both;
+}
+.lfTabs .lfTabs_pages .page {
+    background-color: #EBF3FE;
+    display: none;
+    overflow: auto;
+    padding: 5px;
+}
+.lfTabs .lfTabs_pages .page.actived {
+    display: block;
+}
+
+</style>
+

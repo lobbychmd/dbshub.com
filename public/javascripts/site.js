@@ -1,4 +1,6 @@
-$.jsoneditorSetup({config: {
+$.jsoneditorSetup({
+  json2strurl:'/flowchart/json2str',
+  config: {
     MetaTheme: {
         Theme: { caption: "主题名称" },
         LayoutUI: { caption: "界面配置", editor: 'textarea', scriptType: 'application/json' },

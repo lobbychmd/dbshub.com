@@ -1,0 +1,57 @@
+<script type='text/x-jquery-tmpl' id="uitpxyEditorItems">
+    <div class="xyEditorItems">
+        {{each  data.rows[0]}}
+            <div class="input_items">
+                <div title="${data.columns[$index].metaField.DisplayLabel}" class="input_items_lable">
+                  ${data.columns[$index].metaField.DisplayLabel}
+                </div>
+                <div class="input_items_input">
+                    <input type="text" ${value} style="width:138px" readonly="readonly" name="${fieldName}" id="${fieldName}" fname="${fieldName}" class="editor" rostate="true">
+                </div>
+            </div>
+        {{/each}}
+    </div>
+</script>
+
+
+
+<style >
+.xyEditorItems .input_items {
+    display: inline-block;
+    font-size: 12px;
+    height: 50px;
+}
+.xyEditorItems .input_items .input_items_lable {
+    display: block;
+    overflow: hidden;
+    padding: 5px 0 0 5px;
+    white-space: nowrap;
+}
+.xyEditorItems .input_items .input_items_input {
+    display: block;
+    padding: 2px 0 0 5px;
+}
+.xyEditorItems .input_items .input_items_input input {
+    display: inline-block;
+    
+    vertical-align: middle;
+}
+.xyEditorItems .input_items .input_items_input a.i_sch {
+    background: url("images/icon5.gif") no-repeat scroll center center transparent;
+    border: medium none;
+    cursor: pointer;
+    display: inline-block;
+    height: 16px;
+    margin-left: 2px;
+    outline: medium none;
+    vertical-align: middle;
+    width: 16px;
+}
+.xyEditorItems .input_items .input_items_input select {
+    display: inline-block;
+    height: 21px;
+    vertical-align: middle;
+    width: 135px;
+}    
+</style>
+
