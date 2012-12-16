@@ -57,6 +57,7 @@
     {{if (reference) }} reference={{if (reference.type) }} ${reference.type}{{else}}${reference.path}  {{/if}} {{/if}}
     {{if editor == "textarea" }} align = 'auto' rows=5 {{/if}}
     {{if size }} style="width:${size}px" {{/if}}
+    group = ${name.replace(/\[\d+\]/,'')}
     {{if input}}
         />
     {{else}}

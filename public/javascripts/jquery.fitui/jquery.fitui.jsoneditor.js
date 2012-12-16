@@ -228,7 +228,7 @@ $.fitui.jsoneditor = {
             var r = $(this).attr('reference'); 
             
             if (!cache[r]) cache[r] = [];
-            var name = $(this).attr('name').replace(/\[\d+\]/,''); 
+            var name = $(this).attr('group');//.replace(/\[\d+\]/,''); 
             if (cache[r].indexOf(name) < 0) cache[r].push(name);
         });
         for(var i in cache){
@@ -240,7 +240,7 @@ $.fitui.jsoneditor = {
                     var value = $(this).val();
                     
                     for(var j in cache[i]){
-                        $('<option>').text( value).attr('value', value) .appendTo($('[name="' + cache[i][j] +'"]'));
+                        $('<option>').text( value).attr('value', value) .appendTo($('[group="' + cache[i][j] +'"]'));
                     }
                 });
             }).trigger('change').css('border', '1px solid red');
