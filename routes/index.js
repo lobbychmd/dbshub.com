@@ -43,3 +43,14 @@ exports.tables = function (req, res) {
         }
     });
 };
+
+exports.reference = function(req, res){
+    var q = {ProjectName: req.session.project}
+    q[req.params.key] = eval('/^' + req.query.term + '/');
+    db.collection(req.params.type).find(q).limit(20).toArray(function(err, docs){
+        var data = [];
+        for( var i in docs) data.push({type:req.params.type, value: docs[i][req.params.key], text:'aaa'});
+        res.send(data);
+    })
+    
+}

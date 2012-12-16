@@ -25,7 +25,7 @@ $.lastState = {
         setTimeout(function () {
             var groupstate = $.lastState.getGroupState(state.group);
             if (JSON.stringify(groupstate) == groupstatetxt) {
-                if (console) console.log(groupstate);
+              //  if (console) console.log(groupstate);
                 $.lastStateSetting[id].save(groupstate);
             }
         }, 500);

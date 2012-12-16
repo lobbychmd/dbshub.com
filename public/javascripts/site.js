@@ -1,5 +1,6 @@
 $.jsoneditorSetup({
   json2strurl:'/flowchart/json2str',
+  referenceurl:'/index/reference',
   config: {
     MetaTheme: {
         Theme: { caption: "主题名称" },
@@ -16,12 +17,12 @@ $.jsoneditorSetup({
         Checks: { caption: "业务检查", children:{
             CheckIdx: { caption: '序号', lineshow: true, identity: true, maxLength: 3 },
             CheckEnabled: { caption: '启用', lineshow: true, editor: "checkbox" },
-            ParamToValidate: { caption: '检查参数', lineshow: true, selection: "@Params.ParamName" },
+            ParamToValidate: { caption: '检查参数', lineshow: true, reference: {path:"Params.ParamName"}, editor:"select" },
             CheckSummary: { caption: '描述', lineshow: true, key: true },
             CheckRepeated: { caption: '重复执行', editor: "checkbox" },
             Type: { caption: '检查类型', editor: "select", selection: [{ key: "Required", value: "必须录入" }, { key: "CompareTo", value: "比较" }, { key: "Query", value: "存在于查询中" }, { key: "SQL", value: "返回ResultCode=0"}] },
             CompareType: { caption: '比较类型', editor: "select", selection: [{ key: "=", value: "相等" }, { key: ">", value: "大于" }, { key: ">=", value: "大于等于" }, { key: "<", value: "小于" }, { key: "<=", value: "小于等于" }, { key: "<>", value: "不等于"}] },
-            ParamToCompare: { caption: '比较参数', selection: "@Params.ParamName" },
+            ParamToCompare: { caption: '比较参数', editor:'select', reference: {path:"Params.ParamName"} },
             CheckUpdateFlag: { caption: '检查标志', editor: 'select', selection: [{ key: "UpdateFlag", value: 'UpdateFlag' }, { key: "UpdateFlag2", value: 'UpdateFlag2' }, { key: "UpdateFlag3", value: 'UpdateFlag3' }, { key: "UpdateFlag4", value: 'UpdateFlag4' }, { key: "UpdateFlag5", value: 'UpdateFlag5'}] },
             CheckExecuteFlag: { caption: '检查执行标志', editor: 'select', selection: [{ key: "IUD", value: "增删改" }, { key: "IU", value: "增改" }, { key: "ID", value: "增删" }, { key: "UD", value: "删改" }, { key: "I", value: "增" }, { key: "U", value: "改" }, { key: "D", value: "删"}] },
             CheckSQL: { caption: '检查SQL脚本', editor: "textarea", designer:["codemirror"] }                                
@@ -47,9 +48,9 @@ $.jsoneditorSetup({
     MetaModule: {
         Caption: { caption: "模块名称" },
         ModuleID: { caption: "模块编号" },
-        ParentID: { caption: "上层模块编号" },
+        ParentID: { caption: "上层模块编号", reference:{type: "MetaModule.ModuleID"} },
         Path: { caption: "模块路径(Url)" , designer: ["moduleurl"]},
-        Queryies: { caption: "所用查询" },
+        Queryies: { caption: "所用查询", split:',', roweditor: 'textbox', editor:'textbox', size:400 },
         Bizes: { caption: "所用业务逻辑" },
         ModulePages: { caption: "页面", children:{
             PageID: { caption: '页面ID', lineshow: true, key:true },
@@ -63,7 +64,7 @@ $.jsoneditorSetup({
                     Description: {caption: '流程描述'},
                     State: {caption: '流程状态', editor:'select', selection: [{ key: "fsNew", value: "新增" }, { key: "fsNormal", value: "未审核"}, { key: "fsAuditing", value: "审核中"}, { key: "fsAudited", value: "审核完成"}] , lineshow: true},
                     SaveBiz: {caption: '保存业务逻辑'},
-                    Action: {caption: '可执行动作', 
+                    Action: {caption: '可执行动作',  
                         children:{
                             Summary: {caption: '摘要', lineshow: true, key: true},
                             Biz: {caption: '业务逻辑', lineshow: true},
@@ -178,8 +179,8 @@ $.uidesignerSetup({
         Toolbar: { 
 			desc:"工具条，下级是各种按钮",
             property:{
-				name: {desc: '名字，同一个页面不能重复' } 
-			}
+                name: {desc: '名字，同一个页面不能重复' } 
+            }
         },
         lfTabs:{
 			desc: "多页面标签，下级控件page",
@@ -191,7 +192,10 @@ $.uidesignerSetup({
 			}
 		},
         page:{
-			desc: "页面，lfTabs的下级控件，对应lfTabs的pageCaption数组的个数"
+			desc: "页面，lfTabs的下级控件，对应lfTabs的pageCaption数组的个数",
+            property:{
+				name: {desc: '名字，同一个页面不能重复' }
+			}
 		},
         xyEditorItems:{
 			desc: "字段录入框集合，一般用于主表字段录入，还可作为快速录入xyQuickRec控件的下级控件，供快速录入调用",
@@ -261,12 +265,23 @@ $.uidesignerSetup({
 				UpdateTag: {desc: '行数据的更新标志，与对应biz业务过程的更新标志一致' }
 			}
 		},
-		xyLayout:{
-			desc: "主题控件（BugFree风格），下级包含xyLayoutHead、xyLayoutMenu、xyLayoutPage"
+        xyLayout:{
+			desc: "主题控件（BugFree风格），下级包含xyLayoutHead、xyLayoutMenu、xyLayoutPage",
+            property:{
+                name: {desc: '名字，同一个页面不能重复' }
+                }
+		},
+		QueryGrid:{
+            property:{
+                name: {desc: '名字，同一个页面不能重复',
+                    table: '对应的表名' }
+                },
+			desc: "数据表格，用于显示查询结果。"
 		},
 		xyLayoutHead:{
 			desc: "主题控件xyLayout的构造控件，处于xyLayout控件的下级，用于构造该主题最上方抬头、用户信息区域",
 			property:{
+                name: {desc: '名字，同一个页面不能重复' },
 				HomeUrl: {desc: 'LOGO文字超链接URL，一般设置为首页的URL' },
 				logostr:{desc: '描述文字' }
 			}
@@ -274,29 +289,51 @@ $.uidesignerSetup({
 		xyLayoutMenu:{
 			desc: "主题控件xyLayout的构造控件，处于xyLayout控件的下级，用于构造该主题左边的菜单区域，可构造调用CS模块的菜单",
 			property:{
+                name: {desc: '名字，同一个页面不能重复' },
 				cs: {desc: '是否构造调用CS程序的菜单，值为true则构建的菜单单击时调用CS模块，为false则构建的菜单为BS跳转超链接' }
 			}
 		},
 		xyLayoutPage:{
-			desc: "主题控件xyLayout的构造控件，处于xyLayout控件的下级，用于构造该主题中心模块页面区域"
+			desc: "主题控件xyLayout的构造控件，处于xyLayout控件的下级，用于构造该主题中心模块页面区域",
+            property:{
+                name: {desc: '名字，同一个页面不能重复' } 
+            }
 		},
 		lfLayout:{
-			desc: "主题控件，仿微软风格，比较完整的布局控件，下级包含lfLayout_head、lfLayout_menu、lfLayout_page、lfLayout_foot"
+			desc: "主题控件，仿微软风格，比较完整的布局控件，下级包含lfLayout_head、lfLayout_menu、lfLayout_page、lfLayout_foot",
+            property:{
+                name: {desc: '名字，同一个页面不能重复' } 
+            }
 		},
 		lfLayout_head:{
-			desc: "主题控件lfLayout的构造控件，处于lfLayout控件的下级，用于构造该主题上方LOGO、用户信息区域，LOGO图片路径写死为/Content/linkfern.png，下级可配置工具条控件lfUserBar"
+			desc: "主题控件lfLayout的构造控件，处于lfLayout控件的下级，用于构造该主题上方LOGO、用户信息区域，LOGO图片路径写死为/Content/linkfern.png，下级可配置工具条控件lfUserBar",
+            property:{
+                name: {desc: '名字，同一个页面不能重复' } 
+            }
 		},
 		lfUserBar:{
-			desc: "工具条控件，目前用于lfLayout_head的下级，菜单暂写死，仅修改密码可用"
+			desc: "工具条控件，目前用于lfLayout_head的下级，菜单暂写死，仅修改密码可用",
+            property:{
+                name: {desc: '名字，同一个页面不能重复' } 
+            }
 		},
 		lfLayout_menu:{
-			desc: "主题控件lfLayout的构造控件，处于lfLayout控件的下级，用于构造该主题左边的菜单区域外框（无菜单），下级需使用菜单构造控件构造菜单"
+			desc: "主题控件lfLayout的构造控件，处于lfLayout控件的下级，用于构造该主题左边的菜单区域外框（无菜单），下级需使用菜单构造控件构造菜单",
+            property:{
+                name: {desc: '名字，同一个页面不能重复' } 
+            }
 		},
 		lfLayout_page:{
-			desc: "主题控件lfLayout的构造控件，处于lfLayout控件的下级，用于构造该主题中心模块页面区域"
+			desc: "主题控件lfLayout的构造控件，处于lfLayout控件的下级，用于构造该主题中心模块页面区域",
+            property:{
+                name: {desc: '名字，同一个页面不能重复' } 
+            }
 		},
 		lfLayout_foot:{
-			desc: "主题控件xyLayout的构造控件，处于xyLayout控件的下级，用于构造该主题最下方页脚区域，已写死为：上海灵蕨信息科技有限公司"
+			desc: "主题控件xyLayout的构造控件，处于xyLayout控件的下级，用于构造该主题最下方页脚区域，已写死为：上海灵蕨信息科技有限公司",
+            property:{
+                name: {desc: '名字，同一个页面不能重复' } 
+            }
 		}
     }
 });

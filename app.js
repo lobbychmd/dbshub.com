@@ -43,6 +43,7 @@ app.get('/account/logout', require('./routes/account').logout);
 app.post('/account/signin', require('./routes/account').signin);
 app.post('/account/savestate/:group', require('./routes/account').savestate);
 app.get('/', login, auth, routes.index);
+app.get('/index/reference/:type/:key',  routes.reference);
 app.get('/changeprj/:project', login, routes.changeprj);
 
 app.get('/project/:id', login, routes.index);

@@ -23,7 +23,7 @@ $.uicontrols = {
             function (item, params, callback1) {
                 $.uicontrols.loadRequire(item.ui, function () {
                     if ($.uicontrols[item.ui]) {
-                        alert(item.ui);
+                        
                         var htm = $("#uitp" + item.ui).tmpl(
                         //params 是ui 设置的属性，经过一些处理之后生成 UI
                                     $.uicontrols[item.ui].params2tmpl(item.params, pageInfo)
@@ -86,7 +86,7 @@ $.fn.preview = function (moduleid, page, uitxt) {
                 modluepage.children = data.children;
             }
             
-            var all = 'uitxt' ? [{ ui: "ModulePage", params: {}, children: data.children}]
+            var all = uitxt ? [{ ui: "ModulePage", params: {}, children: data.children}]
                 :layout.children;
             //pageInfo  包括页面元数据，包含的查询的元数据，包含的查询结果数据（demo）
             //先构造所有ui，然后执行 js

@@ -35,14 +35,14 @@ $.uicontrols.lfLayout_head = {
     }
 };
 
-$.uicontrols.lfAccordionMenu = {
+$.uicontrols.AccordionMenu = {
     params2tmpl: function (uiparams, pageInfo) {
         return uiparams;
     }
 };
 
 
-$.fn.lfAccordionMenu = function () {
+$.fn.AccordionMenu = function () {
     return this.each(function () {
         
     });
@@ -58,11 +58,15 @@ $.fn.lfLayout_head = function () {
     return this.each(function () {
         
     });
-};$.fn.lfLayout_foot = function () {
+};
+
+$.fn.lfLayout_foot = function () {
     return this.each(function () {
         
     });
-};$.fn.lfLayout_menu = function () {
+};
+
+$.fn.lfLayout_menu = function () {
     return this.each(function () {
         
     });

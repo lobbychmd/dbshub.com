@@ -123,9 +123,10 @@ fieldset.uidesigner .uiitem > div { height: 30px; }
 fieldset.uidesigner .uiitem > fieldset.empty{ margin: 10px 0; display: none;}
 fieldset.uidesigner .uiitem.focus > fieldset>.uiitem.tmpl{ display: block;}
 fieldset.uidesigner .uiitem.focus > fieldset.empty{ display: block;}
-fieldset.uidesigner .uiitem.tmpl {border: 1px dotted gray; display: none;}
+fieldset.uidesigner .uiitem.tmpl, fieldset.uidesigner .uiitem.tmpl a.deluiitem {display: none;}
 fieldset.uidesigner .uiitem-label {display: none;font-weight: bold;margin-bottom: 1em}
 fieldset.uidesigner .uiitem-icon {float: left;height: 32px;width: 32px; margin: -5px 5px -5px 0;vertical-align: middle;}
 fieldset.uidesigner .uiitem.tmpl .uiitem-icon {border: 1px solid gray ;}
 fieldset.uidesigner input.ui { display: block; vertical-align: middle; float: left;}
-fieldset.uidesigner .uiitem-description {display: block; margin-left: 300px; margin: 0 0 0 240px;padding: 2px; width: auto; height: 32px;}
+fieldset.uidesigner .uiitem-description {display: block; margin-left: 300px; margin: 0 0 0 270px;padding: 2px; width: auto; height: 32px;}
+fieldset.uidesigner a.deluiitem{float:left;background: url(images/delete.png); display:inline-block; width: 16px;height: 16px; vertical-align: middle;}

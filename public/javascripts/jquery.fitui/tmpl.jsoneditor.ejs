@@ -22,7 +22,7 @@
 </script>
 
 <script id="metaPropArray" type="text/x-jquery-tmpl">
-    <fieldset align="auto"  id="array_${path}" class="zip array" caption="${caption}" {{if reference}}ref_type=${reference.type} ref_join=${reference.join} {{/if}} path="${path}"
+    <fieldset align="auto"  id="array_${path}" class="zip array" caption="${caption}" path="${path}"
         {{if typeof(editor) =="string"}} style = "display:none" {{/if}}>
         <legend><span >${caption111}</span> <a href="#" class="zip" style="text-decoration:none"></a> <a class="fullscr" href="#" title ="${path}"></a></legend>
         <span class="count" style="display:none"></span>
@@ -53,14 +53,16 @@
     {{if tmplrow }}field{{/if}}name='${name}' 
     id='editor_${path}' 
     {{if identity }} identity {{/if}}
-    {{if (readonly||reference) }} readonly {{/if}}
+    {{if (readonly) }} readonly {{/if}}
+    {{if (reference) }} reference={{if (reference.type) }} ${reference.type}{{else}}${reference.path}  {{/if}} {{/if}}
     {{if editor == "textarea" }} align = 'auto' rows=5 {{/if}}
+    {{if size }} style="width:${size}px" {{/if}}
     {{if input}}
         />
     {{else}}
         >
         {{if editor == "select" }}
-            {{tmpl({selection: selection, selValue: value}) "#select-option"}}
+            {{if selection}} {{tmpl({selection: selection, selValue: value}) "#select-option"}}{{/if}}
         {{else}}
             ${value}
         {{/if}}
@@ -109,6 +111,7 @@
             <div class="uiitem-label">Select a ui (type "j" for a start):</div>
             <img class="uiitem-icon" src="${icon}" class="ui-state-default" alt="" />
             <input class="ui" value="${ui}" {{if tmpl}}{{else}}readonly{{/if}}/>
+            <a href="#" class="deluiitem"></a>
             <input type="hidden" class="uiitem-id" value="${id}"/>
             <p class="uiitem-description">${description}</p>
         </div>

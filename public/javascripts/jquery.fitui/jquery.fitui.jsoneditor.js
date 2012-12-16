@@ -15,12 +15,13 @@ $.fitui.jsoneditor = {
     },
     array2tmpl: function(value, config, path, name_prefix, handleStr){
         //字符串数组
+        //alert(path);
         if (handleStr && config && config.split) {
             value = value ? value.toString().split(config.split) : [];
             if (!value) value = [];
             value.push("");
             for (var j in value) {
-                var data = $.fitui.jsoneditor.prop2tmpl(name_prefix + '[' + j + ']', path + '.' + j, value[j], { caption: "值", editor: config.roweditor, lineshow: true });
+                var data = $.fitui.jsoneditor.prop2tmpl(name_prefix + '[' + j + ']', path + j, value[j], { caption: "值", editor: config.roweditor, lineshow: true });
                 value[j] = { array: false, data: data };
             }
         }
@@ -37,6 +38,7 @@ $.fitui.jsoneditor = {
             
         }
         value[value.length - 1]["tmplrow"] = true;
+        //alert(JSON.stringify(value))
         return value; //如果传进来的value 是字符串必须返回，如果是数组就不必
     },
 
@@ -160,6 +162,7 @@ $.fitui.jsoneditor = {
                 var c = $.fitui.jsoneditor.getConfigByPath (path);
             
                 data = $.fitui.jsoneditor.array2tmpl(data, c, path, name, true);
+                if (console) console.log({ all1: data });
                 $(texteditor).hide();
                 return $('#metaPropArray').tmpl({readonly: false, jsonvalue: data}).insertBefore(texteditor);
             }
@@ -213,7 +216,37 @@ $.fitui.jsoneditor = {
             }
         }
     },
-
+    reference: function(main, type){
+        $(main).find('[reference]:not(select)').each(function(){
+            var r = $(this).attr('reference').split('.');
+            $(this).autocomplete({
+                 source:'/index/reference/' + r[0] + '/' + r[1], minLength:0
+            }); 
+        });
+        var cache = {};
+        $(main).find('select[reference]').each(function(){
+            var r = $(this).attr('reference'); 
+            
+            if (!cache[r]) cache[r] = [];
+            var name = $(this).attr('name').replace(/\[\d+\]/,''); 
+            if (cache[r].indexOf(name) < 0) cache[r].push(name);
+        });
+        for(var i in cache){
+            var src_array = i.split('.')[0];
+            var src_field = i.split('.')[1];
+            
+            $(main).find('fieldset.array[path="' + type + '.' + src_array + '"]').bind('change', function(){
+                $(this).find('[name$="\[' + src_field + '\]"]').each(function(){
+                    var value = $(this).val();
+                    
+                    for(var j in cache[i]){
+                        $('<option>').text( value).attr('value', value) .appendTo($('[name="' + cache[i][j] +'"]'));
+                    }
+                });
+            }).trigger('change').css('border', '1px solid red');
+        }
+ 
+    },
     toggleDesigner: function (main) {
         $(main).find('a[designer]').live('toggle', function(){
             var p = $(this).closest('.prop');
@@ -249,19 +282,22 @@ $.fitui.jsoneditor = {
 };
 
 $.jsoneditorSetup = function (option) {
-    $.fitui.jsoneditor.config = option.config; //先记录下来
-    $.fitui.jsoneditor.json2strurl = option.json2strurl; //先记录下来
+    //先记录下来
+    $.fitui.jsoneditor.config = option.config; 
+    $.fitui.jsoneditor.json2strurl = option.json2strurl;  
+    $.fitui.jsoneditor.referenceurl = option.referenceurl;  
 }
 
 $.fn.jsoneditor = function (doc, type) {
     return this.each(function () {
         $(this).addClass('jsoneditor').attr('title', type); //基础路径
         var data = $.fitui.jsoneditor.object2tmpl(doc, $.fitui.jsoneditor.config[type], type);
-        if (console) console.log({ all: data });
+        //if (console) console.log({ all: data });
         $('#metaObject').tmpl(data).appendTo(this).layout(true);
         $.fitui.jsoneditor.zip($(this).find('a.zip'));
         $.fitui.jsoneditor.tmplRowEditor(this, false);
         $.fitui.jsoneditor.toggleDesigner(this);
+        $.fitui.jsoneditor.reference(this, type);
     });
 }
 
@@ -328,6 +364,7 @@ $.fitui.uidesigner = {
                 var ui = s.substring(0, s.indexOf(' '));
                 //try {
                 var params = eval("(" + s.substring(s.indexOf(' ') + 1) + ")");  //这是字典(给模拟器用)
+                if (!params.name) params.name = ui + Math.random().toString().substring(2, 5);
                 var attrs = $.dic2array(params); //这是数组，给设计器用
                 //} catch(e){var attrs = [ ];}
                 var item = { ui: ui, id: ui, params: params, attrs: attrs, children: [] };
@@ -376,7 +413,7 @@ $.fitui.uidesigner = {
             if (pe.attr('itemid') == id) { }
             else {
                 if (pe.size() > 0) pe.closest('.ui-dialog').remove();
-                $('#tpuipropedit').tmpl($.fitui.uidesigner.prop2tmpl(item, item.children('div').children('input.ui').val(), id)).appendTo(designer).dialog().find('input').change(function () {
+                $('#tpuipropedit').tmpl($.fitui.uidesigner.prop2tmpl(item, item.children('div').children('input.ui').val(), id)).appendTo(designer).dialog({position:{my: "right top", at: "right middle"  }}).find('input').change(function () {
                     var uiitem = $('#' + $(this).closest('.uipropedit').attr('itemid'));
                     uiitem.attr($(this).attr('key'), $(this).val());
                 }).focus(function(){
@@ -386,6 +423,8 @@ $.fitui.uidesigner = {
                 });
             }
             return false;
+        }).end().find('a.deluiitem').click(function(){
+            $(this).closest('.uiitem').remove();
         });
     },
 
@@ -404,7 +443,7 @@ $.fitui.uidesigner = {
                     $.fitui.uidesigner.data2tmpl({
                     "ui": ui.item.label,
                     "id": ui.item.value, children:[]
-                })).insertBefore(p).removeClass('tmpl').parent().removeClass('empty');
+                })).insertBefore(p).removeClass('tmpl').parent().removeClass('empty').end();
                 $.fitui.uidesigner.uiitem(newitem);
                 $.fitui.uidesigner.tmplitem(newitem.find('.uiitem.tmpl'));
                 return false;
