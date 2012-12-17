@@ -51,6 +51,7 @@ app.get('/tables', routes.tables);
 app.get('/data/tables', require('./routes/data').tables);
 app.get('/data/table', require('./routes/data').table);
 app.get('/data/doc', require('./routes/data').doc);
+app.post('/data/savedoc', require('./routes/data').savedoc);
 app.get('/emulator/page', require('./routes/emulator').page);
 app.get('/emulator/preview', require('./routes/emulator').preview);
  

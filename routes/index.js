@@ -8,7 +8,7 @@ exports.index = function (req, res) {
     new account(req).getState(req.session.project, "TabTree", function (doc) {
         res.render('index.html', {
             global_data: req.global_data, project: req.session.project, user: req.session.user,
-            tabstate: doc ? JSON.stringify(doc.ContentTab) : "null",
+            tabstate: doc ? (doc.ContentTab ? JSON.stringify(doc.ContentTab) :"null"): "null",
         });
     });
 

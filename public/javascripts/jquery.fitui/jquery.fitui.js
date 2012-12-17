@@ -27,7 +27,7 @@ $.fn.ajaxTabs = function (option) {
                     $.ajaxTab.openTab($(this).attr('icon'), url.substring(1),
                         $(this).text() ? $(this).text() : $(this).attr('title'), true,
                         option.create);
-                    //$.lastState.change(option.stateId); //打开会切换，切换时会保存,但是有问题, 切换事件发生在未创建tab之前
+                    $.lastState.change(option.stateId); //打开会切换，切换时会保存,但是有问题, 切换事件发生在未创建tab之前
                 }
                 return false;
             });

@@ -1,7 +1,411 @@
 
 <style >
+lfLayout {display: block;position: relative;}
+.lfLayout .lfLayout_head {-moz-border-bottom-colors: none;-moz-border-left-colors: none;-moz-border-right-colors: none;
+    -moz-border-top-colors: none;border-color: #778CB9;border-image: none;border-style: none none solid;border-width: 1px;
+    display: block; height: 85px; left: 0; min-width: 1000px; position: absolute; top: 0; width: 100%; z-index: 4; }
+.lfLayout .lfLayout_head .head_body {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: url("/javascripts/uicontrols/images/layout/head_bg.gif") repeat-x scroll 0 0 transparent;
+    border-color: #778CB9;
+    border-image: none;
+    border-style: none none solid;
+    border-width: 1px;
+    display: block;
+    height: 58px;
+    overflow: hidden;
+    width: 100%;
+}
+.lfLayout .lfLayout_head .head_body .softlogo {
+    cursor: pointer;
+    display: block;
+    float: left;
+    padding: 4px 0 0 5px;
+}
+.lfLayout .lfLayout_head .head_body .softlogo a {
+    cursor: pointer;
+    outline: medium none;
+}
+.lfLayout .lfLayout_head .head_body .softlogo a img {
+    border: medium none;
+}
+.lfLayout .lfLayout_head .head_body .userinfo {
+    color: #E1F2FB;
+    display: block;
+    float: right;
+    font-size: 12px;
+    font-weight: bold;
+    height: 30px;
+    margin-right: 15px;
+    margin-top: 10px;
+    text-align: right;
+    width: 300px;
+}
+.lfLayout .lfLayout_head .head_body .userinfo span {
+    display: block;
+    margin-top: 3px;
+}
+.lfLayout .lfLayout_head .head_body .userinfo span a {
+    color: #E1F2FB;
+    cursor: pointer;
+    text-decoration: none;
+}
+.lfLayout .lfLayout_head .head_body .userinfo span a:hover {
+    color: #FF0000;
+}
+.lfLayout .lfLayout_head .head_bar {
+    background: url("/javascripts/uicontrols/images/layout/head_bar.gif") repeat-x scroll left top transparent;
+    clear: both;
+    color: #264478;
+    font-size: 12px;
+    height: 26px;
+    width: 100%;
+}
+.lfLayout .lfLayout_head .head_bar .userbar {
+    display: block;
+    float: left;
+    margin-left: 10px;
+}
+.lfLayout .lfLayout_head .head_bar .helpinfo {
+    display: block;
+    float: right;
+    margin-right: 10px;
+}
+.lfLayout .lfLayout_head .systemck {
+    color: #264478;
+    display: block;
+    float: left;
+}
+.lfLayout .lfLayout_head .systemck span {
+    display: block;
+    float: left;
+    margin-top: 6px;
+}
+.lfLayout .lfLayout_head .systemck select {
+    display: block;
+    float: left;
+    margin-right: 5px;
+    margin-top: 4px;
+}
+.lfLayout .lfLayout_menu {
+    background-color: #778CB9;
+    cursor: e-resize;
+    display: block;
+    left: 0;
+    position: absolute;
+    top: 86px;
+    width: 250px;
+    z-index: 2;
+}
+.lfLayout .lfLayout_menu .menu_block {
+    cursor: default;
+    display: block;
+    height: 100%;
+}
+.lfLayout .lfLayout_menu .menu_block .menu_head {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: url("/javascripts/uicontrols/images/layout/menu_head_bg.gif") repeat-x scroll left top transparent;
+    border-color: #778CB9;
+    border-image: none;
+    border-style: none none solid;
+    border-width: 1px;
+    display: block;
+    height: 26px;
+    overflow: hidden;
+    width: 100%;
+}
+.lfLayout .lfLayout_menu .menu_block .menu_head .hcont {
+    display: block;
+    padding: 4px 0 0;
+}
+.lfLayout .lfLayout_menu .menu_block .menu_head .hcont .h_txt {
+    color: #1F4C87;
+    display: block;
+    float: left;
+    font-family: "微软雅黑";
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 30px;
+    text-align: center;
+    white-space: nowrap;
+    width: 100%;
+    z-index: 1;
+}
+.lfLayout .lfLayout_menu .menu_block .menu_head .hcont .hide {
+    background: url("/javascripts/uicontrols/images/layout/hide.gif") no-repeat scroll 0 0 transparent;
+    cursor: pointer;
+    display: block;
+    float: left;
+    height: 18px;
+    margin-left: -23px;
+    width: 18px;
+    z-index: 2;
+}
+.lfLayout .lfLayout_menu .menu_block .menu_head .hcont .hide:hover {
+    background: url("/javascripts/uicontrols/images/layout/hide_hover.gif") no-repeat scroll 0 0 transparent;
+}
+.lfLayout .lfLayout_menu .menu_block .menu_body {
+    background-color: #CEE7FF;
+    clear: both;
+    display: block;
+    overflow: auto;
+}
+.lfLayout .menu_hidebar {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #CEE7FF;
+    border-color: #778CB9;
+    border-image: none;
+    border-style: none solid none none;
+    border-width: 1px;
+    display: none;
+    position: absolute;
+    width: 24px;
+    z-index: 888;
+}
+.lfLayout .menu_hidebar .show {
+    background: url("/javascripts/uicontrols/images/layout/show.gif") no-repeat scroll 0 0 transparent;
+    cursor: pointer;
+    height: 18px;
+    margin-left: 3px;
+    margin-right: 2px;
+    margin-top: 4px;
+    width: 18px;
+}
+.lfLayout .menu_hidebar .show:hover {
+    background: url("/javascripts/uicontrols/images/layout/show_hover.gif") no-repeat scroll 0 0 transparent;
+}
+.lfLayout .lfLayout_page {
+    display: block;
+    position: absolute;
+    z-index: 2;
+}
+.lfLayout .lfLayout_page .page_head {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: url("/javascripts/uicontrols/images/layout/menu_head_bg.gif") repeat-x scroll left top transparent;
+    border-color: #778CB9;
+    border-image: none;
+    border-style: none none solid;
+    border-width: 1px;
+    display: block;
+    height: 26px;
+    width: 100%;
+}
+.lfLayout .lfLayout_page .page_head .modname {
+    color: #1F4C87;
+    display: block;
+    font-family: "微软雅黑";
+    font-size: 16px;
+    letter-spacing: 5px;
+    padding: 2px 0 0 10px;
+    white-space: nowrap;
+}
+.lfLayout .lfLayout_page .page_body {
+    background-color: #CEE7FF;
+    display: block;
+    height: 100px;
+    overflow: auto;
+    width: 100%;
+    z-index: 999;
+}
+.lfLayout .lfLayout_foot {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: url("/javascripts/uicontrols/images/layout/menu_head_bg.gif") repeat scroll 0 0 transparent;
+    border-color: #778CB9;
+    border-image: none;
+    border-style: solid none none;
+    border-width: 1px;
+    display: block;
+    height: 26px;
+    left: 0;
+    min-width: 1000px;
+    position: absolute;
+    width: 100%;
+}
+.lfLayout .lfLayout_foot .foot_body {
+    display: block;
+    font-size: 12px;
+    padding: 5px 0 0;
+    text-align: center;
+    width: 100%;
+}
+
+
+.lfUserBar {
+    height: 26px;
+}
+.userbar_btn {
+    color: #264478;
+    cursor: pointer;
+    display: block;
+    float: left;
+    font-size: 12px;
+    padding: 1px 3px 5px;
+    text-decoration: none;
+}
+.userbar_btn:hover {
+    background: url("/javascripts/uicontrols/images/lfUserBar/cover_hover.png") repeat-x scroll 0 0 transparent;
+    border: 1px solid #7EABCD;
+    padding: 0 2px 4px;
+}
+.userbar_btn .ico {
+    display: block;
+    float: left;
+    margin-top: 5px;
+    padding: 0 0 0 20px;
+}
+.userbar_btn .bdown {
+    background: url("/javascripts/uicontrols/images/lfUserBar/icon_open.png") no-repeat scroll center bottom transparent;
+    display: block;
+    float: left;
+    height: 20px;
+    margin-left: 3px;
+    position: relative;
+    width: 7px;
+}
+.userbar_btn .bdown ul.userbar_menu {
+    background-color: #CEE7FF;
+    border: 1px solid #778CB9;
+    display: none;
+    left: 0;
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 26px;
+    z-index: 999;
+}
+.userbar_btn .bdown ul.userbar_menu li {
+    display: block;
+    list-style: none outside none;
+    padding: 3px 5px;
+    white-space: nowrap;
+}
+.userbar_btn .bdown ul.userbar_menu li:hover {
+    background-color: #DCF0FA;
+}
+.lfUserBar div.userbar_line {
+    background: url("/javascripts/uicontrols/images/lfUserBar/bar_line.gif") no-repeat scroll center center transparent;
+    display: block;
+    float: left;
+    height: 25px;
+    margin-left: 8px;
+    margin-right: 8px;
+    width: 2px;
+}
+
     
-    
+.AccordionMenu .ui-accordion-header{border-style:solid;border-color:#7290B4; border-width:0px 0px 1px 1px; background:url('/javascripts/uicontrols/images/AccordionMenu/outlookbar.png'); margin-top:0px; vertical-align:middle; font-size:1.03em; }
+    /*height:31px; */
+.AccordionMenu .ui-accordion-header .ui-icon{background-image:url('/javascripts/uicontrols/images/AccordionMenu/module.24.png'); height:24px; width:24px; top:3px; background-position:0px 0px;
+                                    vertical-align:middle; }
+.AccordionMenu.ui-accordion .ui-accordion-header .ui-icon{margin-top:0px;  }
+.AccordionMenu .ui-accordion-header[icon="商品"] .ui-icon {
+    background-image: url("/javascripts/uicontrols/images/AccordionMenu/商品.24.png");
+}
+.AccordionMenu .ui-accordion-header[icon="码"] .ui-icon {
+    background-image: url("/javascripts/uicontrols/images/AccordionMenu/码.24.png");
+}
+.AccordionMenu .ui-accordion-header[icon="客户"] .ui-icon {
+    background-image: url("/javascripts/uicontrols/images/AccordionMenu/客户.24.png");
+}
+.AccordionMenu .ui-accordion-header[icon="分类"] .ui-icon {
+    background-image: url("/javascripts/uicontrols/images/AccordionMenu/分类.24.png");
+}
+.AccordionMenu .ui-accordion-header[icon="车"] .ui-icon {
+    background-image: url("/javascripts/uicontrols/images/AccordionMenu/车.24.png");
+}
+.AccordionMenu .ui-accordion-header[icon="盘点"] .ui-icon {
+    background-image: url("/javascripts/uicontrols/images/AccordionMenu/盘点.24.png");
+}
+.AccordionMenu .ui-accordion-header[icon="供应商"] .ui-icon {
+    background-image: url("/javascripts/uicontrols/images/AccordionMenu/供应商.24.png");
+}
+.AccordionMenu .ui-accordion-header[icon="管理"] .ui-icon {
+    background-image: url("images/module/管理.24.png");
+}
+.AccordionMenu .ui-accordion-header[icon="维护"] .ui-icon {
+    background-image: url("/javascripts/uicontrols/images/AccordionMenu/维护.24.png");
+}
+.AccordionMenu .ui-accordion-header[icon="查询"] .ui-icon {
+    background-image: url("/javascripts/uicontrols/images/AccordionMenu/查询.24.png");
+}
+.AccordionMenu .ui-accordion-header[icon="报表"] .ui-icon {
+    background-image: url("/javascripts/uicontrols/images/AccordionMenu/报表.24.png");
+}
+.AccordionMenu .ui-accordion-header>a{height:24px;}
+.AccordionMenu .ui-accordion-content{ background:#eee; border-color:#7290B4; border-width:0px 0px 1px 1px; }
+.AccordionMenu h3.ui-state-active a, .AccordionMenu h3.ui-state-active a:link, .AccordionMenu h3.ui-state-active a:visited
+    .AccordionMenu h3.ui-state-default a, .AccordionMenu h3.ui-state-default a:link, .AccordionMenu h3.ui-state-default a:visited
+        { font-weight:bold; color:#36688D; margin-left:4px;} /*#224678*/
+.AccordionMenu .ui-corner-top, .AccordionMenu .ui-corner-all, .AccordionMenu .ui-corner-bottom{ border-top-left-radius:0px;border-top-right-radius:0px;border-bottom-left-radius:0px;border-bottom-right-radius:0px;}
+        
+.AccordionMenu .filetree span.file{ background: url("/javascripts/uicontrols/images/AccordionMenu/mod.png") no-repeat scroll 0 0 transparent; }
+.AccordionMenu .filetree span.file[icon="商品"] {
+    background: url("/javascripts/uicontrols/images/AccordionMenu/商品.png") no-repeat scroll 0 0 transparent;
+}
+.AccordionMenu .filetree span.file[icon="码"] {
+    background: url("/javascripts/uicontrols/images/AccordionMenu/码.png") no-repeat scroll 0 0 transparent;
+}
+.AccordionMenu .filetree span.file[icon="客户"] {
+    background: url("/javascripts/uicontrols/images/AccordionMenu/客户.png") no-repeat scroll 0 0 transparent;
+}
+.AccordionMenu .filetree span.file[icon="分类"] {
+    background: url("/javascripts/uicontrols/images/AccordionMenu/分类.png") no-repeat scroll 0 0 transparent;
+}
+.AccordionMenu .filetree span.file[icon="车"] {
+    background: url("/javascripts/uicontrols/images/AccordionMenu/车.png") no-repeat scroll 0 0 transparent;
+}
+.AccordionMenu .filetree span.file[icon="盘点"] {
+    background: url("/javascripts/uicontrols/images/AccordionMenu/盘点.png") no-repeat scroll 0 0 transparent;
+}
+.AccordionMenu .filetree span.file[icon="供应商"] {
+    background: url("/javascripts/uicontrols/images/AccordionMenu/供应商.png") no-repeat scroll 0 0 transparent;
+}
+.AccordionMenu .filetree span.file[icon="管理"] {
+    background: url("/javascripts/uicontrols/images/AccordionMenu/管理.png") no-repeat scroll 0 0 transparent;
+}
+.AccordionMenu .filetree span.file[icon="维护"] {
+    background: url("/javascripts/uicontrols/images/AccordionMenu/维护.png") no-repeat scroll 0 0 transparent;
+}
+.AccordionMenu .filetree span.file[icon="报表"] {
+    background: url("/javascripts/uicontrols/images/AccordionMenu/报表.png") no-repeat scroll 0 0 transparent;
+}
+.AccordionMenu .filetree span.file[icon="查询"] {
+    background: url("/javascripts/uicontrols/images/AccordionMenu/查询.png") no-repeat scroll 0 0 transparent;
+}
+.AccordionMenu .treeview li {
+    background: url("/javascripts/uicontrols/images/AccordionMenu/treeview-default-line.gif") no-repeat scroll 0 0 transparent;
+}
+.AccordionMenu .treeview li.collapsable, #nav .treeview li.expandable{  margin-left:-20px; }
+.AccordionMenu .treeview li.selected { background:#a7ceef}
+.AccordionMenu .treeview li.collapsable>span, #nav .treeview li.expandable>span{  font-weight:bold;}
+.AccordionMenu .filetree span.folder {
+    background: url("/javascripts/uicontrols/images/AccordionMenu/arrow_down.png") no-repeat scroll 4px 7px transparent;
+}
+.AccordionMenu .filetree li.expandable span.folder {
+    background: url("/javascripts/uicontrols/images/AccordionMenu/arrow_right.png") no-repeat scroll 4px 4px transparent;
+}
+.AccordionMenu a {
+    text-decoration: none;
+}
+.AccordionMenu a:hover {
+    text-decoration: underline;
+}
 </style>
 
 <script type='text/x-jquery-tmpl' id="uitplfLayout">
@@ -12,12 +416,12 @@
 
 
 <script type='text/x-jquery-tmpl' id="uitplfLayout_page">
-    <div id="${name}" class="lfLayout_page" style="width: 1413px; height: 471px; top: 86px; left: 250px;">
+    <div id="${name}" class="lfLayout_page" >
          <div class="page_head">
           <span class="modname">  90002.用户管理</span>
         </div>
 
-        <div class="page_body" style="height: 444px;" uicontainer="${name}">
+        <div class="page_body" uicontainer="${name}">
 
         </div>
     </div>
@@ -30,26 +434,96 @@
 </script>
 
 <script type='text/x-jquery-tmpl' id="uitplfLayout_foot">
-    <div class="lfLayout_foot" id="lfLayout_foot">
-        
+    <div id="lfLayout_foot" class="lfLayout_foot" >
+        <div class="foot_body"> 上海灵蕨信息科技有限公司</div>
     </div>
 </script>
 
 <script type='text/x-jquery-tmpl' id="uitplfLayout_head">
-    <div class="lfLayout_head" id="lfLayout_head">
+    <div id="lfLayout_head" class="lfLayout_head">
+        <div class="head_body">
+            <div class="softlogo">
+                <a href="/"><img src="/javascripts/uicontrols/images/layout/linkfern.png" alt="logo"></a>
+            </div>
         
+            <div class="userinfo">
+                <span>当前用户：admin</span>
+                <span><a href="/t/Account/Logout">[&nbsp;注销&nbsp;]</a></span>
+            </div>
+        </div>
+
+        <div class="head_bar">
+            <div class="userbar">
+                <div id="lfUserBar" class="lfUserBar">
+                    <a href="/" class="userbar_btn"><span class="ico icon_home">流程图</span></a>
+                <div class="userbar_line">
+ 
+            </div>
+
+            <a class="userbar_btn"> <span class="ico icon_settings">用户设置</span><span class="bdown"> 
+                <ul class="userbar_menu"> 
+                    <li onclick="ChangePwd()"> 修改密码</li>
+                    <li>快速入口设置</li>
+                </ul>
+            </span></a>
+
+            <div class="userbar_line">
+            </div>
+
+            <a class="userbar_btn">
+                <span class="ico icon_key"> 快速入口</span> <span class="bdown">
+                    <ul class="userbar_menu">
+                    </ul>
+                </span>
+            </a>
+        </div>
     </div>
+
+    <div class="helpinfo">
+        <div class="systemck">
+            <span>当前位置：</span>
+            <select id="where"><option value="0000">无供应商</option></select>
+        </div>
+        <a class="userbar_btn"><span class="ico icon_help">帮助</span></a>
+    </div>
+    </div>
+</div>
 </script>
 
 <script type='text/x-jquery-tmpl' id="uitplfLayout_menu">
-    <div class="lfLayout_menu" id="lfLayout_menu">
-        
+    <div class="lfLayout_menu" id="${name}">
+        <div class="menu_block">
+            <div class="menu_head">
+                <div class="hcont">
+                    <span class="h_txt">菜单</span><span class="hide"></span>
+                </div>
+            </div>
+            <div class="menu_body" uicontainer="${name}">
+            </div>
+        </div>
     </div>
 </script>
-
 
 <script type='text/x-jquery-tmpl' id="uitpAccordionMenu">
-    <div class="AccordionMenu" id="AccordionMenu">
-        
+    <div class="AccordionMenu">
+        {{each menu.children }}
+            <h3><a href='#'>${module.Caption}</a></h3>
+            <div>
+                {{tmpl($value) "#uitpAccordionMenuUL"}}
+            </div>
+        {{/each}}
     </div>
 </script>
+
+<script type='text/x-jquery-tmpl' id="uitpAccordionMenuUL">
+    <ul class="filetree">
+        {{each children }}
+            <li><span class="file"><a href="${module.Path}">${module.Caption}</a></span>
+                {{if children.length>0}}
+                    {{tmpl($value) "#uitpAccordionMenuUL"}}
+                {{/if}}
+            </li>
+        {{/each}}
+    </ul>
+</script>
+

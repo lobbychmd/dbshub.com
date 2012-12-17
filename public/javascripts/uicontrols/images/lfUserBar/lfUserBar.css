@@ -1,0 +1,67 @@
+/* CSS Document */
+
+.lfUserBar{
+	height:26px;
+	}
+
+.userbar_btn{
+	display:block;
+	float:left;
+	font-size:12px;
+	padding:1px 3px 5px 3px;
+	cursor:pointer;
+	color: #264478;
+	text-decoration:none;
+	}
+.userbar_btn:hover{
+	background:url(cover_hover.png) repeat-x;
+	border:1px solid #7eabcd;
+	padding:0 2px 4px 2px;
+	}
+.userbar_btn .ico{
+	display:block;
+	float:left;
+	padding:0 0 0 20px;
+	margin-top:5px;
+	}
+.userbar_btn .bdown{
+	display:block;
+	position:relative;
+	float:left;
+	width:7px;
+	height:20px;
+	margin-left:3px;
+	background:url(icon_open.png) center bottom no-repeat;
+	}
+.userbar_btn .bdown ul.userbar_menu{
+	display:none;
+	position:absolute;
+	padding:0;
+	margin:0;
+	left:0px;  /*JS调整*/
+	top:26px;
+	list-style:none;
+	background-color:#CEE7FF;
+	border:1px solid #778CB9;
+	z-index:999;
+	}
+.userbar_btn .bdown ul.userbar_menu li{
+	display:block;
+	list-style:none;
+	white-space:nowrap;
+	padding:3px 5px 3px 5px;
+	}
+.userbar_btn .bdown ul.userbar_menu li:hover{
+	background-color: #DCF0FA;
+	}
+.lfUserBar div.userbar_line{
+	display:block;
+	width:2px;
+	height:25px;
+	float:left;
+	margin-left:8px;
+	margin-right:8px;
+	background: url(bar_line.gif) center center no-repeat;
+	}	
+	
+	

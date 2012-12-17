@@ -27,6 +27,14 @@ var getLayout = function (ProjectName, page, callback) {
     });
 }
 
+var getModules = function (ProjectName, page, callback) {
+    var db = config.db();
+    db.collection("MetaModule").find({ ProjectName: ProjectName }).toArray(function (err, modules) {
+        callback(modules);
+    });
+}
+
+
 var getQueryMeta = function (project, queries, callback) {
     var db = config.db();
     var metaQuery = {};
@@ -93,6 +101,13 @@ exports.page = function (req, res) {
             //布局
             getLayout(req.session.project, req.query.page, function (lay) {
                 page.layout = lay;
+                callback();
+            });
+        },
+        function (params, callback) {
+            //菜单
+            getModules(req.session.project, req.query.page, function (modules) {
+                page.modules = modules;
                 callback();
             });
         },

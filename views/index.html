@@ -41,6 +41,11 @@
             });
         });
 
+        var onCreateTab = function (tab) {
+            tab.attr('align', 'auto')
+                    .attr('layout', 'v').css('padding', '0px').parent().layout();
+            $.autoHeight({}, true);
+        };
         $('#tabs').ajaxTabs({ a_selector: "#tree a",
             stateId: "ContentTab",
             stateGroup: "tabtree",
@@ -48,16 +53,12 @@
                 var contentTab = {{html tabstate}};
                 if (contentTab) {
                     for (var i in contentTab.OpenTabs)
-                        $.ajaxTab.openTab(contentTab.OpenTabs[i].MetaType, contentTab.OpenTabs[i].Url, contentTab.OpenTabs[i].Text, false);
+                        $.ajaxTab.openTab(contentTab.OpenTabs[i].MetaType, contentTab.OpenTabs[i].Url, contentTab.OpenTabs[i].Text, false, onCreateTab);
                     $tabs.tabs("select", contentTab.LastIndex);
                     $.ajaxTab.tabCheckLoad($tabs.find('li.ui-state-active').attr('index'));
                 }
             },
-            create: function (tab) {
-                tab.attr('align', 'auto')
-                    .attr('layout', 'v').css('padding', '0px').parent().layout();
-                $.autoHeight({}, true);
-            }
+            create: onCreateTab
         });
 
 

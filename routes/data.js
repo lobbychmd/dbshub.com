@@ -31,3 +31,9 @@ exports.doc = function (req, res) {
     });
 };
 
+
+exports.savedoc = function (req, res) {
+    res.json(JSON.stringify( req.body));
+
+};
+

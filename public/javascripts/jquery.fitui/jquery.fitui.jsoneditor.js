@@ -243,7 +243,7 @@ $.fitui.jsoneditor = {
                         $('<option>').text( value).attr('value', value) .appendTo($('[group="' + cache[i][j] +'"]'));
                     }
                 });
-            }).trigger('change').css('border', '1px solid red');
+            }).trigger('change');
         }
  
     },

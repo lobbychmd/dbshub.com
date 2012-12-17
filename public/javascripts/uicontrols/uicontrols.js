@@ -7,21 +7,28 @@ $.uicontrols = {
         lfLayout_page: 'lfLayout',
         lfLayout_foot: 'lfLayout'
     },
-    loadRequire: function (uiname, callback) {
+    loadRequire: function (uiname, loaded, callback) {
         var fileName = $.uicontrols.config[uiname];
         if (!fileName) fileName = uiname;
-        $LAB.script("/javascripts/uicontrols/" + fileName + ".js").wait(function () {
-            $.get('/jqtpl?uiname=' + fileName, function (html) {
-                $(html).appendTo('head');
-                callback();
+        if (loaded.indexOf(fileName) < 0){
+            $LAB.script("/javascripts/uicontrols/" + fileName + ".js").wait(function () {
+                $.get('/jqtpl?uiname=' + fileName, function (html) {
+                    $(html).appendTo('head');
+                    loaded.push(fileName);
+                    callback();
 
-            }).appendTo('head');
-        });
+                }).appendTo('head');
+            });
+            
+        } else {
+            callback();
+        }
     },
-    renderUIitem: function (uis, pageInfo, container, callback) {
+    renderUIitem: function (uis, pageInfo, container, loaded, callback) {
         new seq_asyncArray(
             function (item, params, callback1) {
-                $.uicontrols.loadRequire(item.ui, function () {
+                
+                $.uicontrols.loadRequire(item.ui, loaded, function () {
                     if ($.uicontrols[item.ui]) {
                         
                         var htm = $("#uitp" + item.ui).tmpl(
@@ -31,7 +38,7 @@ $.uicontrols = {
 
                         if (item.children && item.children.length > 0){
                             var uicontainer = $(htm).find('[uicontainer=' + item.params.name + ']');
-                            $.uicontrols.renderUIitem(item.children, pageInfo, uicontainer.size() == 0 ? htm: uicontainer, function () {
+                            $.uicontrols.renderUIitem(item.children, pageInfo, uicontainer.size() == 0 ? htm: uicontainer, loaded, function () {
                                 callback1();
                             });
                         }else callback1();
@@ -52,10 +59,12 @@ $.uicontrols = {
             var item = uis[i];
             if (distinctuis.indexOf(item.ui) < 0) {
                 eval("$('." + item.ui + "')." + item.ui + "();");
+                
                 distinctuis.push(item.ui);
             }
+            
             if (item.children && item.children.length > 0)
-                $.uicontrols.execUIitemJs(item.children);
+                $.uicontrols.execUIitemJs(item.children, distinctuis);
         }
     },
     findModulePage: function (data) {
@@ -90,8 +99,9 @@ $.fn.preview = function (moduleid, page, uitxt) {
                 :layout.children;
             //pageInfo  包括页面元数据，包含的查询的元数据，包含的查询结果数据（demo）
             //先构造所有ui，然后执行 js
-            $.uicontrols.renderUIitem(all, pageInfo, container, function () {
-                $.uicontrols.execUIitemJs([{ ui: "ModulePage", params: {}, children: data.children}]);
+            var loaded = [];
+            $.uicontrols.renderUIitem(all, pageInfo, container, loaded, function () {
+                $.uicontrols.execUIitemJs([{ ui: "ModulePage", params: {}, children: all}]);
                 //alert('ready!');
             });
         });

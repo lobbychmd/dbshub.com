@@ -9,7 +9,7 @@
     <div id="path${_id}" ></div>
 </div>
 
-<div id="design${_id}" align="auto" style="overflow: auto; border: 1px solid #d3d3d3; margin: 5px;" ></div>
+<form id="design${_id}" align="auto" style="overflow: auto; border: 1px solid #d3d3d3; margin: 5px;" ></form>
 <div id="preview${_id}" align="auto"  style="overflow: auto; border: 1px solid #d3d3d3; display: none" ></div>
 
 <script>
@@ -23,7 +23,7 @@
             if (r) {
                 $("#design${_id}").hide('slide', {}, 500, function () {
                     $("#" + cmd + "${_id}").show('slide', {}, 500, function () {
-                        if (cmd == "preview") $("#" + cmd + "${_id}").indicator({load:true}).load('/emulator/preview?_id=${_id}&page=1');
+                        if (cmd == "preview") $("#" + cmd + "${_id}").indicator({ load: true }).load('/emulator/preview?_id=${_id}&page=1');
                     });
 
                 });
@@ -43,7 +43,13 @@
             preview: doc_cmd,
             run: function () {
                 window.open('/emulator/preview?_id=${_id}&page=1');
+            },
+            save: function () {
+                $.post('/data/savedoc', $("#design${_id}").serializeArray(), function (data) {
+                    alert(data);
+                });
             }
         });
     });
 </script>
+
