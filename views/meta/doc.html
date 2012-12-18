@@ -42,7 +42,7 @@
             },
             preview: doc_cmd,
             run: function () {
-                window.open('/emulator/preview?_id=${_id}&page=1');
+                window.open('/emulator/preview?_id=${_id}&page=0');
             },
             save: function () {
                 $.post('/data/savedoc', $("#design${_id}").serializeArray(), function (data) {

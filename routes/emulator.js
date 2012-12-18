@@ -16,13 +16,27 @@ var getFieldMeta = function (project, fields, context, callback) {
 var getPageMeta = function (_id, page, callback) {
     var db = config.db();
     db.collection("MetaModule").findOne({ _id: db.ObjectID(_id) }, function (err, m) {
+        var m1 = /\/module\/query\/(\w+)\?mid=\w+/.exec(m.Path)
+        if (m1) {
+            m.ModulePages = [{ UI: "\
+                Toolbar {}\n\
+                    PageButton {name: 'query', caption: '查询'}\n\
+                    PageButton {name: 'print', caption: '打印', type: 'report'}\n\
+                QueryParams {name:'sqm', mq: 'FlowTurndays', grid: 'grid1', button:'query', fieldMeta: 'FlowTurndays_p'}\n\
+                QueryGrid {name: 'grid1', table:'FlowTurndays.0'}\n\
+                Paginating {table:'FlowTurndays.0', dataTable:'FlowTurndays.0', sumTable:'FlowTurndays.1', reqPageKey:'page', countPerPage: 10}  "
+                .replace(/FlowTurndays/ig, m1[1]),
+                Queries: m1[1]
+            }];
+        }
+        
         callback(m.ModulePages[page]);
     });
 }
 
 var getLayout = function (ProjectName, page, callback) {
     var db = config.db();
-    db.collection("MetaTheme").findOne({ ProjectName: ProjectName }, function (err, lay) {
+    db.collection("MetaTheme").findOne({ ProjectName: ProjectName, Theme:'lfLayout' }, function (err, lay) {
         callback(lay);
     });
 }
@@ -30,6 +44,9 @@ var getLayout = function (ProjectName, page, callback) {
 var getModules = function (ProjectName, page, callback) {
     var db = config.db();
     db.collection("MetaModule").find({ ProjectName: ProjectName }).toArray(function (err, modules) {
+        for (var i in modules) { 
+            modules[i].Path = '/emulator/preview?_id=' + modules[i]._id + '&page=0';
+        }
         callback(modules);
     });
 }
