@@ -220,6 +220,7 @@ $.fn.TableAutoWidth = function () {
             paginating.insertAfter(grid);
         }
 
+        grid.width('auto'); 
         var a = grid.width(); if (a) {
             grid.parent().width('auto');
             grid.width(a + 10 * $(grid).find('thead>tr>th').size()); //预留排序位置

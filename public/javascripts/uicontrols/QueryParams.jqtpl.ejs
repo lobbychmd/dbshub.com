@@ -3,7 +3,7 @@
     fieldset.QueryParams>*{} 
     .QueryParams {float:left; min-width:220px} 
     .QueryParams .ui-accordion-content{background:#d8e8ff; border-color:#7791ac} 
-    .QueryParams h3{ background:url('images/queryparam_bg.png'); border-color:#7791ac} 
+    .QueryParams h3{ background:url('/javascripts/uicontrols/images/queryparam_bg.png'); border-color:#7791ac} 
     .QueryParams .ui-icon-triangle-1-s{ background-position: -97px -128px} 
     span.caption{ background:#eee; display:inline-block; border-width:0px 0px 1px 0px; border-color:#7791ac; border-style:solid; width:100%;padding:10px 0 ; 
     color:#666;font-size: 1.2em;font-weight: bold;text-align: left;} 
@@ -26,8 +26,9 @@
                 <form method="get">
                     {{each queryParams}}
                         <div style="display:block">
-                        <label>${DisplayLabel}</label><br/>
-                        <input value="${Value}" name="${DisplayLabel}" id="查询条件_${DisplayLabel}" class="editor DateEditor hasDatepicker">
+                        <label>${metaField.DisplayLabel}</label><br/>
+                        {{tmpl($value) "#tpEditor"}}
+                        
                         <br><br>
                     {{/each}}
                 </div>
@@ -35,3 +36,4 @@
         {{/each}}
     </div>
 </script>
+

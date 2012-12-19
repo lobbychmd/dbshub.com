@@ -12,3 +12,10 @@
     </div>
 </script>
 
+
+<script type='text/x-jquery-tmpl' id="tpEditor">
+    <input value="${Value}" name="${ParamName}" id="查询条件_${ParamName}" 
+        class="editor {{if metaField.EditorType=="DATE" }}DateEditor{{/if}}" {{if metaField.EditorType="DATE" }}type="date"{{/if}}
+    />
+
+</script>

@@ -336,7 +336,7 @@ lfLayout {display: block;position: relative;}
     background-image: url("/javascripts/uicontrols/images/AccordionMenu/供应商.24.png");
 }
 .AccordionMenu .ui-accordion-header[icon="管理"] .ui-icon {
-    background-image: url("images/module/管理.24.png");
+    background-image: url("/javascripts/uicontrols/images/AccordionMenu/管理.24.png");
 }
 .AccordionMenu .ui-accordion-header[icon="维护"] .ui-icon {
     background-image: url("/javascripts/uicontrols/images/AccordionMenu/维护.24.png");
@@ -418,7 +418,7 @@ lfLayout {display: block;position: relative;}
 <script type='text/x-jquery-tmpl' id="uitplfLayout_page">
     <div id="${name}" class="lfLayout_page" >
          <div class="page_head">
-          <span class="modname">  90002.用户管理</span>
+          <span class="modname">  ${pageInfo.ModuleID}.${pageInfo.ModuleCaption}</span>
         </div>
 
         <div class="page_body" uicontainer="${name}">
@@ -505,9 +505,9 @@ lfLayout {display: block;position: relative;}
 </script>
 
 <script type='text/x-jquery-tmpl' id="uitpAccordionMenu">
-    <div class="AccordionMenu">
+    <div class="AccordionMenu" sel="${sel}">
         {{each menu.children }}
-            <h3><a href='#'>${module.Caption}</a></h3>
+            <h3 icon="${icon}"><a href='#'>${module.Caption}</a></h3>
             <div>
                 {{tmpl($value) "#uitpAccordionMenuUL"}}
             </div>
@@ -518,7 +518,7 @@ lfLayout {display: block;position: relative;}
 <script type='text/x-jquery-tmpl' id="uitpAccordionMenuUL">
     <ul class="filetree">
         {{each children }}
-            <li><span class="file"><a href="${module.Path}">${module.Caption}</a></span>
+            <li {{if ($value.sel)}}class="selected"{{/if}} ><span icon="${icon}" class="file"><a href="${module.Path}">${module.Caption}</a></span>
                 {{if children.length>0}}
                     {{tmpl($value) "#uitpAccordionMenuUL"}}
                 {{/if}}

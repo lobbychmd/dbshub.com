@@ -2,12 +2,16 @@
 $.uicontrols.QueryParams = {
     params2tmpl: function (uiparams, pageInfo) {
         if (!uiparams.name) uiparams.name = "queryparams1";
-        console.log(uiparams);
+        //console.log(uiparams.mq);
         uiparams.groups = [{ caption: "查询条件", queryParams: []}];
-        for (var i in pageInfo.metaQueries[uiparams.mq].Params)
-            uiparams.groups[0].queryParams.push({ DisplayLabel: pageInfo.metaQueries[uiparams.mq].Params[i].metaField ?
-                pageInfo.metaQueries[uiparams.mq].Params[i].metaField.DisplayLabel : pageInfo.metaQueries[uiparams.mq].Params[i].ParamName
-            });
+        for (var i in pageInfo.metaQueries[uiparams.mq].Params) {
+            var p = pageInfo.metaQueries[uiparams.mq].Params[i];
+            //p.metaField = pageInfo.metaQueries[uiparams.mq].Params[i].metaField;
+            //p.metaField = pageInfo.metaFields[uiparams.mq][p.ParamName];
+            console.log(p.metaField);
+            if (!p.metaField) p.metaField = { DisplayLabel: p.ParamName };
+            uiparams.groups[0].queryParams.push(p);
+        }
         return uiparams;
     }
 };
@@ -30,7 +34,6 @@ $.fn.QueryParams = function () {
 
         var summary = sqp.attr('paramAsString');
         if (!grid.attr('sqp')) {
-
             var title = $('<span class="caption"><a href="#">查询条件:</a>' + ((summary) ? summary : "无") + '</span>').insertBefore(grid.children().eq(0));
             title.find('a').attr('sqp', sqp.attr('id')).click(function () {
                 var sqp = $('#' + $(this).attr('sqp')).toggle();

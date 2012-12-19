@@ -29,7 +29,8 @@ var getPageMeta = function (_id, page, callback) {
                 Queries: m1[1]
             }];
         }
-        
+        m.ModulePages[page].ModuleID = m.ModuleID;
+        m.ModulePages[page].ModuleCaption = m.Caption;
         callback(m.ModulePages[page]);
     });
 }
@@ -43,7 +44,7 @@ var getLayout = function (ProjectName, page, callback) {
 
 var getModules = function (ProjectName, page, callback) {
     var db = config.db();
-    db.collection("MetaModule").find({ ProjectName: ProjectName }).toArray(function (err, modules) {
+    db.collection("MetaModule").find({ ProjectName: ProjectName }, {_id:1, ModuleID:1, Caption:1, ParentID:1}).toArray(function (err, modules) {
         for (var i in modules) { 
             modules[i].Path = '/emulator/preview?_id=' + modules[i]._id + '&page=0';
         }
@@ -57,7 +58,9 @@ var getQueryMeta = function (project, queries, callback) {
     var metaQuery = {};
     new fitnode.seq_asyncArray(
             function (queryName, data, c) {
-                db.collection("MetaQuery").findOne({ ProjectName: project, QueryName: queryName }, function (err, query) {
+                if (!queryName) c();
+                else db.collection("MetaQuery").findOne({ ProjectName: project, QueryName: queryName }, function (err, query) {
+                    if (!query) console.log(queryName + "不存在");
                     metaQuery[queryName] = query;
                     c();
                 });
@@ -71,6 +74,7 @@ var getQueryMeta = function (project, queries, callback) {
 
 
 var queryParamsMeta = function (fieldsMeta, query) {
+    console.log(fieldsMeta);
     for (var p in query.Params)
         for (var f in fieldsMeta) {
             if (query.Params[p].ParamName == fieldsMeta[f].FieldName) {
@@ -106,7 +110,7 @@ exports.page = function (req, res) {
     var project = req.session.project;
     var page;
     new fitnode.seq_async([
-    
+
         function (params, callback) {
             //取页面元数据
             getPageMeta(req.query._id, req.query.page, function (p) {
@@ -121,16 +125,10 @@ exports.page = function (req, res) {
                 callback();
             });
         },
-        function (params, callback) {
-            //菜单
-            getModules(req.session.project, req.query.page, function (modules) {
-                page.modules = modules;
-                callback();
-            });
-        },
+
         function (params, callback) {
             //取查询元数据
-            page.Queries = page.Queries.trim().split(';');
+            page.Queries = page.Queries?page.Queries.trim().split(';'):[];
             getQueryMeta(project, page.Queries, function (queries) {
                 page.metaQueries = queries;
 
@@ -142,25 +140,28 @@ exports.page = function (req, res) {
             page.dataSet = {};
             new fitnode.seq_asyncArray(
                 function (queryName, params, c) {
-                    //取查询的字段
-                    var metaQuery = page.metaQueries[queryName];
-                    var fields = new fitnode.sql(metaQuery.Scripts[0].Script).fieldsInclude();
+                    if (!queryName) c();
+                    else {
+                        //取查询的字段
+                        var metaQuery = page.metaQueries[queryName];
+                        var fields = new fitnode.sql(metaQuery.Scripts[0].Script).fieldsInclude();
 
-                    //构造查询数据
-                    getFieldMeta(project, fields, metaQuery.QueryName, function (metaFields) {
-                        page.metaFields[metaQuery.QueryName] = metaFields;
+                        //构造查询数据
+                        getFieldMeta(project, fields, metaQuery.QueryName, function (metaFields) {
+                            page.metaFields[metaQuery.QueryName] = metaFields;
 
-                        page.dataSet[metaQuery.QueryName] = getQueryData(fields, metaFields, metaQuery);
-                        page.dataSet[metaQuery.QueryName + ".0"] = page.dataSet[metaQuery.QueryName];
-                        console.log(page.dataSet);
+                            page.dataSet[metaQuery.QueryName] = getQueryData(fields, metaFields, metaQuery);
+                            page.dataSet[metaQuery.QueryName + ".0"] = page.dataSet[metaQuery.QueryName];
+                            console.log(page.dataSet);
 
-                        var queryParams = [];
-                        for (var p in metaQuery.Params) queryParams.push(metaQuery.Params[p].ParamName);
-                        getFieldMeta(project, queryParams, metaQuery.QueryName + "_p", function (pMetaFields) {
-                            page.metaFields[metaQuery.QueryName + "_p"] = pMetaFields;
-                            c();
+                            var queryParams = [];
+                            for (var p in metaQuery.Params) queryParams.push(metaQuery.Params[p].ParamName);
+                            getFieldMeta(project, queryParams, metaQuery.QueryName + "_p", function (pMetaFields) {
+                                page.metaFields[metaQuery.QueryName + "_p"] = pMetaFields;
+                                c();
+                            });
                         });
-                    });
+                    }
                 },
                 page.Queries,
                 function (params) {
@@ -170,12 +171,20 @@ exports.page = function (req, res) {
         },
         function (params, callback) {
             for (var q in page.Queries) {
-                queryParamsMeta(page.metaFields[page.Queries[q] + "_p"], page.metaQueries[page.Queries[q]]);
+                if (page.Queries[q]) queryParamsMeta(page.metaFields[page.Queries[q] + "_p"], page.metaQueries[page.Queries[q]]);
             }
             callback()
-        }
+        },
+        function (params, callback) {
+            //菜单
+            getModules(req.session.project, req.query.page, function (modules) {
+                console.log(page);
+                page.modules = modules;
+                callback();
+            });
+        },
     ], function (params) {
-        console.log(page);
+
         res.json(page);
 
     }).exec();

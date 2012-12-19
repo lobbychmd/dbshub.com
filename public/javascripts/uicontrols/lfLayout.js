@@ -19,6 +19,7 @@ $.uicontrols.lfLayout_menu = {
 
 $.uicontrols.lfLayout_page = {
     params2tmpl: function (uiparams, pageInfo) {
+        uiparams.pageInfo = pageInfo;
         return uiparams;
     }
 };
@@ -43,13 +44,36 @@ $.uicontrols.AccordionMenu = {
                 ) {
                 var mi = { module: modules[i], children: [] };
                 parent.children.push(mi);
+                mi.parent = parent;
+                $.uicontrols.AccordionMenu.setIcon(mi);
+                if (window.location.toString().indexOf(mi.module._id) > 0) {
+                    mi.sel = true;
+                    var p = parent;
+                    while (p.parent && p.parent.module.ModuleID) {
+                        p = p.parent;
+                    }
+                    p.sel = true;
+                }
                 $.uicontrols.AccordionMenu.menutree(modules, mi);
             }
         }
     },
+    setIcon: function (h) {
+        var icons = ["分类", "商品", "码", "客户", "供应商", "车", "盘点", "管理", "维护", "报表", "查询"];
+        for (var j in icons)
+            if (h.module.Caption.indexOf(icons[j]) >= 0) {
+                h.icon = icons[j];
+                break;
+            }
+    },
     params2tmpl: function (uiparams, pageInfo) {
-        uiparams.menu = { module: {ModuleID:null}, children: [] };
+        uiparams.menu = { module: { ModuleID: null }, children: [] };
         $.uicontrols.AccordionMenu.menutree(pageInfo.modules, uiparams.menu);
+        for (var i in uiparams.menu.children) {
+            if (uiparams.menu.children[i].sel) {
+                uiparams.sel = i;
+            }
+        }
         return uiparams;
     }
 };
