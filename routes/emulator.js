@@ -2,14 +2,38 @@ var fitnode = require('fitnode');
 var config = require('config');
 
 /*********** 页面的元数据信息，用来构造页面UI 或者测试 ***************/
+
+/*********** 处理下拉选择***************/
+var fieldMetaSelection = function (fieldsMeta) {
+    for (var i in fieldsMeta) {
+        if (fieldsMeta[i].DicNO)
+            fieldsMeta[i].Selection = fieldsMeta[i].DicNO + "." + fieldsMeta[i].DisplayLabel + "1";
+        if (fieldsMeta[i].Selection && (fieldsMeta[i].Selection.indexOf('.') > 0)) {
+            var selection = fieldsMeta[i].Selection.split(';');
+            fieldsMeta[i].Selection = [];
+            for (var j in selection)
+                fieldsMeta[i].Selection.push({ key: selection[j].split('.')[0], value: selection[j].split('.')[1] });
+        }
+    }
+    return fieldsMeta;
+}
+
 var getFieldMeta = function (project, fields, context, callback) {
     var db = config.db();
     var q = { ProjectName: project, FieldName: { "$in": fields} };
     //暂不考虑情景，待补充
-    //if (context) q["Context"] = context;
+    if (context) q["Context"] = context;
     //else q["Context"] = { "$in": [null, ''] };
     db.collection("MetaField").find(q).toArray(function (err, docs) {
-        callback(docs);
+        for (var i in docs) {
+            var idx = fields.indexOf(docs[i].FieldName);
+            if (idx >= 0) delete fields[idx];
+
+        }
+        q["Context"] = { "$in": [null, ''] };
+        db.collection("MetaField").find(q).toArray(function (err, docs1) {
+            callback(fieldMetaSelection(docs.concat(docs1)));
+        });
     });
 }
 
@@ -74,7 +98,7 @@ var getQueryMeta = function (project, queries, callback) {
 
 
 var queryParamsMeta = function (fieldsMeta, query) {
-    console.log(fieldsMeta);
+    //console.log(fieldsMeta);
     for (var p in query.Params)
         for (var f in fieldsMeta) {
             if (query.Params[p].ParamName == fieldsMeta[f].FieldName) {

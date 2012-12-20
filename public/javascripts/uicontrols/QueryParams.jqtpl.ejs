@@ -27,7 +27,7 @@
                     {{each queryParams}}
                         <div style="display:block">
                         <label>${metaField.DisplayLabel}</label><br/>
-                        {{tmpl($value) "#tpEditor"}}
+                        {{tmpl({name: ParamName, id: '查询条件_' + ParamName, metaField:metaField}) "#tpEditor"}}
                         
                         <br><br>
                     {{/each}}

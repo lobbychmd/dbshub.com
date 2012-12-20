@@ -6,7 +6,7 @@
                   ${data.columns[$index].metaField.DisplayLabel}
                 </div>
                 <div class="input_items_input">
-                    <input type="text" ${value} style="width:138px" readonly="readonly" name="${fieldName}" id="${fieldName}" fname="${fieldName}" class="editor" rostate="true">
+                    {{tmpl({name: key, id: key, metaField:data.columns[$index].metaField, Value: value}) "#tpEditor"}}
                 </div>
             </div>
         {{/each}}

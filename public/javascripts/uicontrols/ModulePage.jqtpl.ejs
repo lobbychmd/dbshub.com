@@ -14,8 +14,17 @@
 
 
 <script type='text/x-jquery-tmpl' id="tpEditor">
-    <input value="${Value}" name="${ParamName}" id="查询条件_${ParamName}" 
-        class="editor {{if metaField.EditorType=="DATE" }}DateEditor{{/if}}" {{if metaField.EditorType="DATE" }}type="date"{{/if}}
-    />
-
+    {{if metaField.EditorType=="LIST" }}
+        <select name="${name}" id="${id}" >
+            {{each metaField.Selection}}
+            <option value="${key}" selected="selected">${value}</option>
+            {{/each}}
+            <option value="" selected="selected"></option>
+        </select>
+    {{else}}
+        <input value="${Value}" name="${name}" id="${id}" 
+            class="editor {{if metaField.EditorType=="DATE" }}DateEditor{{/if}}" {{if metaField.EditorType=="DATE" }}type="date"{{/if}}
+        />
+    {{/if}}
+    
 </script>

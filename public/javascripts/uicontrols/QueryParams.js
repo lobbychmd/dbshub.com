@@ -6,10 +6,8 @@ $.uicontrols.QueryParams = {
         uiparams.groups = [{ caption: "查询条件", queryParams: []}];
         for (var i in pageInfo.metaQueries[uiparams.mq].Params) {
             var p = pageInfo.metaQueries[uiparams.mq].Params[i];
-            //p.metaField = pageInfo.metaQueries[uiparams.mq].Params[i].metaField;
-            //p.metaField = pageInfo.metaFields[uiparams.mq][p.ParamName];
-            console.log(p.metaField);
             if (!p.metaField) p.metaField = { DisplayLabel: p.ParamName };
+            else if (p.metaField.EditorType ) p.metaField.EditorType = p.metaField.EditorType.toUpperCase() ;
             uiparams.groups[0].queryParams.push(p);
         }
         return uiparams;

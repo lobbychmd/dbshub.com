@@ -71,7 +71,7 @@ app.get('/documentation/:name', require('./routes/documentation').doc);
 app.listen(3000, function () {
     console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
     var db = require('config').db();
-    //db.collection('MetaTable').remove({ ProjectName: '4f61852865631f03146075c8' }, null, function () {
+    //db.collection('MetaField').remove({ ProjectName: '4f61852865631f03146075c8' }, null, function () {
       //  console.log('remove ok.');
-   // })
+    //})
 });
