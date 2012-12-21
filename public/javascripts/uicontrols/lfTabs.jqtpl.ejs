@@ -1,93 +1,35 @@
 <script type='text/x-jquery-tmpl' id="uitplfTabs">
-    <div id="${name}" class="lfTabs">
-        <div class="lfTabs_items" style="height: 21px;">
-            <ul>
-                <li no="1" class="actived">基本信息</li>
-            </ul>
-        </div>
+  <div id="${name}" class="lfTabs">
+    <ul>
+        {{each pageCaption}}
+            <li><a href="#tabs-${$index}">${$value}</a></li>
+        {{/each}}
+    </ul>
 
-        <div class="lfTabs_pages" uicontainer="${name}">
-
-
-
-        </div>
-
-
-    </div>
-
+</div>
  
 </script>
 
-
+<script type='text/x-jquery-tmpl' id="uitppage">
+    <div id="${name}" uicontainer="${name}">
+        
+    </div>
+</script>
 
 <style >
+    .lfTabs {margin-top: 10px;}
+    .lfTabs.ui-widget-content {background: transparent;    }
+    .lfTabs.ui-tabs{border-radius:0px; border: 0px; padding: 0px;}
+    .lfTabs.ui-tabs ul { padding: 0 0 0 6px;   }
+    .lfTabs.ui-tabs>.ui-widget-header {border-width: 0px; background: transparent;border-top-left-radius:0px;border-bottom-right-radius:0px;border-top-right-radius:0px;border-bottom-left-radius:0px;  }
+    .lfTabs.ui-tabs .ui-tabs-nav{height:32px;}
+    .lfTabs.ui-tabs>ul>li .ui-icon-close {cursor: pointer; float: left; margin: 0.4em 0.6em 0 0;}
 
-.lfTabs {
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    border-color: #818A99;
-    border-image: none;
-    border-style: none none solid solid;
-    border-width: 1px;
-    margin: 10px 0;
-    position: relative;
-}
-.lfTabs .lfTabs_items {
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    border-color: #818A99;
-    border-image: none;
-    border-style: none none solid;
-    border-width: 1px;
-}
-.lfTabs .lfTabs_items ul {
-    list-style: none outside none;
-    margin: 0;
-    padding: 0;
-}
-.lfTabs .lfTabs_items ul li {
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    background: url("tabs_bg.gif") repeat-x scroll 0 0 transparent;
-    border-color: #818A99;
-    border-image: none;
-    border-style: solid solid solid none;
-    border-width: 1px;
-    cursor: pointer;
-    float: left;
-    list-style: none outside none;
-    padding: 2px 10px 3px;
-}
-.lfTabs .lfTabs_items ul li.actived {
-    background: none repeat scroll 0 0 #EBF3FE;
-    border-bottom-color: #EBF3FE;
-}
-.lfTabs .lfTabs_pages {
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    border-color: #818A99;
-    border-image: none;
-    border-style: none solid none none;
-    border-width: 1px;
-    clear: both;
-}
-.lfTabs .lfTabs_pages .page {
-    background-color: #EBF3FE;
-    display: none;
-    overflow: auto;
-    padding: 5px;
-}
-.lfTabs .lfTabs_pages .page.actived {
-    display: block;
-}
+    .lfTabs.ui-tabs li.ui-state-default {
+        background:url("/") repeat-x scroll 50% 50%   ; border: 0px;    height: 31px;  }
+    .lfTabs.ui-tabs>ul>li.ui-state-default{ background: url('/javascripts/uicontrols/images/tabs_bg.gif');border-radius: 0px; height: 30px; border-width: 1px 1px 0 1px; border-color: #aaa; border-style: solid; }
+    .lfTabs.ui-tabs>ul>li.ui-state-default.ui-state-active{ background: #EBF3FE; }
+    .lfTabs.ui-tabs .ui-tabs-panel {border-width: 1px; background: #EBF3FE}
 
 </style>
 

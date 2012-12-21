@@ -96,6 +96,7 @@ $.readOnly = function (ctrl) {
 
 $.fn.setReadOnly = function (readonly) {
     return this.each(function () {
+        
         if (readonly) $(this).attr('readonly', 'readonly');
         else $(this).removeAttr('readonly');
         //alert(readonly);
@@ -127,7 +128,7 @@ $.fn.toggleReadOnly = function (readonly, rostate) {
         if (!rostate) rostate = "rostate";
         if (!$(this).attr(rostate)) //设置初始状态
             $(this).attr(rostate, $(this).attr('readonly') ? "true" : "false");
-
+        
         if ($(this).attr(rostate) == "true") {
             if (this.tagName == "SELECT") {
                 if ($(this).parent().find('[relID]').size() == 0) {

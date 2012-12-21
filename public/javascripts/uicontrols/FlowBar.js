@@ -12,10 +12,7 @@ $.uicontrols.FlowBar = {
 
 $.fn.FlowBar = function () {
     return this.each(function () {
-        $(this).tabs().find('.flowcmd input').button().click(function () {
-            alert($(this).attr('Description'));
-
-        }); ;
+        $(this).tabs()
     });
 
 

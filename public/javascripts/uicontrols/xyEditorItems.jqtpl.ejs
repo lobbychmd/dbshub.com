@@ -1,21 +1,35 @@
 <script type='text/x-jquery-tmpl' id="uitpxyEditorItems">
     <div class="xyEditorItems">
-        {{each  data.rows[0]}}
+        {{each  data}}
             <div class="input_items">
-                <div title="${data.columns[$index].metaField.DisplayLabel}" class="input_items_lable">
-                  ${data.columns[$index].metaField.DisplayLabel}
+                <div title="${column.metaField.DisplayLabel}" class="input_items_lable">
+                  ${column.metaField.DisplayLabel}
                 </div>
                 <div class="input_items_input">
-                    {{tmpl({name: key, id: key, metaField:data.columns[$index].metaField, Value: value}) "#tpEditor"}}
+                    {{tmpl({name: column.fieldName, id: column.fieldName, metaField:column.metaField, Value: value}) "#tpEditor"}}
                 </div>
             </div>
         {{/each}}
     </div>
 </script>
 
+<script type='text/x-jquery-tmpl' id="uitpxyQuickRec">
+    <fieldset class="xyQuickRec">
+        <legend>快速录入</legend>
+        <div class="input_items quickKey">                 
+            <div class="input_items_lable" title="${column.metaField.DisplayLabel} ">${column.metaField.DisplayLabel} </div>
+            <div class="input_items_input">                               
+                <input /><a href="#" class="quickCmd quickDialog"></a><a href="#" class="quickCmd quickDel"></a>
+            </div>             
+        </div>
+
+    </div>
+</script>
+
 
 
 <style >
+    
 .xyEditorItems .input_items {
     display: inline-block;
     font-size: 12px;
@@ -52,6 +66,13 @@
     height: 21px;
     vertical-align: middle;
     width: 135px;
-}    
+}
+
+    .xyQuickRec {margin-top: 10px; padding: 0px;}
+    .xyQuickRec .quickKey {background: #ddd; display: inline-block; margin: 0px 0px 0px 5px;padding: 5px; border: 1px dotted gray}
+    .xyQuickRec .xyEditorItems {display: inline-block; margin: 5px; }
+    .xyQuickRec a.quickCmd {display: inline-block; margin: 0 5px; height: 16px; width: 16px;}
+    .xyQuickRec a.quickDialog {background: url("/javascripts/uicontrols/images/dialog.png") no-repeat scroll 0 0 transparent;}
+    .xyQuickRec a.quickDel {background: url("/javascripts/uicontrols/images/remove.png") no-repeat scroll 0 0 transparent;}
 </style>
 

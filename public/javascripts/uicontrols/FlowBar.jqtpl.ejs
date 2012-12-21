@@ -1,17 +1,18 @@
 <style >
     .ModulePage .FlowBar { margin-top: 20px; }
     .ModulePage .FlowBar ul { height:32px}
+    .ModulePage .FlowBar ul>li.activeFlow a{ color: red;}
     .ModulePage .FlowBar>div { height: 50px; }
     .ModulePage .FlowBar p.desc { display: inline-block }
     .ModulePage .flowcmd { float: right; padding: 10px;  width: 200px;  text-align: right; }
-    .ModulePage .FlowBar > .ui-widget-header { background: url("/javascripts/uicontrols/images/tbbg.png") repeat scroll 0 0 transparent  }
+    .ModulePage .FlowBar > .ui-widget-header { background: url("/javascripts/uicontrols/images/fbbg.png") repeat scroll 0 0 transparent  }
 </style>
 
 <script type='text/x-jquery-tmpl' id="uitpFlowBar">
     <div class="FlowBar">
         <ul>
         {{each data}}
-            <li><a href="#tabs-${ID}">${Summary}</a></li>
+            <li {{if ID==pageInfo.ActiveFlow.ID}}class='activeFlow' {{/if}}><a href="#tabs-${ID}">${Summary}</a></li>
         {{/each}}
         </ul>
     {{each data}}
@@ -19,7 +20,7 @@
             <p class="desc">${Description}</p>
             <div class="flowcmd">
                 {{each Action}}
-                <input value="${Summary}" description="${Description}" type ="button" />
+                {{tmpl({type: 'biz', caption:Summary, name:Summary, hint: Description, biz:Biz}) "#uitpPageButton"}}
                 {{/each}}
             </div>
             <div style="clear:both"></div>

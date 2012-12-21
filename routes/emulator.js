@@ -53,9 +53,14 @@ var getPageMeta = function (_id, page, callback) {
                 Queries: m1[1]
             }];
         }
-        m.ModulePages[page].ModuleID = m.ModuleID;
-        m.ModulePages[page].ModuleCaption = m.Caption;
-        callback(m.ModulePages[page]);
+        var p = m.ModulePages[page];
+        if (p.PageFlow) {
+            p.PageFlow = eval(p.PageFlow);
+            if (p.PageFlow) p.ActiveFlow = p.PageFlow[0];
+        }
+        p.ModuleID = m.ModuleID;
+        p.ModuleCaption = m.Caption;
+        callback(p);
     });
 }
 
@@ -111,7 +116,7 @@ var queryParamsMeta = function (fieldsMeta, query) {
 var getQueryData = function (fields, fieldsMeta, query) {
     var dataset = {
         Columns: [],
-        Rows: [{}]
+        Rows: [{},{},{},{},{},{},{},{},{},{},{}]
     };
     for (var i in fields) {
         var ff = { fieldName: fields[i] };
@@ -123,7 +128,7 @@ var getQueryData = function (fields, fieldsMeta, query) {
         }
         if (!ff["metaField"]) ff["metaField"] = {DisplayLabel: fields[i]}
         dataset.Columns.push(ff);
-        dataset.Rows[0][fields[i]] = i;
+        for(var j = 0;j <11; j++) dataset.Rows[j][fields[i]] = i + j;
     }
     return dataset;
 }
@@ -136,14 +141,14 @@ exports.page = function (req, res) {
     new fitnode.seq_async([
 
         function (params, callback) {
-            //取页面元数据
+            console.log('取页面元数据');
             getPageMeta(req.query._id, req.query.page, function (p) {
                 page = p;
                 callback();
             });
         },
         function (params, callback) {
-            //布局
+            console.log('布局');
             getLayout(req.session.project, req.query.page, function (lay) {
                 page.layout = lay;
                 callback();
@@ -151,8 +156,8 @@ exports.page = function (req, res) {
         },
 
         function (params, callback) {
-            //取查询元数据
-            page.Queries = page.Queries?page.Queries.trim().split(';'):[];
+            console.log('//取查询元数据');
+            page.Queries = page.Queries ? page.Queries.trim().split(';') : [];
             getQueryMeta(project, page.Queries, function (queries) {
                 page.metaQueries = queries;
 
@@ -166,25 +171,35 @@ exports.page = function (req, res) {
                 function (queryName, params, c) {
                     if (!queryName) c();
                     else {
-                        //取查询的字段
+                        console.log('//取查询的字段');
                         var metaQuery = page.metaQueries[queryName];
-                        var fields = new fitnode.sql(metaQuery.Scripts[0].Script).fieldsInclude();
+                        var queryFields = [];
+                        var i = 0;
+                        new fitnode.seq_asyncArray(
+                            function (script, params1, c1) {
+                                var fields = new fitnode.sql(script.Script).fieldsInclude();
+                                console.log('//构造查询数据');
+                                getFieldMeta(project, fields, metaQuery.QueryName, function (metaFields) {
+                                    queryFields = queryFields.concat(metaFields);
+                                    page.dataSet[metaQuery.QueryName + "." + i] = getQueryData(fields, metaFields, metaQuery);
+                                    if (i == 0) page.dataSet[metaQuery.QueryName] = page.dataSet[metaQuery.QueryName + ".0"];
+                                    i++;
+                                    c1();
+                                });
 
-                        //构造查询数据
-                        getFieldMeta(project, fields, metaQuery.QueryName, function (metaFields) {
-                            page.metaFields[metaQuery.QueryName] = metaFields;
-
-                            page.dataSet[metaQuery.QueryName] = getQueryData(fields, metaFields, metaQuery);
-                            page.dataSet[metaQuery.QueryName + ".0"] = page.dataSet[metaQuery.QueryName];
-                            console.log(page.dataSet);
-
-                            var queryParams = [];
-                            for (var p in metaQuery.Params) queryParams.push(metaQuery.Params[p].ParamName);
-                            getFieldMeta(project, queryParams, metaQuery.QueryName + "_p", function (pMetaFields) {
-                                page.metaFields[metaQuery.QueryName + "_p"] = pMetaFields;
-                                c();
-                            });
-                        });
+                            },
+                            metaQuery.Scripts,
+                            function (params) {
+                                page.metaFields[metaQuery.QueryName] = queryFields;
+                                var queryParams = [];
+                                for (var p in metaQuery.Params) queryParams.push(metaQuery.Params[p].ParamName);
+                                getFieldMeta(project, queryParams, metaQuery.QueryName + "_p", function (pMetaFields) {
+                                    page.metaFields[metaQuery.QueryName + "_p"] = pMetaFields;
+                                    c();
+                                });
+                            }
+                        ).exec();
+                        
                     }
                 },
                 page.Queries,
@@ -215,5 +230,24 @@ exports.page = function (req, res) {
 };
 
 exports.preview = function (req, res) {
-    res.render("meta/preview.html", {layout: false, _id: req.query._id, page: req.query.page});
+    res.render("meta/preview.html", { layout: false, _id: req.query._id, page: req.query.page });
+}
+
+exports.biz = function (req, res) {
+    var q = { ProjectName: req.session.project, BizID: req.params.biz };
+    config.db().collection("MetaBiz").findOne(q, function (err, biz) {
+        if (!biz) res.json({ IsValid: false, ErrorMessage: "没找到业务逻辑 " + req.params.biz });
+        else {
+            var msg = "执行业务逻辑: " + req.params.biz + "\n";
+            for (var i in biz.Scripts) {
+                var s = biz.Scripts[i];
+                if (s.ProcEnabled) {
+                    if (!s.ProcRepeated) {
+                        msg += "  1) " + s.ProcSummary + " (参数: [])\n";
+                    }
+                }
+            }
+            res.json({ IsValid: true, Message: msg});
+        }
+    });
 }

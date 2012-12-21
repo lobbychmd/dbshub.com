@@ -1,0 +1,38 @@
+<script type='text/x-jquery-tmpl' id="uitpxyGrid">
+   <div class="xyGrid">     </div>
+</script>
+
+<style >
+</style>
+
+
+<script type='text/x-jquery-tmpl' id="uitpxyGridTable">
+   <table id="${name}" class="QueryGrid DataGrid ui-widget ui-widget-content" >
+ <thead class="ui-widget-header">
+  <tr>
+   {{each data.columns}}
+    <th>{{if metaField}}${metaField.DisplayLabel}{{else}}${fieldName}{{/if}}</th>
+    {{/each}}
+  
+</tr>
+
+ 
+</thead>
+
+ <tbody>
+    {{each data.rows}}
+     <tr>
+        {{each $value}}
+            <td>
+                ${value}
+            </td>
+        {{/each}}
+    </tr>
+    {{/each}}
+ 
+</tbody>
+
+
+</table>
+
+</script>

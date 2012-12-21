@@ -1,12 +1,11 @@
 
 <style >
-    .Toolbar > input.ui-button[value="查询"] {background: url("/javascripts/uicontrols/images/search.png") no-repeat scroll 0 0 transparent;}
-    .Toolbar > input.ui-button[value="打印"] {background: url("/javascripts/uicontrols/images/report.png") no-repeat scroll 0 0 transparent;}
-    .Toolbar > input.ui-button[value="新增"] {background: url("/javascripts/uicontrols/images/new.png") no-repeat scroll 0 0 transparent;}
-    .Toolbar > input.ui-button {background: none repeat scroll 0 0 transparent;border: 0 none;color: #234369;height: 16px;margin-bottom: 4px;padding: 0 18px;width: auto;}
 </style>
 
 <script type='text/x-jquery-tmpl' id="uitpPageButton">
-    <input type="${type}" id="${name}" class="PageButton " value="${caption}" role="button" aria-disabled="false">
+    <input type="button" title="${hint}" id="${name}" class="PageButton ${type}" value="${caption}" href="${href}" 
+        {{if type=="save"}}biz="${pageInfo.ActiveFlow.SaveBiz}"{{/if}}
+        {{if type=="biz"}}biz="${biz}"{{/if}}
+    >
 </script>
 

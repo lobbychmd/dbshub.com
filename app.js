@@ -54,6 +54,7 @@ app.get('/data/doc', require('./routes/data').doc);
 app.post('/data/savedoc', require('./routes/data').savedoc);
 app.get('/emulator/page', require('./routes/emulator').page);
 app.get('/emulator/preview', require('./routes/emulator').preview);
+app.post('/emulator/biz/:biz', require('./routes/emulator').biz);
  
 app.get('/flowchart/index', require('./routes/dbchart').index);
 app.get('/flowchart/view/demo_view', require('./routes/dbchart').demo_view);

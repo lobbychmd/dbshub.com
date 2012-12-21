@@ -5,7 +5,11 @@ $.uicontrols = {
         lfLayout_menu: 'lfLayout',
         AccordionMenu: 'lfLayout',
         lfLayout_page: 'lfLayout',
-        lfLayout_foot: 'lfLayout'
+        page: 'lfTabs',
+        xyGridTable: 'DataGrid',
+        xyGrid: 'DataGrid',
+        lfLayout_foot: 'lfLayout',
+        xyQuickRec :'xyEditorItems'
     },
     loadRequire: function (uiname, loaded, callback) {
         var fileName = $.uicontrols.config[uiname];
@@ -16,7 +20,6 @@ $.uicontrols = {
                     $(html).appendTo('head');
                     loaded.push(fileName);
                     callback();
-
                 }).appendTo('head');
             });
             
@@ -30,7 +33,6 @@ $.uicontrols = {
                 
                 $.uicontrols.loadRequire(item.ui, loaded, function () {
                     if ($.uicontrols[item.ui]) {
-                        
                         var htm = $("#uitp" + item.ui).tmpl(
                         //params 是ui 设置的属性，经过一些处理之后生成 UI
                                     $.uicontrols[item.ui].params2tmpl(item.params, pageInfo)

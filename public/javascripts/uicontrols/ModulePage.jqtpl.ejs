@@ -8,7 +8,7 @@
 
 <script type='text/x-jquery-tmpl' id="uitpModulePage">
     <div class="ModulePage">
-        
+        <span id="ActiveFlowStr" style="display:none">${ActiveFlowStr}</span>
     </div>
 </script>
 
@@ -22,7 +22,7 @@
             <option value="" selected="selected"></option>
         </select>
     {{else}}
-        <input value="${Value}" name="${name}" id="${id}" 
+        <input value="${Value}" name="${name}" id="${id}" fn ="${name}" 
             class="editor {{if metaField.EditorType=="DATE" }}DateEditor{{/if}}" {{if metaField.EditorType=="DATE" }}type="date"{{/if}}
         />
     {{/if}}

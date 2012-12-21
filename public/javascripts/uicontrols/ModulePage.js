@@ -1,6 +1,8 @@
 
 $.uicontrols.ModulePage = {
     params2tmpl: function (uiparams, pageInfo) {
+        uiparams.pageInfo = pageInfo;
+        uiparams.ActiveFlowStr = JSON.stringify(pageInfo.ActiveFlow);
         return uiparams;
     }
 };
@@ -24,11 +26,20 @@ $.ModulePage = {
 
 $.fn.ModulePage = function () {
     return this.each(function () {
-        //console.log($.ModulePage.config.lookups());
+        var ActiveFlowStr = $('#ActiveFlowStr').text();
+        if (ActiveFlowStr) {
+            var activeFlow = eval("(" + ActiveFlowStr  + ")");
+            if (activeFlow && activeFlow.BlackList) {
+                for (var i in activeFlow.BlackList) {
+                    $('[fn=' + activeFlow.BlackList[i] + ']').setReadOnly(true);
+                }
+            }
+        }
         $(this).find(".DateEditor").DateEditor();
         //debug();
     });
 }
+
 $.ModulePage = {
     config: {
         lookups: function () {
@@ -44,14 +55,6 @@ $.ModulePage = {
             return d ? $.parseJSON(d) : {};
         }
     }
-}
-
-$.fn.ModulePage = function () {
-    return this.each(function () {
-        //console.log($.ModulePage.config.lookups());
-        $(this).find(".DateEditor").DateEditor();
-        //debug();
-    });
 }
 
 $.fn.Editor = function () {
