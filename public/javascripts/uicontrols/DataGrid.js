@@ -36,7 +36,44 @@ $.uicontrols.xyGridTable = {
 
 $.fn.xyGridTable = function () {
     return this.each(function () {
-        
+        var g = $(this);
+        var w = g.width();
+        $(this).find('tbody tr:nth-child(even)').addClass('striped');
+        $(this).find('tfoot>tr>td').attr('colspan', $(this).find('thead>tr>td').size());
+
+        $(this).find('tbody tr').click(function () {
+            $(this).closest('table').children('tbody').children('tr').removeClass('selected');
+            $(this).addClass('selected');
+        });
+
+        var head = $('<table class="xyGridTable ui-widget ui-widget-content">').insertBefore(this);
+
+        var width = [];
+        $(this).find('thead th').each(function () {
+            var hw = $(this).width() + 1;
+            if (hw < 25) hw = 25;
+            $(this).width(hw)  //考虑 border
+            width.push(hw);
+        });
+
+        $(this).find('thead, caption').appendTo(head);
+        var i = 1;
+        head.find('thead th').each(function () {
+            var td = g.find('tbody>tr:first>td:nth-child(' + i + ')');
+            //var tdw = td.outerWidth(true); var thw = $(this).outerWidth(true);
+            //alert(tdw); alert(thw);
+            td.width(width[i - 1]);
+            i++;
+        });
+
+        var foot = $('<table class="xyGridTable ui-widget ui-widget-content">').insertAfter(this);
+        $(this).find('tfoot').appendTo(foot);
+
+        $(this).wrap('<div class="DataGridWrap">').parent().height('150px').width(w + 18); //滚动条宽度
+        var thl = head.find('th:last');
+        thl.width(thl.width() + 18);
+        foot.find('td').width(w + 18 - 20) //去掉 padding
+            .text('共 '+ g.children('tbody').children('tr').size() + ' 行');
     });
 
 

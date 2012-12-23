@@ -3,15 +3,35 @@
 </script>
 
 <style >
+    .xyGridTable{ background: rgb(253, 254, 254); border-collapse:collapse}
+    .xyGridTable input { background: rgb(253, 254, 254); border: 1px;}
+    .xyGridTable>caption{ border: 0px solid rgb(166, 201, 226); text-align: left; padding: 0.3em 10px; font-weight: bold;
+                        color: #ddd;
+                        background: url("/javascripts/uicontrols/images/dgCaption1.png") repeat scroll 0 0 transparent;
+    }
+    .xyGridTable>thead>tr{ background: url("/javascripts/uicontrols/images/dgHead1.png") repeat scroll 0 0 transparent;}
+    .xyGridTable>tfoot>tr{ background: url("/javascripts/uicontrols/images/dgFoot.png") repeat scroll 0 0 transparent;
+                           height: 26px;font-weight: bold;color: #333;
+    }
+    .xyGridTable>tbody>tr:hover, .xyGridTable>tbody>tr:hover input{ background: rgb(221, 236, 247);}
+    .xyGridTable>tbody>tr.striped, .xyGridTable>tbody>tr.striped input{ background: rgb(243,244,244);}
+    .xyGridTable>tbody>tr.selected, .xyGridTable>tbody>tr.selected input{ background: rgb(251, 236, 136); border: 1px solid gray;}
+    
+    
+    .xyGridTable td, .xyGridTable th {border: 1px solid rgb(166, 201, 226);padding: 0.1em 10px;text-align: left;}
+    .xyGridTable > tbody > tr.first > td { border-top: rgb(253, 254, 254);}
+    
+    .DataGridWrap { overflow:auto;min-height: 150px;} 
 </style>
 
 
 <script type='text/x-jquery-tmpl' id="uitpxyGridTable">
-   <table id="${name}" class="QueryGrid DataGrid ui-widget ui-widget-content" >
+<table id="${name}" class="xyGridTable ui-widget ui-widget-content" >
+    <caption class="ui-corner-top">明细表</caption>
  <thead class="ui-widget-header">
   <tr>
-   {{each data.columns}}
-    <th>{{if metaField}}${metaField.DisplayLabel}{{else}}${fieldName}{{/if}}</th>
+    {{each data.columns}}
+        <th>{{if metaField}}${metaField.DisplayLabel}{{else}}${fieldName}{{/if}}</th>
     {{/each}}
   
 </tr>
@@ -21,17 +41,19 @@
 
  <tbody>
     {{each data.rows}}
-     <tr>
+     <tr {{if ($index == 0)}} class="first" {{/if}}>
         {{each $value}}
             <td>
-                ${value}
+                <input value="${value}" />
             </td>
         {{/each}}
     </tr>
     {{/each}}
- 
+    
 </tbody>
-
+<tfoot>
+                <tr><td>合计</td></tr>
+            </tfoot>    
 
 </table>
 
