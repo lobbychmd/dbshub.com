@@ -38,6 +38,13 @@ $.fn.xyGridTable = function () {
     return this.each(function () {
         var g = $(this);
         var w = g.width();
+        if (w == 0) {
+            var $clone = $(this).clone();
+            $clone.css({ 'position': 'absolute', 'visibility': 'hidden', 'display': 'block' }).appendTo(body);
+            w = $clone.width();
+            $clone.remove();
+        }
+
         $(this).find('tbody tr:nth-child(even)').addClass('striped');
         $(this).find('tfoot>tr>td').attr('colspan', $(this).find('thead>tr>td').size());
 
@@ -60,12 +67,9 @@ $.fn.xyGridTable = function () {
         var i = 1;
         head.find('thead th').each(function () {
             var td = g.find('tbody>tr:first>td:nth-child(' + i + ')');
-            //var tdw = td.outerWidth(true); var thw = $(this).outerWidth(true);
-            //alert(tdw); alert(thw);
             td.width(width[i - 1]);
             i++;
         });
-
         var foot = $('<table class="xyGridTable ui-widget ui-widget-content">').insertAfter(this);
         $(this).find('tfoot').appendTo(foot);
 
@@ -73,7 +77,7 @@ $.fn.xyGridTable = function () {
         var thl = head.find('th:last');
         thl.width(thl.width() + 18);
         foot.find('td').width(w + 18 - 20) //去掉 padding
-            .text('共 '+ g.children('tbody').children('tr').size() + ' 行');
+            .text('共 ' + g.children('tbody').children('tr').size() + ' 行');
     });
 
 

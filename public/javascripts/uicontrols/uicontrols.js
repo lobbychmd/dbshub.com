@@ -82,32 +82,39 @@ $.uicontrols = {
 
 };
 
-$.fn.preview = function (moduleid, page, uitxt) {
+$.fn.preview = function (moduleid, page, uitxt, Layout, callback) {
     return this.each(function () {
         $(this).children().remove();
         var container = this;
         //格式：{ ui: ui, id: ui, params: params, attrs: attrs, children: [] };
-        //console.log(data);
-        $.get('http://localhost:3000/emulator/page?_id=' + moduleid + '&page=' + page, function (pageInfo) {
-            var data = $("<div>").uidesigner(uitxt ? uitxt : pageInfo.UI, { getdata: true });
+        var url = 'http://localhost:3000/emulator/page?';
+        
+        if(moduleid) url += '_id=' + moduleid + '&page=' + page + '&';
+        if(Layout) url += 'layout=1';
+
+        $.get(url, function (pageInfo) {
+            var data = moduleid? 
+                $("<div>").uidesigner(uitxt ? uitxt : pageInfo.UI, { getdata: true })
+                :"";
 
             if (!uitxt){
                 var layout = $("<div>").uidesigner(pageInfo.layout.LayoutUI, { getdata: true });
                 var modluepage= $.uicontrols.findModulePage(layout.children);
-                modluepage.children = data.children;
+                if (moduleid) modluepage.children = data.children;
+                if (! Layout) layout = [ modluepage];
             }
             
             var all = uitxt ? [{ ui: "ModulePage", params: {}, children: data.children}]
-                :layout.children;
+                :( (!Layout)? [ modluepage] : layout.children);
+            
             //pageInfo  包括页面元数据，包含的查询的元数据，包含的查询结果数据（demo）
             //先构造所有ui，然后执行 js
             var loaded = [];
             $.uicontrols.renderUIitem(all, pageInfo, container, loaded, function () {
                 $.uicontrols.execUIitemJs([{ ui: "ModulePage", params: {}, children: all}]);
+                if (callback) callback();
                 //alert('ready!');
             });
         });
-
-
     });
 }

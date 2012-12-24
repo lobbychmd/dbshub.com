@@ -22,16 +22,48 @@
         body { margin: 0px; padding: 0px; font-size: 12px;}
     </style>
     <script>
-        $(function(){
-            $(".previewbody").preview("${_id}", ${page}, null);
-        });
+        $(function () {
+            if ('${moduleLayout}' == '')
+                $(".previewbody").preview(null, null, null, true, function () {
+                    $('#tabs').appendTo('.page_body');
+                    $('#tabs').ajaxTabs1(
+                        {
+                            a_selector: ".AccordionMenu a",
+                            stateSetting: {
+                                lastState: {
+                                    OpenTabs: [{ text: 'asf', url: 'http://localhost:3000/emulator/preview?_id=50d048745722eb61282c08d6&page=0' }, 
+                                    { text: 'asf1', url: 'http://localhost:3000/emulator/preview?_id=50d048745722eb61282c08d8&page=0'}],
+                                    last: 0
+                                },
+                                stateId: "ContentTab",
+                                stateGroup: "tabtree",
+                                saveState: function() { alert('saveState'); }
+                            },
+                            create: function(tab) {
+                                tab.attr('align', 'auto')
+                                    .attr('layout', 'v').css('padding', '0px'); //.parent().layout();
+                                //$.autoHeight({}, true);
+                            }
+                            }
+                    );
+                    $('.ModulePage, .page_head, .lfUserBar').remove();
+         });
+            else $(".previewbody").preview("${_id}", ${ page }, true, null);
+         });
+
+
     </script>
 
     
 </head>
 <body style="padding:0px;margin:0px;" layout="v" id="body">    
-    <div class='previewbody'>     </div>
+    <div class='previewbody'>     
+    
+    </div>
 
-
+    <div id="tabs" align="auto" layout="v" class="headerTabs">
+        <ul align="top">
+        </ul>
+    </div>
 </body>
 </html>

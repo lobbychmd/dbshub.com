@@ -1,4 +1,4 @@
-﻿<div id="tabs" align="auto" layout="v">
+﻿<div id="tabs" align="auto" layout="v" class="headerTabs">
     <ul align="top">
     </ul>
 </div>
@@ -41,12 +41,26 @@
             });
         });
 
+        var contentTab = {{html tabstate}};
         var onCreateTab = function (tab) {
             tab.attr('align', 'auto')
                     .attr('layout', 'v').css('padding', '0px').parent().layout();
             $.autoHeight({}, true);
         };
-        $('#tabs').ajaxTabs({ a_selector: "#tree a",
+        $('#tabs').ajaxTabs1(
+            {
+                a_selector: "#tree a",
+                stateSetting: {
+                    lastState: contentTab,
+                    stateId: "ContentTab",
+                    stateGroup: "tabtree",
+                    saveState: function() { alert('saveState'); }
+                },
+                create: onCreateTab
+                }
+        );
+
+      /*  $('#tabs').ajaxTabs({ a_selector: "#tree a",
             stateId: "ContentTab",
             stateGroup: "tabtree",
             saveState: saveState, restoreState: function () {
@@ -60,7 +74,7 @@
             },
             create: onCreateTab
         });
-
+        */
 
     });
 </script>

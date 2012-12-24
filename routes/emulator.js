@@ -139,13 +139,13 @@ exports.page = function (req, res) {
     var project = req.session.project;
     var page;
     new fitnode.seq_async([
-
         function (params, callback) {
             console.log('取页面元数据');
-            getPageMeta(req.query._id, req.query.page, function (p) {
+            if (req.query._id) getPageMeta(req.query._id, req.query.page, function (p) {
                 page = p;
                 callback();
             });
+            else { page = {}; callback() }
         },
         function (params, callback) {
             console.log('布局');
@@ -156,63 +156,67 @@ exports.page = function (req, res) {
         },
 
         function (params, callback) {
-            console.log('//取查询元数据');
-            page.Queries = page.Queries ? page.Queries.trim().split(';') : [];
-            getQueryMeta(project, page.Queries, function (queries) {
-                page.metaQueries = queries;
-
-                callback();
-            });
-        },
-        function (params, callback) {
-            page.metaFields = {};
-            page.dataSet = {};
-            new fitnode.seq_asyncArray(
-                function (queryName, params, c) {
-                    if (!queryName) c();
-                    else {
-                        console.log('//取查询的字段');
-                        var metaQuery = page.metaQueries[queryName];
-                        var queryFields = [];
-                        var i = 0;
-                        new fitnode.seq_asyncArray(
-                            function (script, params1, c1) {
-                                var fields = new fitnode.sql(script.Script).fieldsInclude();
-                                console.log('//构造查询数据');
-                                getFieldMeta(project, fields, metaQuery.QueryName, function (metaFields) {
-                                    queryFields = queryFields.concat(metaFields);
-                                    page.dataSet[metaQuery.QueryName + "." + i] = getQueryData(fields, metaFields, metaQuery);
-                                    if (i == 0) page.dataSet[metaQuery.QueryName] = page.dataSet[metaQuery.QueryName + ".0"];
-                                    i++;
-                                    c1();
-                                });
-
-                            },
-                            metaQuery.Scripts,
-                            function (params) {
-                                page.metaFields[metaQuery.QueryName] = queryFields;
-                                var queryParams = [];
-                                for (var p in metaQuery.Params) queryParams.push(metaQuery.Params[p].ParamName);
-                                getFieldMeta(project, queryParams, metaQuery.QueryName + "_p", function (pMetaFields) {
-                                    page.metaFields[metaQuery.QueryName + "_p"] = pMetaFields;
-                                    c();
-                                });
-                            }
-                        ).exec();
-                        
-                    }
-                },
-                page.Queries,
-                function (params) {
+            if (req.query._id) {
+                console.log('//取查询元数据');
+                page.Queries = page.Queries ? page.Queries.trim().split(';') : [];
+                getQueryMeta(project, page.Queries, function (queries) {
+                    page.metaQueries = queries;
                     callback();
-                }
-            ).exec();
+                });
+            } else callback();
         },
         function (params, callback) {
-            for (var q in page.Queries) {
-                if (page.Queries[q]) queryParamsMeta(page.metaFields[page.Queries[q] + "_p"], page.metaQueries[page.Queries[q]]);
-            }
-            callback()
+            if (req.query._id) {
+                page.metaFields = {};
+                page.dataSet = {};
+                new fitnode.seq_asyncArray(
+                    function (queryName, params, c) {
+                        if (!queryName) c();
+                        else {
+                            console.log('//取查询的字段');
+                            var metaQuery = page.metaQueries[queryName];
+                            var queryFields = [];
+                            var i = 0;
+                            new fitnode.seq_asyncArray(
+                                function (script, params1, c1) {
+                                    var fields = new fitnode.sql(script.Script).fieldsInclude();
+                                    console.log('//构造查询数据');
+                                    getFieldMeta(project, fields, metaQuery.QueryName, function (metaFields) {
+                                        queryFields = queryFields.concat(metaFields);
+                                        page.dataSet[metaQuery.QueryName + "." + i] = getQueryData(fields, metaFields, metaQuery);
+                                        if (i == 0) page.dataSet[metaQuery.QueryName] = page.dataSet[metaQuery.QueryName + ".0"];
+                                        i++;
+                                        c1();
+                                    });
+
+                                },
+                                metaQuery.Scripts,
+                                function (params) {
+                                    page.metaFields[metaQuery.QueryName] = queryFields;
+                                    var queryParams = [];
+                                    for (var p in metaQuery.Params) queryParams.push(metaQuery.Params[p].ParamName);
+                                    getFieldMeta(project, queryParams, metaQuery.QueryName + "_p", function (pMetaFields) {
+                                        page.metaFields[metaQuery.QueryName + "_p"] = pMetaFields;
+                                        c();
+                                    });
+                                }
+                            ).exec();
+
+                        }
+                    },
+                    page.Queries,
+                    function (params) {
+                        callback();
+                    }
+                ).exec();
+            } else callback();
+        },
+        function (params, callback) {
+            if (req.query._id)
+                for (var q in page.Queries) {
+                    if (page.Queries[q]) queryParamsMeta(page.metaFields[page.Queries[q] + "_p"], page.metaQueries[page.Queries[q]]);
+                }
+            callback();
         },
         function (params, callback) {
             //菜单
@@ -223,15 +227,16 @@ exports.page = function (req, res) {
             });
         },
     ], function (params) {
-
         res.json(page);
-
     }).exec();
 };
 
 exports.preview = function (req, res) {
-    res.render("meta/preview.html", { layout: false, _id: req.query._id, page: req.query.page });
+    if (req.query.layout)
+        res.render("meta/preview.html", { layout: false, _id: req.query._id, page: req.query.page});
+    else res.render("meta/previewPage.html", { layout: false, _id: req.query._id, page: req.query.page});
 }
+
 
 exports.biz = function (req, res) {
     var q = { ProjectName: req.session.project, BizID: req.params.biz };

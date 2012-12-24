@@ -8,8 +8,93 @@ $.fn.headerTabs = function (option) {
     });
 }
 
+$.ajaxTabs1 = {
+    addTab: function ($tabs, text, icon, url, loadNow, option) {
+        var ul = $tabs.children('ul');
+
+        if (url.indexOf('#') == 0) url = url.substring(1);
+
+        var index = $tabs.attr('index');
+        if (index) index = parseInt(index) + 1; else index = 1;
+
+        $tabs.attr('index', index);
+        var tabStr = "#ui-tabs-" + index;
+
+        $tabs.tabs("add", tabStr, text);
+        var idx = ul.children('li').size() - 1;
+        $tabs.tabs("select", idx).find('li.ui-tabs-active').attr('url', url).attr('icon', icon);
+        var tab = $(tabStr);
+        if (option && option.create) option.create(tab);
+        if (loadNow) $.ajaxTabs1.tabCheckLoad($tabs, tab, ul.children().eq(idx));
+    },
+    tabCheckLoad: function ($tabs, tab, li) {
+        if (!tab.attr('load'))
+            tab.indicator({}).load(li.attr('url'), function () {
+                tab.attr('load', '1');
+            });
+    },
+    tabCheckLoadIdx: function ($tabs, ul, idx) {
+        $.ajaxTabs1.tabCheckLoad($tabs, $tabs.find('#ui-tabs-' + idx + '.ui-widget-content'), ul.children().eq(idx));
+    }
+};
+$.fn.ajaxTabs1 = function (option) {
+    return this.each(function () {
+        var $tabs = $(this).tabs({ tabTemplate: "<li><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close'>Remove Tab</span></li>" });
+        var ul = $tabs.children('ul');
+
+        if (option.stateSetting) {
+            var lastState = option.stateSetting.lastState;
+            if (lastState)
+                for (var i in lastState.OpenTabs) {
+                    var t = lastState.OpenTabs[i];
+                    $.ajaxTabs1.addTab($tabs, t.text, t.icon, t.url, false, option);
+                }
+
+            $tabs.attr('stateId', option.stateSetting.stateId);
+            $.lastState.register(
+                option.stateSetting.stateId,
+                option.stateSetting.stateGroup, function () { return 1; },
+                option.stateSetting.saveState);
+        }
+
+        $tabs.tabs({ select: function (event, ui) {
+            $.ajaxTabs1.tabCheckLoadIdx($tabs, ul, ui.index);
+            if ($tabs.attr('stateId')) $.lastState.change(option.stateSetting.stateId);
+        }
+        });
+
+        $tabs.find("span.ui-icon-close").live("click", function () {
+            var index = $("li", $tabs).index($(this).parent());
+            $tabs.tabs("remove", index);
+            if (ul.children().size() == 0) if (option.stateId) $.lastState.change(option.stateId);
+        });
+
+        $(option.a_selector).die("click.withTab").live("click.withTab", function () {
+            var url = $(this).attr('href');
+            if (url) {
+                var li = ul.children('li[url="' + url + '"]');
+                if (li.size() > 0) {
+                    var currIdx = $tabs.tabs("option", "selected");
+                    var toIdx = $("li", $tabs).index(li);
+                    if (currIdx != toIdx) {
+                        $tabs.tabs("select", toIdx);
+                    }
+                }
+                else {
+                    var text = $(this).text();
+                    var icon = $(this).text();
+                    $.ajaxTabs1.addTab($tabs, text, icon, url, true, option);
+                }
+                //$tabs.tabs("select", index).find('li.ui-tabs-active').attr('url', url).attr('index', index).attr('icon', icon);
+            }
+            return false;
+        });
+    });
+}
+
 $.fn.ajaxTabs = function (option) {
     return this.each(function () {
+
         var id = this.id;
         $.extend({ maxOpen: 5 }, option);
         if (option.reload) {

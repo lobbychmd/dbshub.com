@@ -73,7 +73,7 @@ input.uf{border:1px solid;width:20px;}
 
 .StatusBar input{ display:inline-block; float:right}
 
-.AccordionMenu .ui-accordion-header{border-style:solid;border-color:#7290B4; border-width:0px 0px 1px 1px; background:url('images/outlookbar.png'); height:31px; margin-top:0px; 
+.AccordionMenu .ui-accordion-header{border-style:solid;border-color:#7290B4; border-width:0px 0px 1px 1px; background:url('images/outlookbar.png'); margin-top:0px; 
                                   vertical-align:middle; font-size:1.03em; }
 .AccordionMenu .ui-accordion-header .ui-icon{background-image:url('images/module/module.24.png'); height:24px; width:24px; top:3px; background-position:0px 0px;
                                     vertical-align:middle; }

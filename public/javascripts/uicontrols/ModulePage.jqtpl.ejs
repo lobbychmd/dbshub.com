@@ -4,6 +4,18 @@
         background: none repeat scroll 0 0 #D8E8FF;
         padding: 10px;
     }
+    /* 标签页(基于 jquery ui) */
+.headerTabs.ui-tabs{border-radius:0px; border: 0px; padding: 0px;}
+.headerTabs.ui-tabs ul { border-width: 0px; padding: 0 0 0 6px;   }
+.headerTabs.ui-tabs>.ui-widget-header {background: url("/javascripts/uicontrols/images/header_bg.png") repeat scroll 0 0 transparent;border-top-left-radius:0px;border-bottom-right-radius:0px;border-top-right-radius:0px;border-bottom-left-radius:0px;  }
+.headerTabs.ui-tabs .ui-tabs-nav{height:32px;}
+.headerTabs li .ui-icon-close {cursor: pointer; float: left; margin: 0.4em 0.6em 0 0;}
+
+.headerTabs.ui-tabs li.ui-state-default {
+    background:url("/") repeat-x scroll 50% 50%   ; border: 0px;    height: 31px;  }
+.headerTabs.ui-tabs li.ui-state-active{ background:  #CEE7FF; border-radius: 0px; height: 30px; border-width: 0 1px; border-color: #7791AC; border-style: solid; }
+.headerTabs.ui-tabs .ui-tabs-panel {background:  #CEE7FF}
+
 </style>
 
 <script type='text/x-jquery-tmpl' id="uitpModulePage">
