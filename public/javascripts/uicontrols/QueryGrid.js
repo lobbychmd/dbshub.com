@@ -7,8 +7,7 @@ $.uicontrols.QueryGrid = {
         
         for (var i in table.Rows) {
             var row = [];
-            //var href = uiparams.href + "?";
-            var href = window.location.toString(); href = href.substring(0, href.length - 1) + "1&";
+            var href = '/emulator/preview?_id=' + uiparams.pageInfo.ModuleId + '&page=1&';
             for (var j in table.Columns) {
                 row.push({ key: table.Columns[j].fieldName, value: table.Rows[i][table.Columns[j].fieldName] });
                 href += table.Columns[j].fieldName + "=" + table.Rows[i][table.Columns[j].fieldName] + "&";

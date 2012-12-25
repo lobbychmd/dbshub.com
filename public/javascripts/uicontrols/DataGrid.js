@@ -36,14 +36,8 @@ $.uicontrols.xyGridTable = {
 
 $.fn.xyGridTable = function () {
     return this.each(function () {
+        return;
         var g = $(this);
-        var w = g.width();
-        if (w == 0) {
-            var $clone = $(this).clone();
-            $clone.css({ 'position': 'absolute', 'visibility': 'hidden', 'display': 'block' }).appendTo(body);
-            w = $clone.width();
-            $clone.remove();
-        }
 
         $(this).find('tbody tr:nth-child(even)').addClass('striped');
         $(this).find('tfoot>tr>td').attr('colspan', $(this).find('thead>tr>td').size());
@@ -53,17 +47,20 @@ $.fn.xyGridTable = function () {
             $(this).addClass('selected');
         });
 
-        var head = $('<table class="xyGridTable ui-widget ui-widget-content">').insertBefore(this);
+        var head = $('<table class="xyGridTable ui-widget ui-widget-content">').css({ 'position': 'absolute', 'visibility': 'hidden', 'display': 'block' }).appendTo(body);
+        $(this).find('thead, caption').appendTo(head);
+        var bd = $('tbody').appendTo(head);
+        $(this).find('tbody tr:first').appendTo(bd);
 
         var width = [];
-        $(this).find('thead th').each(function () {
+        head.find('thead th').each(function () {
             var hw = $(this).width() + 1;
             if (hw < 25) hw = 25;
             $(this).width(hw)  //考虑 border
             width.push(hw);
         });
+        var w = head.width();
 
-        $(this).find('thead, caption').appendTo(head);
         var i = 1;
         head.find('thead th').each(function () {
             var td = g.find('tbody>tr:first>td:nth-child(' + i + ')');

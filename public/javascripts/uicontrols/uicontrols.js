@@ -55,18 +55,19 @@ $.uicontrols = {
             }
         ).exec();
     },
-    execUIitemJs: function (uis, distinctuis) {
+    execUIitemJs: function (container, uis, distinctuis) {
         if (!distinctuis) distinctuis = [];
         for (var i in uis) {
             var item = uis[i];
             if (distinctuis.indexOf(item.ui) < 0) {
-                eval("$('." + item.ui + "')." + item.ui + "();");
+                eval("$(container).find('." + item.ui + "')." + item.ui + "();");
+                //eval("$('." + item.ui + "')." + item.ui + "();");
                 
                 distinctuis.push(item.ui);
             }
             
             if (item.children && item.children.length > 0)
-                $.uicontrols.execUIitemJs(item.children, distinctuis);
+                $.uicontrols.execUIitemJs(container, item.children, distinctuis);
         }
     },
     findModulePage: function (data) {
@@ -111,7 +112,7 @@ $.fn.preview = function (moduleid, page, uitxt, Layout, callback) {
             //先构造所有ui，然后执行 js
             var loaded = [];
             $.uicontrols.renderUIitem(all, pageInfo, container, loaded, function () {
-                $.uicontrols.execUIitemJs([{ ui: "ModulePage", params: {}, children: all}]);
+                $.uicontrols.execUIitemJs(container,[{ ui: "ModulePage", params: {}, children: all}]);
                 if (callback) callback();
                 //alert('ready!');
             });

@@ -63,6 +63,19 @@ exports.savestate = function (req, res) {
     new acc.account(req).saveState(req.session.project, req.params.group, req.body, function () {
         res.send('ok');
     });
+}
 
+exports.setting = function (req, res) {
+    var type = req.params.type ? req.params.type : "Pwd";
+    res.render('account/set' + type + '.html', {
+        global_data: req.global_data, project: req.session.project, user: req.session.user,
+        type: type
+    });
+}
+
+exports.addPrj = function (req, res) {
+    config.db().collection('Project').insert(req.body, function () {
+        res.redirect('/account/setting/Prj');
+    });
 
 }

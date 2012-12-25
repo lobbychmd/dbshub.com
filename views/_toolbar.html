@@ -2,17 +2,29 @@
     $.fn.toolbar = function (options) {
         return this.each(function () {
             if (!options) $(this).find('button').button();
-            else
+            else {
+                var showcount = 0;
                 $(this).find("#leftToolbar>button[cmd]").each(function () {
                     var cmd = $(this).attr('cmd');
                     if (options && options[cmd]) {
                         $(this).show().unbind('click').bind('click', function () {
                             options[cmd](cmd);
                         });
-
+                        showcount++;
                     } else $(this).hide();
 
                 });
+                if (showcount == 0) {
+                    $('#navtoolbar').hide();
+                    $(this).hide();
+                    $('#spliter').css('margin-top', '0');
+                    $('body>.header').css('background-color', '#fff');
+                } else {
+                    $('#navtoolbar').show();
+                    $('#spliter').css('margin-top', '46px');
+                    $('body>.header').css('background-color', '#F3F3F3');
+                }
+            }
         });
     }
 </script>

@@ -36,6 +36,8 @@
         .search_input { display: inline-block;vertical-align: middle;}
         .search_input .input_span { background: url("/images/tabimg.png?v=20120918") no-repeat scroll -403px -108px transparent; display: inline-block; height: 34px; margin: 1px 10px 0 0;width: 97px;}
         .search_input input { background: url("/images/tabimg.png?v=20120918") no-repeat scroll -204px -108px #DDDDDD; border: 0 none; cursor: pointer; font-size: 14px; height: 32px;padding: 0; width: 95px;}
+        ol.header_right {float: right;margin: 3px  10px;color: #d3d3d3;font-size: 0.88em;display: block;list-style: none outside none;padding: 3px 0px;}
+        ol.header_right > li {border-left: 1px solid #666666;display: inline-block;line-height: 18px;padding: 0 4px;position: relative;vertical-align: top;}
     </style>
     <script>
 
@@ -58,14 +60,15 @@
         <a href="/flowchart/index">流程</a>
         <a href="/documentation">文档</a>
         
-        <div style="float: right;margin: 3px  10px;color: #d3d3d3;font-size: 0.88em;" >
-            欢迎，${user.UserName}&nbsp(<a href="/account/logout">注销</a>)
-            <select style="" id="currprj">
+        <ol class='header_right' >
+            <li>欢迎，${user.UserName}&nbsp(<a href="/account/logout">注销</a>)</li>
+            <li><select style="" id="currprj">
                 {{each global_data.projects}}
                     <option value="/changeprj/${_id}" {{if (_id == project)}}selected=selected{{/if}} >${ProjectName}</option>
                 {{/each}}
-            </select>
-        </div>
+            </select></li>
+            <li><a style="display:inline-block;width:18px;height:18px; background: url('/images/h_bedf916a.png') repeat scroll 0 0 transparent;" title="设置" href="/Account/Setting"></a></li>
+        </ol>
     </header>
     <div align="top" class="header" style="height: 60px;background: #f3f3f3" layout="h" >
         <a href="/" id="logo-container" class="logo-container" style="" align="left">
@@ -85,7 +88,7 @@
         <nav align="left" style="width: 300px;" id="nav" layout="v" >
             <div align="top" class="toolbar" id ="navtoolbar" style="height: 36px;padding-top: 10px;">
                 <h3 style="margin: 0px;color: #DD4B39;font-size: 1.5em;">导航菜单</h3></div>
-            <header align="top" id="navheader" style="height:1px;margin-bottom: 10px;"></header>
+            
         </nav>
         <div align="spliter" id="spliter" style="margin: 46px 0 0 0;"></div>
         <div align="auto" id="content" layout="v">

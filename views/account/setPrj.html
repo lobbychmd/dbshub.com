@@ -1,0 +1,19 @@
+{{partial({}) "setNav.html"}}
+
+<header><h3>添加项目</h3></header>
+<form action="/account/addPrj" method="post">
+
+    <table>
+        <tbody>
+            <tr><td>项目名称</td><td><input name="ProjectName" value="" class="valid"></td></tr>
+            <tr><td>项目代码</td><td><input name="ProjectCode" value=""></td></tr>
+            <tr><td>接口密码</td><td><input name="SyncPassword" value=""></td></tr>
+        </tbody>
+
+    </table>
+    <input type="submit" id="addPrj" value="保存" />
+</form>
+
+<script>
+    $('#addPrj').button();
+</script>

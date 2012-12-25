@@ -2,7 +2,7 @@
     <ul align="top">
     </ul>
 </div>
-<div section="nav" style="padding: 5px;" align="auto" id="navtree" >
+<div section="nav" style="padding: 5px;border-top: 1px solid #ddd" align="auto" id="navtree" >
     <ul id="tree">
         <li class="open"><span class="folder">搜索</span></li>
         <li class="open"><span class="folder">捷径</span>
@@ -54,7 +54,7 @@
                     lastState: contentTab,
                     stateId: "ContentTab",
                     stateGroup: "tabtree",
-                    saveState: function() { alert('saveState'); }
+                    saveState: saveState
                 },
                 create: onCreateTab
                 }

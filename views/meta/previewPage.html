@@ -1,7 +1,14 @@
     <script>
         $(function () {
-            var div = $(".asf#m${_id}").parent().preview("${_id}", ${ page }, null, false);
-          });
+            var div = $(".asf#m${_id}").parent().preview("${_id}", ${ page }, null, false, function () {
+                div.find('a[href*=emulator]').click(function () {
+                    var url = $(this).attr('href');
+                    div.load(url);
+                    return false;
+                });
+
+            });
+            });
     </script>
 
     

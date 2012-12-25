@@ -1,0 +1,18 @@
+<style>
+    ul.nav {display: block;font-size: 0.88em;margin: 0;padding: 0; margin-top: 20px;}
+    ul.nav li.sel {border-left: 3px solid #DD4B39;}
+    ul.nav li {border-left: 3px solid #FFFFFF;display: block;font-size: 1.12em;font-weight: bold;line-height: 20px;margin: 0;padding: 5px;vertical-align: top;}
+    ul.nav li.sel a {color: #DD4B39;}
+    ul.nav a {color: #000000;margin-left: 20px;text-decoration: none;}
+</style>
+<div section="nav" style="padding: 0;" align="auto" id="navtree" >
+    <header><h3>系统设置</h3></header>
+    <ul class="nav">
+        <li class="{{if type=='Prj'}}sel{{/if}}"><a class="nav" href="/Account/Setting/Prj"> 项目设置 </a> </li>
+        <li class="{{if type=='Pwd'}}sel{{/if}}"><a class="nav" href="/Account/Setting/Pwd"> 更改密码 </a> </li>
+    </ul>
+</div>
+
+<script>
+    $('#toolbar').toolbar({});
+</script>

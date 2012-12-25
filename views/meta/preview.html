@@ -28,17 +28,7 @@
                     $('#tabs').appendTo('.page_body');
                     $('#tabs').ajaxTabs1(
                         {
-                            a_selector: ".AccordionMenu a",
-                            stateSetting: {
-                                lastState: {
-                                    OpenTabs: [{ text: 'asf', url: 'http://localhost:3000/emulator/preview?_id=50d048745722eb61282c08d6&page=0' }, 
-                                    { text: 'asf1', url: 'http://localhost:3000/emulator/preview?_id=50d048745722eb61282c08d8&page=0'}],
-                                    last: 0
-                                },
-                                stateId: "ContentTab",
-                                stateGroup: "tabtree",
-                                saveState: function() { alert('saveState'); }
-                            },
+                            a_selector: ".AccordionMenu li>span>a",
                             create: function(tab) {
                                 tab.attr('align', 'auto')
                                     .attr('layout', 'v').css('padding', '0px'); //.parent().layout();

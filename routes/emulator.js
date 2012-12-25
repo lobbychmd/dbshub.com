@@ -59,6 +59,7 @@ var getPageMeta = function (_id, page, callback) {
             if (p.PageFlow) p.ActiveFlow = p.PageFlow[0];
         }
         p.ModuleID = m.ModuleID;
+        p.ModuleId = m._id;
         p.ModuleCaption = m.Caption;
         callback(p);
     });
