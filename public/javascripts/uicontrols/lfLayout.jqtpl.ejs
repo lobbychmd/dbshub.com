@@ -406,6 +406,9 @@ lfLayout {display: block;position: relative;}
 .AccordionMenu a:hover {
     text-decoration: underline;
 }
+.AccordionMenu.ui-accordion .ui-accordion-content {
+        padding: 5px;
+    }
 </style>
 
 <script type='text/x-jquery-tmpl' id="uitplfLayout">
@@ -518,7 +521,9 @@ lfLayout {display: block;position: relative;}
 <script type='text/x-jquery-tmpl' id="uitpAccordionMenuUL">
     <ul class="filetree">
         {{each children }}
-            <li {{if ($value.sel)}}class="selected"{{/if}} ><span icon="${icon}" class="file"><a href="${module.Path}">${module.Caption}</a></span>
+            <li {{if ($value.sel)}}class="selected"{{/if}} ><span icon="${icon}" class="file">
+                <a module="${module.ModuleID}" page="index">${module.Caption}</a>
+                </span>
                 {{if children.length>0}}
                     {{tmpl($value) "#uitpAccordionMenuUL"}}
                 {{/if}}

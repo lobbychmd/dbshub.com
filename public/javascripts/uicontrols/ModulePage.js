@@ -24,11 +24,17 @@ $.ModulePage = {
     }
 }
 
+$.Layout = function (site) {
+    $('.AccordionMenu a[module]').each(function () {
+        $(this).attr('href', site + "?_id=" + $(this).attr('module')+ "&page=" + $(this).attr('page'));
+    });
+}
+
 $.fn.ModulePage = function () {
     return this.each(function () {
         var ActiveFlowStr = $('#ActiveFlowStr').text();
         if (ActiveFlowStr) {
-            var activeFlow = eval("(" + ActiveFlowStr  + ")");
+            var activeFlow = eval("(" + ActiveFlowStr + ")");
             if (activeFlow && activeFlow.BlackList) {
                 for (var i in activeFlow.BlackList) {
                     $('[fn=' + activeFlow.BlackList[i] + ']').setReadOnly(true);
@@ -36,6 +42,30 @@ $.fn.ModulePage = function () {
             }
         }
         $(this).find(".DateEditor").DateEditor();
+        $(this).find('[module], [page]').click(function () {
+            var modulepage = $(this).closest('.ModulePage').parent();
+            var moduleContainer = modulepage.parent(); //$(this)ui-tabs-panel
+
+            var page = $(this).attr('page');
+            var params = $(this).attr('params');
+            var div = moduleContainer.find('.ModulePage[page=' + page + ']');
+
+            var reload = params != div.attr('params');
+            if (reload) div.parent().remove();
+            if (div.size() == 1 && (!reload)) {
+                div.parent().show();
+                modulepage.hide();
+            }
+            //else if (div.size() >= 1) alert(div.size());
+            else {
+                div = $('<div class="asf">').insertAfter(modulepage).attr('params', params);;
+                div.indicator({})
+                    .load('/emulator/preview?_id=' + $(this).attr('module') + '&page=' + page + "&" + params, function (data) {
+                        modulepage.hide();
+                    });
+            }
+            return false;
+        });
         //debug();
     });
 }
@@ -54,6 +84,10 @@ $.ModulePage = {
             var d = $(".flowconfig_edittype").val();
             return d ? $.parseJSON(d) : {};
         }
+    },
+    
+    openPage: function(moduleId, pageId, params){
+        
     }
 }
 
@@ -106,9 +140,7 @@ $.fn.PageButton = function () {
             else if ($(this).hasClass('edit')) {
                 $(this).closest('form').find('input[fn]').toggleReadOnly();
             }
-            else if ($(this).hasClass('back')) {
-                window.history.back();
-            }
+            
         });
     });
 

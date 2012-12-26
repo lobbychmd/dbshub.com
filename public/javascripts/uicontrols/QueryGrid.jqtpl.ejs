@@ -37,7 +37,7 @@ table.QueryGrid td, table.QueryGrid th {
      <tr>
         {{each $value}}
             <td>
-                {{if $index==0 }} <a href="${value}">明细</a> {{else}}${value}{{/if}}
+                {{if $index==0 }} <a page="detail" module="${pageInfo.ModuleID}" href="#" params="${value}">明细</a> {{else}}${value}{{/if}}
             </td>
         {{/each}}
     </tr>

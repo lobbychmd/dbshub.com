@@ -4,8 +4,9 @@
 
 <script type='text/x-jquery-tmpl' id="uitpPageButton">
     <input type="button" title="${hint}" id="${name}" class="PageButton ${type}" value="${caption}" href="${href}" 
-        {{if type=="save"}}biz="${pageInfo.ActiveFlow.SaveBiz}"{{/if}}
-        {{if type=="biz"}}biz="${biz}"{{/if}}
+        {{if type=="save"}} biz="${pageInfo.ActiveFlow.SaveBiz}"{{/if}}
+        {{if type=="biz"}} biz="${biz}"{{/if}}
+        {{if type=="back"}} module="${pageInfo.ModuleID}" page="index"{{/if}}
     >
 </script>
 

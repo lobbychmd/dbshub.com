@@ -26,20 +26,21 @@
             if ('${moduleLayout}' == '')
                 $(".previewbody").preview(null, null, null, true, function () {
                     $('#tabs').appendTo('.page_body');
+                    $.Layout('/emulator/preview');
                     $('#tabs').ajaxTabs1(
                         {
                             a_selector: ".AccordionMenu li>span>a",
-                            create: function(tab) {
+                            create: function (tab) {
                                 tab.attr('align', 'auto')
                                     .attr('layout', 'v').css('padding', '0px'); //.parent().layout();
                                 //$.autoHeight({}, true);
                             }
-                            }
+                        }
                     );
                     $('.ModulePage, .page_head, .lfUserBar').remove();
-         });
+                });
             else $(".previewbody").preview("${_id}", ${ page }, true, null);
-         });
+            });
 
 
     </script>

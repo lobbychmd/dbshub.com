@@ -33,11 +33,12 @@ $.uicontrols = {
                 
                 $.uicontrols.loadRequire(item.ui, loaded, function () {
                     if ($.uicontrols[item.ui]) {
+                        //console.log(item.ui +'params2tmpl');
                         var htm = $("#uitp" + item.ui).tmpl(
                         //params 是ui 设置的属性，经过一些处理之后生成 UI
                                     $.uicontrols[item.ui].params2tmpl(item.params, pageInfo)
                                 ).appendTo(container );
-
+                        //console.log(item.ui +'params2tmpl end;');
                         if (item.children && item.children.length > 0){
                             var uicontainer = $(htm).find('[uicontainer=' + item.params.name + ']');
                             $.uicontrols.renderUIitem(item.children, pageInfo, uicontainer.size() == 0 ? htm: uicontainer, loaded, function () {
@@ -60,7 +61,12 @@ $.uicontrols = {
         for (var i in uis) {
             var item = uis[i];
             if (distinctuis.indexOf(item.ui) < 0) {
-                eval("$(container).find('." + item.ui + "')." + item.ui + "();");
+                try {
+                    eval("$(container).find('." + item.ui + "')." + item.ui + "();");
+                }catch(e){
+                    alert(item.ui +'js 插件出错。');
+                }
+                
                 //eval("$('." + item.ui + "')." + item.ui + "();");
                 
                 distinctuis.push(item.ui);
@@ -68,6 +74,7 @@ $.uicontrols = {
             
             if (item.children && item.children.length > 0)
                 $.uicontrols.execUIitemJs(container, item.children, distinctuis);
+
         }
     },
     findModulePage: function (data) {
@@ -92,7 +99,6 @@ $.fn.preview = function (moduleid, page, uitxt, Layout, callback) {
         
         if(moduleid) url += '_id=' + moduleid + '&page=' + page + '&';
         if(Layout) url += 'layout=1';
-
         $.get(url, function (pageInfo) {
             var data = moduleid? 
                 $("<div>").uidesigner(uitxt ? uitxt : pageInfo.UI, { getdata: true })
@@ -113,6 +119,7 @@ $.fn.preview = function (moduleid, page, uitxt, Layout, callback) {
             var loaded = [];
             $.uicontrols.renderUIitem(all, pageInfo, container, loaded, function () {
                 $.uicontrols.execUIitemJs(container,[{ ui: "ModulePage", params: {}, children: all}]);
+                console.log('js 插件完成。');
                 if (callback) callback();
                 //alert('ready!');
             });

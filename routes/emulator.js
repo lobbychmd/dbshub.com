@@ -37,9 +37,10 @@ var getFieldMeta = function (project, fields, context, callback) {
     });
 }
 
-var getPageMeta = function (_id, page, callback) {
+var getPageMeta = function (projectName, _id, page, callback) {
     var db = config.db();
-    db.collection("MetaModule").findOne({ _id: db.ObjectID(_id) }, function (err, m) {
+    var q = (_id.length ==24) ? {_id: db.ObjectID(_id)} : { ProjectName: projectName, ModuleID: _id };
+    db.collection("MetaModule").findOne(q, function (err, m) {
         var m1 = /\/module\/query\/(\w+)\?mid=\w+/.exec(m.Path)
         if (m1) {
             m.ModulePages = [{ UI: "\
@@ -54,6 +55,7 @@ var getPageMeta = function (_id, page, callback) {
             }];
         }
         var p = m.ModulePages[page];
+        if (!p) for(var i in m.ModulePages) if (m.ModulePages[i].PageID == page){p = m.ModulePages[i]; break;}
         if (p.PageFlow) {
             p.PageFlow = eval(p.PageFlow);
             if (p.PageFlow) p.ActiveFlow = p.PageFlow[0];
@@ -142,7 +144,7 @@ exports.page = function (req, res) {
     new fitnode.seq_async([
         function (params, callback) {
             console.log('取页面元数据');
-            if (req.query._id) getPageMeta(req.query._id, req.query.page, function (p) {
+            if (req.query._id) getPageMeta(req.session.project, req.query._id, req.query.page, function (p) {
                 page = p;
                 callback();
             });
@@ -233,9 +235,11 @@ exports.page = function (req, res) {
 };
 
 exports.preview = function (req, res) {
+    var page = req.query.page;
+    page = page =="index"?0:(page =="detail"?1:page );
     if (req.query.layout)
-        res.render("meta/preview.html", { layout: false, _id: req.query._id, page: req.query.page});
-    else res.render("meta/previewPage.html", { layout: false, _id: req.query._id, page: req.query.page});
+        res.render("meta/preview.html", { layout: false, _id: req.query._id, page: page});
+    else res.render("meta/previewPage.html", { layout: false, _id: req.query._id, page: page});
 }
 
 

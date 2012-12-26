@@ -34,8 +34,9 @@ $.uicontrols.xyQuickRec = {
             if (table.Columns[j].fieldName == uiparams.KeyField) {
                 uiparams.column = table.Columns[j];
                 break;
-            } 
+            }
         //console.log(uiparams.data);
+        if (!uiparams.column) alert(uiparams.KeyField +'没找到');
         return uiparams;
     }
 };

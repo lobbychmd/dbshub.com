@@ -1,59 +1,142 @@
 <script type='text/x-jquery-tmpl' id="uitpxyGrid">
-   <div class="xyGrid">     </div>
+   <div class="xyGrid"> </div>
 </script>
 
 <style >
-    .xyGridTable{ background: rgb(253, 254, 254); border-collapse:collapse}
-    .xyGridTable input { background: rgb(253, 254, 254); border: 1px;}
-    .xyGridTable>caption{ border: 0px solid rgb(166, 201, 226); text-align: left; padding: 0.3em 10px; font-weight: bold;
-                        color: #ddd;
-                        background: url("/javascripts/uicontrols/images/dgCaption1.png") repeat scroll 0 0 transparent;
-    }
-    .xyGridTable>thead>tr{ background: url("/javascripts/uicontrols/images/dgHead1.png") repeat scroll 0 0 transparent;}
-    .xyGridTable>tfoot>tr{ background: url("/javascripts/uicontrols/images/dgFoot.png") repeat scroll 0 0 transparent;
-                           height: 26px;font-weight: bold;color: #333;}
-    .xyGridTable>tbody>tr:hover, .xyGridTable>tbody>tr:hover input{ background: rgb(221, 236, 247);}
-    .xyGridTable>tbody>tr.striped, .xyGridTable>tbody>tr.striped input{ background: rgb(243,244,244);}
-    .xyGridTable>tbody>tr.selected, .xyGridTable>tbody>tr.selected input{ background: rgb(251, 236, 136); border: 1px solid gray;}
-    
-    
-    .xyGridTable td, .xyGridTable th {border: 1px solid rgb(166, 201, 226);padding: 0.1em 10px;text-align: left;}
-    .xyGridTable > tbody > tr.first > td { border-top: rgb(253, 254, 254);}
-    
-    .DataGridWrap { overflow:auto;min-height: 150px;} 
+    /* CSS Document */
+
+/*基本*/
+.GridExtenPlus {
+	border:1px solid #000;
+	overflow:auto;
+	font-size:12px;
+	padding:2px;
+	}
+.GridExtenPlus .dbody{
+	overflow:auto;
+	overflow-x:hidden;
+	}
+.GridExtenPlus .line{
+	position:absolute;
+	display:none;
+	width:1px;
+	height:200px;
+	top:0;
+	left:0;
+	background-color:#F00;
+	border-style:none;
+	}
+	
+/*应用样式*/
+.GridExtenPlus table{
+	border-collapse:collapse;
+	}
+.GridExtenPlus table,.GridExtenPlus table td{
+	border:1px solid #CCCCCC; 
+	border-style:none solid solid none;
+	white-space:nowrap;
+	padding:2px 0px;
+	}
+.GridExtenPlus table td{
+	overflow:hidden;
+	}
+.GridExtenPlus table.thead,.GridExtenPlus table.tfoot{
+	border-style:solid solid solid solid;
+	}
+.GridExtenPlus table.tbody{
+	border-style:none solid solid solid;
+	}
+.GridExtenPlus table tr{
+	border:none solid solid none;
+	height:23px;
+	cursor: default;
+	}
+.GridExtenPlus table td div{
+	padding:0 5px;
+	}
+.GridExtenPlus table span.tab_down{
+	display:block;
+	width:23px;
+	height:16px;
+	background:url(/javascripts/uicontrols/images/datagrid/reload.png) center center no-repeat;
+	}
+.GridExtenPlus table.thead td.zClum:hover{
+	background:none;
+	background-color:#EDEDED;
+	}
+/*下面是样式*/
+.GridExtenPlus table.thead tr{
+	background:url(/javascripts/uicontrols/images/datagrid/header_bg.gif) repeat-x;
+	cursor:pointer;
+	}
+.GridExtenPlus table td{
+	padding:2px 5px;
+	}	
+.GridExtenPlus table td.zClum{
+	background:url(/javascripts/uicontrols/images/datagrid/header_bg.gif) repeat-x;
+	text-align:center;
+	cursor:pointer;
+	min-width:23px;
+	padding:0;
+	}
+.GridExtenPlus table.tbody tr{
+	background-color:#E1F0FF;
+	}
+.GridExtenPlus table.tbody tr.stripe{
+	background-color:#EEEEFF;
+	}	
+/*行鼠标经过样式*/
+.GridExtenPlus table.tbody tr:hover{
+	background-color: #A9DBF3;
+	}
+.GridExtenPlus table.tbody tr:hover td.zClum{
+	background:none;
+	background-color:#EFEFEF;
+	}
+.GridExtenPlus table.tbody tr.hover{
+	background-color:#0CF;
+	}	
+.GridExtenPlus table.tbody tr.hover td.zClum{
+	background:none;
+	background-color:#CCC;
+	}
+	
 </style>
 
 
 <script type='text/x-jquery-tmpl' id="uitpxyGridTable">
-<table id="${name}" class="xyGridTable ui-widget ui-widget-content" >
-    <caption class="ui-corner-top">明细表</caption>
- <thead class="ui-widget-header">
-  <tr>
-    {{each data.columns}}
-        <th>{{if metaField}}${metaField.DisplayLabel}{{else}}${fieldName}{{/if}}</th>
-    {{/each}}
+<div id="${name}" class="xyGridTable" >
+    <div>
+        <table id="${name}_head" >
+          <tr>
+            {{each data.columns}}
+                <td>{{if metaField}}${metaField.DisplayLabel}{{else}}${fieldName}{{/if}}</td>
+            {{/each}}
   
-</tr>
-
- 
-</thead>
-
- <tbody>
-    {{each data.rows}}
-     <tr {{if ($index == 0)}} class="first" {{/if}}>
-        {{each $value}}
-            <td>
-                <input value="${value}" />
-            </td>
-        {{/each}}
-    </tr>
-    {{/each}}
-    
-</tbody>
-<tfoot>
-                <tr><td>合计</td></tr>
-            </tfoot>    
-
-</table>
-
+        </tr>
+        </table>
+    </div>
+    <div>
+        <table id="${name}_body" >
+            {{each data.rows}}
+             <tr {{if ($index == 0)}} class="first" {{/if}}>
+                {{each $value}}
+                    <td>
+                        <input value="${value}" />
+                    </td>
+                {{/each}}
+            </tr>
+            {{/each}}
+        </table> 
+    </div> 
+    <div>  
+        <table id="${name}_foot" >
+        <tr>
+            {{each data.columns}}
+                <td>{{if $index==0}}合计{{/if}}</td>
+            {{/each}}
+        </tr>                
+        </table>
+    </div>
+</div>
 </script>

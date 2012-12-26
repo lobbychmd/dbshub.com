@@ -1,16 +1,15 @@
-    <script>
-        $(function () {
-            var div = $(".asf#m${_id}").parent().preview("${_id}", ${ page }, null, false, function () {
-                div.find('a[href*=emulator]').click(function () {
-                    var url = $(this).attr('href');
-                    div.load(url);
-                    return false;
-                });
 
-            });
+<div class='asf' id="m${_id}_${page}" >
+</div>
+
+    <script>
+        var div = $(".asf#m${_id}_${page}");
+        if (div.parent().hasClass('asf')) div = div.parent().attr('id', "m${_id}_${page}");
+        div.indicator({insert: true})
+            .preview("${_id}", ${ page }, null, false, function () {
+                div.find('.ModulePage').attr('params', div.attr('params'));
+                div.indicator({remove: true})
             });
     </script>
 
     
-<div class='asf' id="m${_id}" >
-</div>

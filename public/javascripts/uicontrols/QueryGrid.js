@@ -4,10 +4,11 @@ $.uicontrols.QueryGrid = {
         uiparams.pageInfo = pageInfo;
         var table = pageInfo.dataSet[uiparams.table];
         uiparams.data = { columns: table.Columns, rows: [] };
-        
+
         for (var i in table.Rows) {
             var row = [];
-            var href = '/emulator/preview?_id=' + uiparams.pageInfo.ModuleId + '&page=1&';
+            //var href = '/emulator/preview?_id=' + uiparams.pageInfo.ModuleId + '&page=1&';
+            var href = "";
             for (var j in table.Columns) {
                 row.push({ key: table.Columns[j].fieldName, value: table.Rows[i][table.Columns[j].fieldName] });
                 href += table.Columns[j].fieldName + "=" + table.Rows[i][table.Columns[j].fieldName] + "&";

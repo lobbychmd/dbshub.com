@@ -16,12 +16,14 @@
 <script type='text/x-jquery-tmpl' id="uitpxyQuickRec">
     <fieldset class="xyQuickRec">
         <legend>快速录入</legend>
-        <div class="input_items quickKey">                 
-            <div class="input_items_lable" title="${column.metaField.DisplayLabel} ">${column.metaField.DisplayLabel} </div>
-            <div class="input_items_input">                               
-                <input /><a href="#" class="quickCmd quickDialog"></a><a href="#" class="quickCmd quickDel"></a>
-            </div>             
-        </div>
+        {{if column}}
+            <div class="input_items quickKey">                 
+                <div class="input_items_lable" title="${column.metaField.DisplayLabel} ">${column.metaField.DisplayLabel} </div>
+                <div class="input_items_input">                               
+                    <input /><a href="#" class="quickCmd quickDialog"></a><a href="#" class="quickCmd quickDel"></a>
+                </div>             
+            </div>
+        {{/if}}
 
     </div>
 </script>
