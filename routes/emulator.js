@@ -39,7 +39,7 @@ var getFieldMeta = function (project, fields, context, callback) {
 
 var getPageMeta = function (projectName, _id, page, callback) {
     var db = config.db();
-    var q = (_id.length ==24) ? {_id: db.ObjectID(_id)} : { ProjectName: projectName, ModuleID: _id };
+    var q = (_id.length == 24) ? { _id: db.ObjectID(_id)} : { ProjectName: projectName, ModuleID: _id };
     db.collection("MetaModule").findOne(q, function (err, m) {
         var m1 = /\/module\/query\/(\w+)\?mid=\w+/.exec(m.Path)
         if (m1) {
@@ -55,7 +55,8 @@ var getPageMeta = function (projectName, _id, page, callback) {
             }];
         }
         var p = m.ModulePages[page];
-        if (!p) for(var i in m.ModulePages) if (m.ModulePages[i].PageID == page){p = m.ModulePages[i]; break;}
+        //console.log(p);
+        if (!p) for (var i in m.ModulePages) if (m.ModulePages[i].PageID == page) { p = m.ModulePages[i]; break; }
         if (p.PageFlow) {
             p.PageFlow = eval(p.PageFlow);
             if (p.PageFlow) p.ActiveFlow = p.PageFlow[0];
@@ -224,7 +225,7 @@ exports.page = function (req, res) {
         function (params, callback) {
             //菜单
             getModules(req.session.project, req.query.page, function (modules) {
-                console.log(page);
+                //console.log(page);
                 page.modules = modules;
                 callback();
             });
@@ -236,12 +237,16 @@ exports.page = function (req, res) {
 
 exports.preview = function (req, res) {
     var page = req.query.page;
-    page = page =="index"?0:(page =="detail"?1:page );
-    if (req.query.layout)
-        res.render("meta/preview.html", { layout: false, _id: req.query._id, page: page});
-    else res.render("meta/previewPage.html", { layout: false, _id: req.query._id, page: page});
-}
+    page = page == "index" ? 0 : (page == "detail" ? 1 : page);
+    var multiPage = req.query.layout;
+    var loadLayout = (!multiPage) || (req.query.layout == "1");
+    var loadPage = (!multiPage) || (req.query._id);
 
+    var p = { layout: false, _id: req.query._id, page: page || page==0?page:"null", multiPage: multiPage?"true":"false", loadLayout: loadLayout?"true":"false", loadPage: loadPage?"true":"false" };
+    if (multiPage && loadPage && (!loadLayout)) 
+        res.render("meta/previewPage.html", p);
+    else res.render("meta/preview.html", p);
+}
 
 exports.biz = function (req, res) {
     var q = { ProjectName: req.session.project, BizID: req.params.biz };

@@ -7,6 +7,13 @@ $.uicontrols.ModulePage = {
     }
 };
 
+$.uicontrols.ModuleTabs = {
+    params2tmpl: function (uiparams, pageInfo) {
+        uiparams.pageInfo = pageInfo;
+        return uiparams;
+    }
+};
+
 $.ModulePage = {
     config: {
         lookups: function () {
@@ -24,11 +31,26 @@ $.ModulePage = {
     }
 }
 
-$.Layout = function (site) {
-    $('.AccordionMenu a[module]').each(function () {
-        $(this).attr('href', site + "?_id=" + $(this).attr('module')+ "&page=" + $(this).attr('page'));
+$.fn.ModuleTabs = function () {
+    return this.each(function () {
+        $('.page_head').remove();
+        var site = "/emulator/preview";
+        $('.AccordionMenu a[module]').each(function () {
+            $(this).attr('href', site + "?_id=" + $(this).attr('module') + "&page=" + $(this).attr('page') + "&layout=0");
+        });
+        $(this).ajaxTabs1(
+        {
+            a_selector: ".AccordionMenu li>span>a",
+            create: function (tab) {
+                tab.attr('align', 'auto')
+                        .attr('layout', 'v').css('padding', '0px'); //.parent().layout();
+                //$.autoHeight({}, true);
+            }
+        }
+        );
     });
 }
+
 
 $.fn.ModulePage = function () {
     return this.each(function () {
@@ -41,28 +63,38 @@ $.fn.ModulePage = function () {
                 }
             }
         }
+
         $(this).find(".DateEditor").DateEditor();
+
         $(this).find('[module], [page]').click(function () {
             var modulepage = $(this).closest('.ModulePage').parent();
             var moduleContainer = modulepage.parent(); //$(this)ui-tabs-panel
 
             var page = $(this).attr('page');
             var params = $(this).attr('params');
-            var div = moduleContainer.find('.ModulePage[page=' + page + ']');
-
-            var reload = params != div.attr('params');
-            if (reload) div.parent().remove();
-            if (div.size() == 1 && (!reload)) {
-                div.parent().show();
-                modulepage.hide();
-            }
-            //else if (div.size() >= 1) alert(div.size());
+            var url = '/emulator/preview?_id=' + $(this).attr('module') + '&page=' + page + "&" + params;
+            if ($(this).closest('.ModuleTabs').size() == 0)
+                window.location = url;
             else {
-                div = $('<div class="asf">').insertAfter(modulepage).attr('params', params);;
-                div.indicator({})
-                    .load('/emulator/preview?_id=' + $(this).attr('module') + '&page=' + page + "&" + params, function (data) {
-                        modulepage.hide();
-                    });
+                url += "&layout=0";
+                var div = moduleContainer.find('.ModulePage[page=' + page + ']');
+
+
+
+                var reload = params != div.attr('params');
+                if (reload) div.parent().remove();
+                if (div.size() == 1 && (!reload)) {
+                    div.parent().show();
+                    modulepage.hide();
+                }
+                //else if (div.size() >= 1) alert(div.size());
+                else {
+                    div = $('<div class="asf">').insertAfter(modulepage).attr('params', params); ;
+                    div.indicator({})
+                        .load(url, function (data) {
+                            modulepage.hide();
+                        });
+                }
             }
             return false;
         });

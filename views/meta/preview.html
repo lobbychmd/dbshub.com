@@ -23,38 +23,14 @@
     </style>
     <script>
         $(function () {
-            if ('${moduleLayout}' == '')
-                $(".previewbody").preview(null, null, null, true, function () {
-                    $('#tabs').appendTo('.page_body');
-                    $.Layout('/emulator/preview');
-                    $('#tabs').ajaxTabs1(
-                        {
-                            a_selector: ".AccordionMenu li>span>a",
-                            create: function (tab) {
-                                tab.attr('align', 'auto')
-                                    .attr('layout', 'v').css('padding', '0px'); //.parent().layout();
-                                //$.autoHeight({}, true);
-                            }
-                        }
-                    );
-                    $('.ModulePage, .page_head, .lfUserBar').remove();
-                });
-            else $(".previewbody").preview("${_id}", ${ page }, true, null);
-            });
 
-
+            $("body").preview("${_id}", ${ page }, null, ${ multiPage }, ${ loadLayout }, ${ loadPage });
+        });
     </script>
 
     
 </head>
 <body style="padding:0px;margin:0px;" layout="v" id="body">    
-    <div class='previewbody'>     
     
-    </div>
-
-    <div id="tabs" align="auto" layout="v" class="headerTabs">
-        <ul align="top">
-        </ul>
-    </div>
 </body>
 </html>

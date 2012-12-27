@@ -5,16 +5,16 @@
         padding: 10px;
     }
     /* 标签页(基于 jquery ui) */
-.headerTabs.ui-tabs{border-radius:0px; border: 0px; padding: 0px;}
-.headerTabs.ui-tabs>ul { border-width: 0px; padding: 0 0 0 6px;   }
-.headerTabs.ui-tabs>.ui-widget-header {background: url("/javascripts/uicontrols/images/header_bg.png") repeat scroll 0 0 transparent;border-top-left-radius:0px;border-bottom-right-radius:0px;border-top-right-radius:0px;border-bottom-left-radius:0px;  }
-.headerTabs.ui-tabs>.ui-tabs-nav{height:32px;}
-.headerTabs>ul>li .ui-icon-close {cursor: pointer; float: left; margin: 0.4em 0.6em 0 0;}
+.ModuleTabs.ui-tabs{border-radius:0px; border: 0px; padding: 0px;}
+.ModuleTabs.ui-tabs>ul { border-width: 0px; padding: 0 0 0 6px;   }
+.ModuleTabs.ui-tabs>.ui-widget-header {background: url("/javascripts/uicontrols/images/header_bg.png") repeat scroll 0 0 transparent;border-top-left-radius:0px;border-bottom-right-radius:0px;border-top-right-radius:0px;border-bottom-left-radius:0px;  }
+.ModuleTabs.ui-tabs>.ui-tabs-nav{height:32px;}
+.ModuleTabs>ul>li .ui-icon-close {cursor: pointer; float: left; margin: 0.4em 0.6em 0 0;}
 
-.headerTabs.ui-tabs>ul>li.ui-state-default {
+.ModuleTabs.ui-tabs>ul>li.ui-state-default {
     background:url("/") repeat-x scroll 50% 50%   ; border: 0px;    height: 31px;  }
-.headerTabs.ui-tabs>ul>li.ui-state-active{ background:  #CEE7FF; border-radius: 0px; height: 30px; border-width: 0 1px; border-color: #7791AC; border-style: solid; }
-.headerTabs.ui-tabs>.ui-tabs-panel {background:  #CEE7FF}
+.ModuleTabs.ui-tabs>ul>li.ui-state-active{ background:  #CEE7FF; border-radius: 0px; height: 30px; border-width: 0 1px; border-color: #7791AC; border-style: solid; }
+.ModuleTabs.ui-tabs>.ui-tabs-panel {background:  #CEE7FF}
 
 </style>
 
@@ -34,9 +34,17 @@
             <option value="" selected="selected"></option>
         </select>
     {{else}}
-        <input value="${Value}" name="${name}" id="${id}" fn ="${name}" 
+        <input value="${value}" name="${name}" id="${id}" fn ="${name}" 
             class="editor {{if metaField.EditorType=="DATE" }}DateEditor{{/if}}" {{if metaField.EditorType=="DATE" }}type="date"{{/if}}
         />
     {{/if}}
     
+</script>
+
+
+<script type='text/x-jquery-tmpl' id="uitpModuleTabs">
+    <div id="ModuleTabs" align="auto" layout="v" class="ModuleTabs">
+        <ul align="top">
+        </ul>
+    </div>
 </script>

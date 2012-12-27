@@ -9,11 +9,14 @@ $.uicontrols = {
         xyGridTable: 'DataGrid',
         xyGrid: 'DataGrid',
         lfLayout_foot: 'lfLayout',
-        xyQuickRec :'xyEditorItems'
+        xyQuickRec :'xyEditorItems',
+        ModuleTabs :'ModulePage'
     },
+    loaded:[],
     loadRequire: function (uiname, loaded, callback) {
         var fileName = $.uicontrols.config[uiname];
         if (!fileName) fileName = uiname;
+        
         if (loaded.indexOf(fileName) < 0){
             $LAB.script("/javascripts/uicontrols/" + fileName + ".js").wait(function () {
                 $.get('/jqtpl?uiname=' + fileName, function (html) {
@@ -30,22 +33,18 @@ $.uicontrols = {
     renderUIitem: function (uis, pageInfo, container, loaded, callback) {
         new seq_asyncArray(
             function (item, params, callback1) {
-                
                 $.uicontrols.loadRequire(item.ui, loaded, function () {
                     if ($.uicontrols[item.ui]) {
-                        //console.log(item.ui +'params2tmpl');
                         var htm = $("#uitp" + item.ui).tmpl(
                         //params 是ui 设置的属性，经过一些处理之后生成 UI
                                     $.uicontrols[item.ui].params2tmpl(item.params, pageInfo)
                                 ).appendTo(container );
-                        //console.log(item.ui +'params2tmpl end;');
                         if (item.children && item.children.length > 0){
                             var uicontainer = $(htm).find('[uicontainer=' + item.params.name + ']');
                             $.uicontrols.renderUIitem(item.children, pageInfo, uicontainer.size() == 0 ? htm: uicontainer, loaded, function () {
                                 callback1();
                             });
-                        }else callback1();
-
+                        } else callback1();
                     }
                 });
                 //else callback();
@@ -57,14 +56,17 @@ $.uicontrols = {
         ).exec();
     },
     execUIitemJs: function (container, uis, distinctuis) {
+        
         if (!distinctuis) distinctuis = [];
         for (var i in uis) {
             var item = uis[i];
+            console.log(item);
             if (distinctuis.indexOf(item.ui) < 0) {
                 try {
                     eval("$(container).find('." + item.ui + "')." + item.ui + "();");
                 }catch(e){
                     alert(item.ui +'js 插件出错。');
+                    console.log(e);
                 }
                 
                 //eval("$('." + item.ui + "')." + item.ui + "();");
@@ -90,35 +92,35 @@ $.uicontrols = {
 
 };
 
-$.fn.preview = function (moduleid, page, uitxt, Layout, callback) {
+$.fn.preview = function (moduleid, page, uitxt, multiPage, loadLayout, loadPage, callback) {
     return this.each(function () {
+
         $(this).children().remove();
         var container = this;
         //格式：{ ui: ui, id: ui, params: params, attrs: attrs, children: [] };
-        var url = 'http://localhost:3000/emulator/page?';
+        var url = '/emulator/page?';
+        if(moduleid) url += '_id=' + moduleid + '&page=' + page + '&multiPage=' + multiPage + '&loadLayout=' + loadLayout + '&loadPage=' + loadPage;
         
-        if(moduleid) url += '_id=' + moduleid + '&page=' + page + '&';
-        if(Layout) url += 'layout=1';
         $.get(url, function (pageInfo) {
-            var data = moduleid? 
-                $("<div>").uidesigner(uitxt ? uitxt : pageInfo.UI, { getdata: true })
-                :"";
-
-            if (!uitxt){
-                var layout = $("<div>").uidesigner(pageInfo.layout.LayoutUI, { getdata: true });
-                var modluepage= $.uicontrols.findModulePage(layout.children);
-                if (moduleid) modluepage.children = data.children;
-                if (! Layout) layout = [ modluepage];
+            console.log(pageInfo);
+            var pageData = loadPage ? ($("<div>").uidesigner(uitxt ? uitxt : pageInfo.UI, { getdata: true })) : null;
+            var layoutData =loadLayout ? $("<div>").uidesigner(pageInfo.layout.LayoutUI, { getdata: true }): null;
+            
+            var data = null;
+            if ((!multiPage) || (loadLayout && loadPage)){
+                modluepage= $.uicontrols.findModulePage(layoutData.children);
+                modluepage.children = pageData.children;
+                data = layoutData.children;
             }
-            
-            var all = uitxt ? [{ ui: "ModulePage", params: {}, children: data.children}]
-                :( (!Layout)? [ modluepage] : layout.children);
-            
+            else {
+                if (!loadLayout) data = [{ ui: "ModulePage", params: {}, children: pageData.children}];
+                else if (!loadPage) data = layoutData.children;
+            }
             //pageInfo  包括页面元数据，包含的查询的元数据，包含的查询结果数据（demo）
             //先构造所有ui，然后执行 js
-            var loaded = [];
-            $.uicontrols.renderUIitem(all, pageInfo, container, loaded, function () {
-                $.uicontrols.execUIitemJs(container,[{ ui: "ModulePage", params: {}, children: all}]);
+            var loaded = $.uicontrols.loaded;//[];
+            $.uicontrols.renderUIitem(data, pageInfo, container, loaded, function () {
+                $.uicontrols.execUIitemJs(container, data);
                 console.log('js 插件完成。');
                 if (callback) callback();
                 //alert('ready!');

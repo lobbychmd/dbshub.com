@@ -25,7 +25,7 @@ $.uicontrols.xyGridTable = {
             //var href = uiparams.href + "?";
             var href = window.location.toString(); href = href.substring(0, href.length - 1) + "1&";
             for (var j in table.Columns) {
-                row.push({ key: table.Columns[j].fieldName, value: table.Rows[i][table.Columns[j].fieldName] });
+                row.push({ key: table.Columns[j].fieldName, value: table.Rows[i][table.Columns[j].fieldName], metaField: table.Columns[j].metaField});
             }
             uiparams.data.rows.push(row);
 

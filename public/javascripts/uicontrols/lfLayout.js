@@ -83,6 +83,11 @@ $.fn.AccordionMenu = function () {
     return this.each(function () {
         var sel = $(this).attr('sel');
         $(this).Accordion({ active: sel ? parseInt(sel) : 0 }).find('.ui-accordion-content').css('height', '').children('ul').treeview();
+
+        var site = "/emulator/preview";
+        $('.AccordionMenu a[module]').each(function () {
+            $(this).attr('href', site + "?_id=" + $(this).attr('module') + "&page=" + $(this).attr('page') + "&layout=1");
+        });
     });
 }
 
