@@ -69,6 +69,9 @@ app.post('/flowchart/json2str', require('./routes/dbchart').json2str);
 
 app.get('/demo/uidesigner', require('./routes/demo').uidesigner);
 app.get('/demo/dataGrid', require('./routes/demo').dataGrid);
+app.get('/demo/lookupdemo', require('./routes/demo').lookupdemo);
+app.get('/demo/lookupquery/:query', require('./routes/demo').lookup);
+app.get('/demo/searchquery/:query', require('./routes/demo').search);
 
 app.get('/documentation', require('./routes/documentation').index);
 app.get('/documentation/:name', require('./routes/documentation').doc);

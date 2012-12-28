@@ -1,0 +1,38 @@
+<style>
+    .searchlookup tr.sel { background: yellow}
+</style>
+<table border=1 class="searchlookup">
+    <thead>
+        <tr>
+            {{each lookupfields}}
+                <th>${$value}</th>
+            {{/each}}
+        </tr>
+        <tr>
+            {{each lookupfields}}
+                <td fn="${$value}">${$value} 1</td>
+            {{/each}}
+        </tr>
+    </thead>
+    
+</table>
+
+<script>
+    $('table.searchlookup tr').click(function () {
+        $(this).closest('table').find('tr').removeClass('sel');
+        $(this).addClass('sel');
+    });
+
+    $.fn.getSingleSel = function () {
+        var div = $(this[0]);
+        var seltr = div.find('tr.sel');
+        if (seltr.size() == 1) {
+            var data = {};
+            $(seltr).children('td').each(function () {
+                data[$(this).attr('fn')] = $(this).text();
+            });
+            return data;
+            
+        } else return null;
+    }
+</script>
