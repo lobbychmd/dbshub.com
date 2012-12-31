@@ -14,6 +14,10 @@ exports.lookupdemo = function (req, res) {
     res.render('demo/lookup.html', {  layout: null });
 };
 
+exports.lookupfail = function (req, res) { 
+    res.json(null);
+}
+
 exports.lookup = function (req, res) {
     var result = {};
     var value = '';
@@ -22,10 +26,10 @@ exports.lookup = function (req, res) {
     }
     var lookupfields = req.query.lookupfields.split(';');
     for (var i in lookupfields)
-        result[lookupfields[i]] = value;
+        result[lookupfields[i]] = value + i;
     res.json(result);
 };
 
 exports.search = function (req, res) {
-    res.render("demo/searchlookup.html", {layout: null, lookupfields: req.query.lookupfields.split(';')});
+    res.render("demo/searchlookup.html", {layout: null, lookupfields: req.query.lookupfields.split(';'), multisel: req.query.multisel, rows:[{idx: 1}, {idx: 2}]});
 };

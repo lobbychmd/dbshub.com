@@ -72,14 +72,30 @@ app.get('/demo/dataGrid', require('./routes/demo').dataGrid);
 app.get('/demo/lookupdemo', require('./routes/demo').lookupdemo);
 app.get('/demo/lookupquery/:query', require('./routes/demo').lookup);
 app.get('/demo/searchquery/:query', require('./routes/demo').search);
+app.get('/demo/lookupquery_fail/:query', require('./routes/demo').lookupfail);
 
 app.get('/documentation', require('./routes/documentation').index);
 app.get('/documentation/:name', require('./routes/documentation').doc);
 
 app.listen(3000, function () {
+    var sql = "declare @Tag int \
+    select  @Tag = min(nTag) from tMemCard where nMemberID = :MemberID \
+select \
+    MemberID = a.nMemberID, \
+    Name = a.sName, \
+    SexTypeID = a.sSexID, \
+    SexType = a.sSex, \
+    IDTypeID = a.sIDTypeID, \
+    IDType = a.sIDType, \
+    IDCardNO = a.sIDCardNO, \
+    Birthday = a.dBirthday, \
+    Address = a.sAddress, \
+    BizRangeTypeID = a.sBizRangeID, ";
+    var reg1 = /[Ss][Ee][Ll][Ee][Cc][Tt]\s+(\w+\s+)*(\w+\s*=.+[,\s]+)+\s+[Ff][Rr][Oo][Mm]/g;
+    reg1.exec(sql);
     console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
     var db = require('config').db();
     //db.collection('MetaField').remove({ ProjectName: '4f61852865631f03146075c8' }, null, function () {
-      //  console.log('remove ok.');
+    //  console.log('remove ok.');
     //})
 });

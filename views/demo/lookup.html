@@ -25,37 +25,64 @@
         a.lookup.ui-button-text-only .ui-button-text {padding: 0.1em 0.3em }
     </style>
     <script>
-        $.lookup = {
-            findinput: function (ui, parents, fieldname, fieldattr) {
-                if (ui.attr('fn') == fieldname) return ui;
-                else for (var i in parents) {
-                    var parent = parents[i].tag ? $(ui).closest(parents[i].tag) :
-                         $(parents[i].id ? ("#" + parents[i].id) : parents[i].dom);
-                    var c = parent.find('[' + fieldattr + '=' + fieldname + ']')
-                    if (c.size() > 0) return c;
-                }
-                alert('没找到' + fieldname);
+        var fieldmatch = function (config) {
+            this.config = config;
+        }
+
+        fieldmatch.prototype = {
+            constructor: fieldmatch,
+            match: function (name) {
+                if (!this.config) return name;
+                else if (this.config[name]) return this.config[name];
+                else return name;
             },
-            findcfg: function (option, searchquery) {
-                for (var j in option.config) {
-                    var cfg = option.config[j];
-                    if (cfg.searchquery == searchquery) {
-                        return cfg;
+            matches: function (names) {
+                var r = [];
+                for (var i in names)
+                    r.push(this.match(names[i]));
+                return r;
+            }
+        }
+
+        $.lookup =
+            {
+                findinput: function (ui, parents, fieldname, fieldattr) {
+                    if (ui.attr('fn') == fieldname) return ui;
+                    else for (var i in parents) {
+                        var parent = parents[i].tag ? $(ui).closest(parents[i].tag) :
+                         $(parents[i].id ? ("#" + parents[i].id) : parents[i].dom);
+                        var c = parent.find('[' + fieldattr + '=' + fieldname + ']')
+                        if (c.size() > 0) return c;
+                    }
+                    alert('没找到' + fieldname);
+                },
+                findcfg: function (option, searchquery) {
+                    for (var j in option.config) {
+                        var cfg = option.config[j];
+                        if (cfg.searchquery == searchquery) {
+                            return cfg;
+                        }
+                    }
+                },
+                getajaxurl: function (cfg, ui, option, type) {
+                    var fm = new fieldmatch(cfg.fieldsmatch);
+                    var query = $.map(cfg.keyfields, function (a) { return fm.match(a) + '=' + $.lookup.findinput(ui, option.parents, a, option.fieldattr).val(); })
+                                    .join("&");
+                    if (cfg.multisel) query += "&multisel=1";
+                    var lookupfields = cfg.lookupfields.concat(cfg.keyfields);
+                    return option.url.replace(':type', type).replace(':query', cfg[type]) + "?" + query + "&lookupfields=" + fm.matches(lookupfields).join(";")
+                },
+                singlelookup: function (cfg, ui, option, data, includekey) {
+                    var fm = new fieldmatch(cfg.fieldsmatch);
+                    includekey = includekey || (!data);  //关联失败就去掉key 值
+                    var fields = includekey? cfg.lookupfields.concat(cfg.keyfields) : cfg.lookupfields;
+                    for (var i in fields) {
+                        var f = fields[i];
+                        var input = $.lookup.findinput(ui, option.parents, f, option.fieldattr).val(data? data[fm.match(f)]: null);
+                        if (cfg.keyfields.indexOf(fields[i]) < 0) input.change();
                     }
                 }
-            },
-            getajaxurl: function (cfg, ui, option, type) {
-                var query = $.map(cfg.keyfields, function (a) { return a + '=' + $.lookup.findinput(ui, option.parents, a, option.fieldattr).val(); })
-                                    .join("&");
-                return option.url.replace(':type', type).replace(':query', cfg[type]) + "?" + query + "&lookupfields=" + cfg.lookupfields.join(";")
-            },
-            singlelookup: function (cfg, ui, option, data) {
-                for (var i in cfg.lookupfields) {
-                    var f = cfg.lookupfields[i];
-                    $.lookup.findinput(ui, option.parents, f, option.fieldattr).val(data[f]).change();
-                }
-            }
-        };
+            };
         $.fn.lookup = function (option) {
             return this.each(function () {
                 option = $.extend({ fieldattr: 'fn', url: '/demo/:type/:query' }, option);
@@ -82,10 +109,17 @@
                                     modal: true,
                                     buttons: {
                                         "ok": function () {
-                                            var data =  $('.lookupdialog').getSingleSel();
-                                            if (data) {
-                                                $.lookup.singlelookup(cfg, keyInput, option, data);
+                                            if (cfg.multisel) {
+                                                var data = $('.lookupdialog').getMultiSel();
+                                                for (var i in data) cfg.multisel(data[i]);
                                                 $(this).dialog("close");
+                                            }
+                                            else {
+                                                var data = $('.lookupdialog').getSingleSel();
+                                                if (data) {
+                                                    $.lookup.singlelookup(cfg, keyInput, option, data, true);
+                                                    $(this).dialog("close");
+                                                }
                                             }
                                         }
                                     }
@@ -98,17 +132,17 @@
                 var selector = $.map(allkeys, function (a) { return '[' + option.fieldattr + '=' + a + ']'; })
                     .join(", ");
 
-                container.find(selector).change(function () {
+                container.find(selector).live('change.lookup', function () {
                     var keyInput = $(this);
                     var fieldname = keyInput.attr(option.fieldattr);
                     new seq_asyncArray(
                         function (cfg, params, callback) {
-                            if (cfg.keyfields.indexOf(fieldname) >= 0) {
+                            if (cfg.lookupquery && (cfg.keyfields.indexOf(fieldname) >= 0)) {
 
                                 keyInput.indicator({ insert: true });
 
                                 $.get($.lookup.getajaxurl(cfg, keyInput, option, 'lookupquery'), function (data) {
-                                    $.lookup.singlelookup(cfg, keyInput, option, data);
+                                    $.lookup.singlelookup(cfg, keyInput, option, data, false);
                                     keyInput.indicator({ remove: true });
                                     callback();
                                 });
@@ -147,6 +181,22 @@
             $('#lookup7').lookup({ fieldattr: 'fname', config: [{ lookupquery: 'xxx', keyfields: ['key'], lookupfields: ['value']}] });
             $('#lookup8').lookup({ config: [{ lookupquery: 'xxx', searchquery: 'xxx', keyfields: ['key'], lookupfields: ['value']}] });
             $('#lookup9').lookup({ config: [{ lookupquery: 'xxx', searchquery: 'xxx', keyfields: ['key1', 'key2'], lookupfields: ['value1', 'value2']}] });
+            $('#lookup10').lookup({ config: [
+                { lookupquery: 'xxx', keyfields: ['key1', 'key2'], lookupfields: ['value1', 'value2'], fieldsmatch: { key1: 'key3', value1: 'value3'} },
+                { searchquery: 'xxx', keyfields: ['key5'], lookupfields: ['value5'], fieldsmatch: { key5: 'key6', value5: 'value6'} }
+            ]
+            });
+            $('#lookup11').lookup({ config: [
+                { lookupquery: 'xxx', searchquery: 'xxx', keyfields: ['key1', 'key2'], lookupfields: ['value1', 'value2'],
+                    multisel: function (data) {
+                        $('#lookup11').append('<br />');
+                        for (var i in data) $('#lookup11').append('<span>' + i + ':' + data[i] + '</span>');
+                    }
+                }
+            ]
+            });
+            $('#lookup12').lookup({ config: [{ lookupquery: 'xxx', searchquery: 'xxx', keyfields: ['key1', 'key2'], lookupfields: ['value1', 'value2']}] });
+            $('#lookup13').lookup({ url: '/demo/:type_fail/:query', config: [{ lookupquery: 'xxx', keyfields: ['key'], lookupfields: ['value']}] });
         });
     </script>
 </head>
@@ -156,21 +206,21 @@
         <div class="item">value<br /><input fn="value"/></div>
     </fieldset>
 
-    <fieldset id='lookup2'><legend>多key多value</legend>
+    <fieldset id='lookup2'><legend>demo2 多key多value</legend>
         <div class="item">key1<br /><input fn="key1"/></div>
         <div class="item">key2<br /><input fn="key2"/></div>
         <div class="item">value1<br /><input fn="value1"/></div>
         <div class="item">value2<br /><input fn="value2"/></div>
     </fieldset>
 
-    <fieldset id='lookup3'><legend>lookup触发lookup</legend>
+    <fieldset id='lookup3'><legend>demo3 lookup触发lookup</legend>
         <div class="item">key1<br /><input fn="key1"/></div>
         <div class="item">key2<br /><input fn="key2"/></div>
         <div class="item">key3<br /><input fn="key3" value="aa"/></div>
         <div class="item">value1<br /><input fn="value1"/></div>
     </fieldset>
 
-    <fieldset id='lookup4'><legend>多行</legend>
+    <fieldset id='lookup4'><legend>demo4 多行</legend>
         <table border=1>
             <tr><td>key</td><td><input fn="key"/></td>
                 <td>value</td><td><input fn="value"/></td></tr>
@@ -179,7 +229,7 @@
         </table>
     </fieldset>
 
-    <fieldset id='lookup5'><legend>主从</legend>
+    <fieldset id='lookup5'><legend>demo5 主从</legend>
         <div class="item" id="main1">key1<br /><input fn="key1"/></div>
         <table border=1>
             <tr><td>key</td><td><input fn="key"/></td>
@@ -189,28 +239,56 @@
         </table>
     </fieldset>
 
-    <fieldset id='lookup6'><legend>多个触发</legend>
+    <fieldset id='lookup6'><legend>demo6 多个触发</legend>
         <div class="item">key1<br /><input fn="key1"/></div>
         <div class="item">key2<br /><input fn="key2"/></div>
         <div class="item">value1<br /><input fn="value1" value="aa"/></div>
         <div class="item">value2<br /><input fn="value2"/></div>
     </fieldset>
 
-    <fieldset id='lookup7'><legend>自定义fieldname tag</legend>
+    <fieldset id='lookup7'><legend>demo7 自定义fieldname tag</legend>
         <div class="item">key<br /><input fname="key"/></div>
         <div class="item">value<br /><input fname="value"/></div>
     </fieldset>
 
-    <fieldset id='lookup8'><legend>弹出选择</legend>
+    <fieldset id='lookup8'><legend>demo8 弹出选择</legend>
         <div class="item">key<br /><input fn="key"/></div>
         <div class="item">value<br /><input fn="value"/></div>
     </fieldset>
 
-    <fieldset id='lookup9'><legend>多key弹出选择</legend>
+    <fieldset id='lookup9'><legend>demo9 多key弹出选择</legend>
         <div class="item">key1<br /><input fn="key1"/></div>
         <div class="item">key2<br /><input fn="key2"/></div>
         <div class="item">value1<br /><input fn="value1"/></div>
         <div class="item">value2<br /><input fn="value2"/></div>
+    </fieldset>
+
+    <fieldset id='lookup10'><legend>demo10 字段匹配(和只弹出不lookup)</legend>
+        <div class="item">key1<br /><input fn="key1"/></div>
+        <div class="item">key2<br /><input fn="key2"/></div>
+        <div class="item">value1<br /><input fn="value1"/></div>
+        <div class="item">value2<br /><input fn="value2"/></div>
+
+        <div class="item">key5<br /><input fn="key5"/></div>
+        <div class="item">value5<br /><input fn="value5"/></div>
+    </fieldset>
+
+    <fieldset id='lookup11'><legend>demo11 多选</legend>
+        <div class="item">key1<br /><input fn="key1"/></div>
+        <div class="item">key2<br /><input fn="key2"/></div>
+        <div class="item">value1<br /><input fn="value1"/></div>
+        <div class="item">value2<br /><input fn="value2"/></div>
+    </fieldset>
+    <fieldset id='lookup12'><legend>demo12 弹出模式，会带回key，但不会二次触发</legend>
+        <div class="item">key1<br /><input fn="key1"/></div>
+        <div class="item">key2<br /><input fn="key2"/></div>
+        <div class="item">value1<br /><input fn="value1"/></div>
+        <div class="item">value2<br /><input fn="value2"/></div>
+    </fieldset>
+
+    <fieldset id='lookup13'><legend>demo13 关联失败</legend>
+        <div class="item">key<br /><input fn="key"/></div>
+        <div class="item">value<br /><input fn="value"/></div>
     </fieldset>
 </body>
 </html>

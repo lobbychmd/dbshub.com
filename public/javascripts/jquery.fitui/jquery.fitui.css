@@ -5,7 +5,7 @@ a {text-decoration: none; }
 /* 布局 */
 footer, header {height: 32px; background: url("images/header_bg.png") repeat-x scroll right 0 transparent}
 body>header {background: repeat scroll 0 0 #2D2D2D; font-size: 1.2em; }
-header>* { display: inline-block; padding: 4px 8px; margin: 0px; vertical-align: middle; color: #d3d3d3 }
+header>* { display: inline-block; padding: 6px 8px; margin: 0px; vertical-align: middle; color: #d3d3d3 }
 header a { color: #d3d3d3 }
 nav {float: left}
 nav>header>h3 { color: #DD4B39}

@@ -4,25 +4,32 @@
 <table border=1 class="searchlookup">
     <thead>
         <tr>
+            {{if multisel}}<th></th>{{/if}}
             {{each lookupfields}}
                 <th>${$value}</th>
             {{/each}}
         </tr>
-        <tr>
-            {{each lookupfields}}
-                <td fn="${$value}">${$value} 1</td>
-            {{/each}}
-        </tr>
     </thead>
+    <tbody>
+        {{each rows}}
+            <tr>
+                {{if multisel}}<td><input type="checkbox" class="sel"></td>{{/if}}
+                {{each lookupfields}}
+                    <td fn="${$value}">${$value} ${idx}</td>
+                {{/each}}
+            </tr>
+        {{/each}}
+    </tbody>
     
 </table>
 
 <script>
+    {{if !multisel }}
     $('table.searchlookup tr').click(function () {
         $(this).closest('table').find('tr').removeClass('sel');
         $(this).addClass('sel');
     });
-
+    {{/if}}
     $.fn.getSingleSel = function () {
         var div = $(this[0]);
         var seltr = div.find('tr.sel');
@@ -32,7 +39,22 @@
                 data[$(this).attr('fn')] = $(this).text();
             });
             return data;
-            
+
         } else return null;
+    }
+
+    $.fn.getMultiSel = function () {
+        var div = $(this[0]);
+        var result = [];
+        div.find('tbody tr').each(function () {
+            if ($(this).find(':checkbox.sel').attr('checked')) {
+                var data = {};
+                $(this).children('td').each(function () {
+                    data[$(this).attr('fn')] = $(this).text();
+                });
+                result.push(data);
+            }
+        });
+        return result;
     }
 </script>

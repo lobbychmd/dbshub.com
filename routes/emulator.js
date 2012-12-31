@@ -163,6 +163,7 @@ exports.page = function (req, res) {
             if (req.query._id) {
                 console.log('//取查询元数据');
                 page.Queries = page.Queries ? page.Queries.trim().split(';') : [];
+                console.log(page.Queries);
                 getQueryMeta(project, page.Queries, function (queries) {
                     page.metaQueries = queries;
                     callback();
@@ -183,7 +184,9 @@ exports.page = function (req, res) {
                             var i = 0;
                             new fitnode.seq_asyncArray(
                                 function (script, params1, c1) {
+                                    console.log('get fields');
                                     var fields = new fitnode.sql(script.Script).fieldsInclude();
+                                    console.log(fields);
                                     console.log('//构造查询数据');
                                     getFieldMeta(project, fields, metaQuery.QueryName, function (metaFields) {
                                         queryFields = queryFields.concat(metaFields);
