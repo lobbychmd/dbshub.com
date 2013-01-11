@@ -77,6 +77,8 @@ app.get('/demo/lookupquery_fail/:query', require('./routes/demo').lookupfail);
 app.get('/documentation', require('./routes/documentation').index);
 app.get('/documentation/:name', require('./routes/documentation').doc);
 
+app.get('/game/ant', require('./routes/game').ant);
+
 app.listen(3000, function () {
     var sql = "declare @Tag int \
     select  @Tag = min(nTag) from tMemCard where nMemberID = :MemberID \

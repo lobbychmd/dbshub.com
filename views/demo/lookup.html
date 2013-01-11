@@ -75,10 +75,10 @@
                 singlelookup: function (cfg, ui, option, data, includekey) {
                     var fm = new fieldmatch(cfg.fieldsmatch);
                     includekey = includekey || (!data);  //关联失败就去掉key 值
-                    var fields = includekey? cfg.lookupfields.concat(cfg.keyfields) : cfg.lookupfields;
+                    var fields = includekey ? cfg.lookupfields.concat(cfg.keyfields) : cfg.lookupfields;
                     for (var i in fields) {
                         var f = fields[i];
-                        var input = $.lookup.findinput(ui, option.parents, f, option.fieldattr).val(data? data[fm.match(f)]: null);
+                        var input = $.lookup.findinput(ui, option.parents, f, option.fieldattr).val(data ? data[fm.match(f)] : null);
                         if (cfg.keyfields.indexOf(fields[i]) < 0) input.change();
                     }
                 }
@@ -96,7 +96,11 @@
 
                     if (cfg.searchquery) {
                         var keyinputs = container.find($.map(option.config[i].keyfields, function (a) { return '[' + option.fieldattr + '=' + a + ']'; }).join(", "));
-                        $("<a >...</a>").addClass('lookup').attr('query', cfg.searchquery).button().insertAfter(keyinputs).click(function () {
+                        var lb = typeof option.lookupbtn ;
+                        var btn = (lb == "string")? $(option.lookupbtn ) : (
+                            lb == "function"? option.lookupbtn (): $("<a >...</a>").button()
+                          );
+                        btn.addClass('lookup').attr('query', cfg.searchquery).insertAfter(keyinputs).click(function () {
                             var query = $(this).attr('query');
                             var cfg = $.lookup.findcfg(option, query);
                             var keyInput = $(this);
@@ -197,6 +201,10 @@
             });
             $('#lookup12').lookup({ config: [{ lookupquery: 'xxx', searchquery: 'xxx', keyfields: ['key1', 'key2'], lookupfields: ['value1', 'value2']}] });
             $('#lookup13').lookup({ url: '/demo/:type_fail/:query', config: [{ lookupquery: 'xxx', keyfields: ['key'], lookupfields: ['value']}] });
+            $('#lookup14').lookup({ lookupbtn: "<a href='#'>弹出</a>", config: [{ searchquery: 'xxx', keyfields: ['key'], lookupfields: ['value']}] });
+            $('#lookup15').lookup({ lookupbtn: function(){
+                return $("<a href='#'>弹出</a>").button();
+            }, config: [{ searchquery: 'xxx', keyfields: ['key'], lookupfields: ['value']}] });
         });
     </script>
 </head>
@@ -287,6 +295,16 @@
     </fieldset>
 
     <fieldset id='lookup13'><legend>demo13 关联失败</legend>
+        <div class="item">key<br /><input fn="key"/></div>
+        <div class="item">value<br /><input fn="value"/></div>
+    </fieldset>
+
+    <fieldset id='lookup14'><legend>自定义按钮</legend>
+        <div class="item">key<br /><input fn="key"/></div>
+        <div class="item">value<br /><input fn="value"/></div>
+    </fieldset>
+
+    <fieldset id='lookup15'><legend>自定义按钮</legend>
         <div class="item">key<br /><input fn="key"/></div>
         <div class="item">value<br /><input fn="value"/></div>
     </fieldset>
