@@ -3,5 +3,9 @@ var db = require('config').db();
 var fitnode = require('fitnode');
 
 exports.index = function (req, res) {
-    res.render('demo/editor/index.html', { layout: "../demoLayout"});
+    var types = [
+        {type: "string", size: 20},
+        {type: "date" },
+    ];
+    res.render('demo/editor/index.html', { layout: "../demoLayout" });
 };
