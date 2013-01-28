@@ -67,15 +67,19 @@ app.get('/flowchart/tree', require('./routes/dbchart').tree);
 app.post('/flowchart/save', require('./routes/dbchart').save);
 app.post('/flowchart/json2str', require('./routes/dbchart').json2str);
 
+app.get('/demo', require('./routes/demo').index);
+app.get('/demo/lookupdemo', require('./routes/demo/lookup').lookupdemo);
+app.get('/demo/lookupquery/:query', require('./routes/demo/lookup').lookup);
+app.get('/demo/searchquery/:query', require('./routes/demo/lookup').search);
+app.get('/demo/lookupquery_fail/:query', require('./routes/demo/lookup').lookupfail);
+app.get('/demo/dataGrid', require('./routes/demo/grid').dataGrid);
+app.get('/demo/editor', require('./routes/demo/editor').index);
 app.get('/demo/uidesigner', require('./routes/demo').uidesigner);
-app.get('/demo/dataGrid', require('./routes/demo').dataGrid);
-app.get('/demo/lookupdemo', require('./routes/demo').lookupdemo);
-app.get('/demo/lookupquery/:query', require('./routes/demo').lookup);
-app.get('/demo/searchquery/:query', require('./routes/demo').search);
-app.get('/demo/lookupquery_fail/:query', require('./routes/demo').lookupfail);
 
 app.get('/documentation', require('./routes/documentation').index);
 app.get('/documentation/:name', require('./routes/documentation').doc);
+
+app.get('/game/ant', require('./routes/game').ant);
 
 app.listen(3000, function () {
     var sql = "declare @Tag int \
